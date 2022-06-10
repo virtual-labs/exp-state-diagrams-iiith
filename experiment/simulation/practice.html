@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Counters: Practice</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.7-b/css/style.min.css">
+	<link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+	<div class="container" style="margin-top:1%">
+		<div class="columns is-centered">
+			<div class="column is-one-quarter v-instruction-title">
+				Tasks
+			</div>
+			<div class="column">
+				<div class="v-tabs">
+					<ul>
+						<li class="is-active" id="task1" onclick="changeTabs(event)">
+							<a>
+								Basic Counter
+							</a>
+						</li>
+						<li id="task2" onclick="changeTabs(event)">
+							<a>
+								Ring Counter
+							</a>
+						</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="columns is-centered">
+			<div class="column">
+				<div class="v-instruction-container instructions-box">
+					<div class="v-instruction-title" id="task-title">Basic Counter</div>
+					<div class="v-instruction-text" id="task-description">
+						Implement a Basic Counter using JK Flip-Flops where QB is MSB and QA is LSB.
+						<br>
+					</div>
+					<div>
+						<p>Click on components on the left side to add them to the circuit board.</p>
+						<p>Drag and drop components to move them around, connect them using wires by dragging your cursor from one endpoint to another.</p>
+						<p>You can delete components by right clicking on them and selecting the delete option.</p>
+						<p>Click on the "Simulate" button to simulate the circuit and see the output.</p>
+						<p>Click on the "Submit" button to submit the circuit once you think you have built the required circuit.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="columns is-centered is-flex is-flex-direction-row is-flex-wrap-wrap is-align-content-start">
+		<div class="column is-2-desktop is-12-tablet is-12-mobile">
+			<div class="v-datalist-container" style="height:100%">
+				<div class="v-datalist-title">Components</div>
+				<div class="v-datalist-row components-list" id="toolbar">
+					<div class="component-button jkflipflop" onclick="addJKFlipFlop(event)"></div>
+				</div>
+			</div>
+		</div>
+		<div class="column is-7-desktop is-12-tablet is-12-mobile">
+			<div id="circuit-board">
+				<div id="working-area">
+				</div>
+			</div>
+		</div>
+		<div class="column is-3-desktop is-12-tablet is-12-mobile">
+			<div class="v-datalist-container components-list">
+				<div class="v-datalist-title">Observations</div>
+				<div class="v-datalist-row">
+					<div class="v-table-wrap">
+						<table class="table is-bordered is-fullwidth">
+							<thead id="table-head">
+							</thead>
+							<tbody id="table-body">
+							</tbody>
+						</table>
+					</div>
+					<div id="result"></div>
+				</div>
+				<div class="v-datalist-row">
+					<button class="v-button" id="simulate-button">Simulate</button>
+					<button class="v-button" onclick="submitCircuit()">Submit</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="menu">
+		<ul class="menu-options">
+			<li class="menu-option">Delete</li>
+			<li class="menu-option">Cancel</li>
+		</ul>
+	</div>
+	
+	<script src="js/jsplumb.bundle.js"></script>
+	<script type="module" src="js/main.js"></script>
+
+</body>
+
+</html>

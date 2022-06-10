@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.7-b/css/style.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/MotionPathPlugin.min.js"></script>
+    <title>
+        State Diagram: Demo
+    </title>
+</head>
+
+<body>
+    <div class="container" style="margin-top: 1%;">
+        <div class="columns is-centered">
+            <div class="column is-one-quarter v-instruction-title">
+                Tasks
+            </div>
+            <div class="column">
+                <div class="v-tabs">
+                    <ul>
+                        <li id="task1" class="is-active">
+                            <a>
+                                State Diagrams
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns is-centered">
+            <div class="column">
+                <div class="v-instruction-container instructions-box">
+                    <div class="v-instruction-title" id="task-title">State Diagrams</div>
+                    <div class="v-instruction-text" id="task-description">
+                        Simulation of a circuit made from the given state diagram using D flip-flops.
+                    </div>
+                    <p>Start- Starts the simulation after the inputs are properly selected. Default speed is 1x. Select
+                        the speed through dropdown menu</p>
+                    <p>Reset - Resets the simulation</p>
+                    <p>There is a clock which can be started by the user but it's cycle cannot be controlled.</p>
+                    <p>There is one output(Y) </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="column" style="margin:auto;text-align:center">
+            <div class="v-select">
+                <select autocomplete="off" name="speed" onchange="setSpeed(this.value)" id="speed">
+                    <option value="1">1x</option>
+                    <option value="2">2x</option>
+                    <option value="4">4x</option>
+                </select>
+            </div>
+            <button class="v-button" id="play-or-pause" onclick="simulationStatus()">Start</button>
+            <button class="v-button" id="restart" onclick="restartCircuit()">Reset</button>
+        </div>
+    </div>
+
+    <div class="columns is-centered is-flex is-flex-direction-row is-flex-wrap-wrap is-align-content-start">
+        <div class="column is-9-desktop is-12-tablet is-12-mobile">
+            <div id="circuit-board">
+                <svg class="svg" xmlns="http://www.w3.org/2000/svg" width="100%" height="120%" viewBox="0 0 925 1000 ">
+                    <rect id="x1" x="60" y="60" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x2" x="90" y="60" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x3" x="120" y="60" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x4" x="150" y="60" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x5" x="180" y="60" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x6" x="210" y="60" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x7" x="240" y="60" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x8" x="270" y="60" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y1" x="60" y="140" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y2" x="90" y="140" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y3" x="120" y="140" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y4" x="150" y="140" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y5" x="180" y="140" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y6" x="210" y="140" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y7" x="240" y="140" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y8" x="270" y="140" width="30" height="40"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <path id="path1" fill="none" stroke="currentColor" stroke-width="3"
+                        d="M 600 700 L 600 550 L 750 550" /> <!-- J to Qb-->
+                    <path id="path2" fill="none" stroke="currentColor" stroke-width="3" d="M 800 450 L 1050 450 " />
+                    <!-- J to Qa-->
+                    <path id="path3" fill="none" stroke="currentColor" stroke-width="3" d="M 50 440 L 230 440 " />
+                    <!-- J to Qa-->
+                    <path id="path4" fill="none" stroke="currentColor" stroke-width="3" d="M 50 480 L 230 480 " />
+                    <!-- J to Qa-->
+                    <path id="path5" fill="none" stroke="currentColor" stroke-width="3" d="M 230 460 L 500 460 " />
+                    <!-- J to Qa-->
+                    <path id="path6" fill="none" stroke="currentColor" stroke-width="3" d="M 550 435 L 750 435 " />
+                    <!-- J to Qa-->
+                    <path id="path7" fill="none" stroke="currentColor" stroke-width="3"
+                        d="M 950 450 L 950 350 L 300 350 L 300 410 L 500 410 " /> <!-- J to Qa-->
+                    <rect id="dflipflop1" x="750" y="400" width="150" height="250"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);stroke-width:5;fill-opacity:1;stroke-opacity:1" />
+                    <g id="xor1">
+                        <path id="path1XOR" stroke="currentColor" fill="#29e" stroke-width="3"
+                            d="M 195 425 Q 230 460 195 495 Q 231 460 195 425 M 200 425 Q 235 460 200 495 Q 305 460 200 425" />
+                    </g>
+                    <g id="xor2">
+                        <path id="path2XOR" stroke="currentColor" fill="#29e" stroke-width="3"
+                            d="M 495 400 Q 530 435 495 470 Q 531 435 495 400 M 500 400 Q 535 435 500 470 Q 605 435 500 400" />
+                    </g>
+                    <circle id="a" cx="1050" cy="450" r="15"
+                        style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
+                    <circle id="clock" cx="600" cy="700" r="15"
+                        style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
+                    <circle id="x" cx="50" cy="440" r="10"
+                        style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
+                    <circle id="y" cx="50" cy="480" r="10"
+                        style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
+                    <text font-size="1.5em" x="750" y="450" fill="black">D</text>
+                    <text font-size="1.5em" x="1100" y="450" fill="black">A</text>
+                    <text font-size="1.5em" x="20" y="450" fill="black">x</text>
+                    <text font-size="1.5em" x="20" y="480" fill="black">y</text>
+                    <text font-size="1.5em" x="750" y="554" fill="black">&#8827clk</text>
+                    <text font-size="1.5em" x="550" y="735" fill="black"> CLOCK</text>
+                    <text font-size="1.5em" x="0" y="50" fill="black">Stream Input X</text>
+                    <text font-size="1.5em" x="70" y="85" fill="black">0</text>
+                    <text font-size="1.5em" x="100" y="85" fill="black">0</text>
+                    <text font-size="1.5em" x="130" y="85" fill="black">1</text>
+                    <text font-size="1.5em" x="160" y="85" fill="black">1</text>
+                    <text font-size="1.5em" x="190" y="85" fill="black">0</text>
+                    <text font-size="1.5em" x="220" y="85" fill="black">0</text>
+                    <text font-size="1.5em" x="250" y="85" fill="black">1</text>
+                    <text font-size="1.5em" x="280" y="85" fill="black">1</text>
+                    <text font-size="1.5em" x="0" y="130" fill="black">Stream Input Y</text>
+                    <text font-size="1.5em" x="70" y="165" fill="black">0</text>
+                    <text font-size="1.5em" x="100" y="165" fill="black">1</text>
+                    <text font-size="1.5em" x="130" y="165" fill="black">0</text>
+                    <text font-size="1.5em" x="160" y="165" fill="black">1</text>
+                    <text font-size="1.5em" x="190" y="165" fill="black">0</text>
+                    <text font-size="1.5em" x="220" y="165" fill="black">1</text>
+                    <text font-size="1.5em" x="250" y="165" fill="black">0</text>
+                    <text font-size="1.5em" x="280" y="165" fill="black">1</text>
+                </svg>
+            </div>
+        </div>
+        <div class="column is-3-desktop is-4-tablet is-12-mobile">
+            <div class="v-datalist-container components-list">
+                <div class="v-datalist-title">Observations</div>
+                <div class="v-datalist-row">
+                    <div id="observations"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="menu">
+        <ul class="menu-options">
+            <li class="menu-option">Delete</li>
+            <li class="menu-option">Cancel</li>
+        </ul>
+    </div>
+    <script type="module" src="js/animation.js"></script>
+</body>
+
+</html>
