@@ -84,7 +84,7 @@ function textClockInit() {
 
 function outputCoordinates() {
 
-    let xcor = 1045;
+    let xcor = 895;
     let ycor = 455;
 
     for (const text of TEXTOUTPUT) {
@@ -201,8 +201,8 @@ function changeInput() {
     let state = currPos;
     TEXTINPUT[0].textContent = inputStream[0][state];
     TEXTINPUT[1].textContent = inputStream[1][state];
-    setCoordinates(45, 445, TEXTINPUT[0]);
-    setCoordinates(45, 485, TEXTINPUT[1]);
+    setCoordinates(45, 440, TEXTINPUT[0]);
+    setCoordinates(45, 490, TEXTINPUT[1]);
     svg.append(TEXTINPUT[0]);
     svg.append(TEXTINPUT[1]);
     setActive(state);
@@ -260,7 +260,11 @@ function reboot() {
     }
 }
 function display() {
-    OBSERV.innerHTML = "Simulation has finished. Press Reset to start again"
+    OBSERV.innerHTML = "Simulation has finished. Press Reset to start again";
+    OBSERV.innerHTML += "<br />";
+    let img = document.createElement("img");
+    img.src = "./images/state-table.png";
+    OBSERV.appendChild(img);
 }
 function setter(value, component) {
     //toggles the text content a of input/output component b
@@ -481,7 +485,7 @@ for(let i=0;i<96;i+=12){
     timeline.add(outputVisible, 12+i);
     timeline.add(increaseCurrPos, 12+i);
 }
-timeline.add(display, 40);
+timeline.add(display, 98);
 timeline.eventCallback("onComplete", outputVisible);
 timeline.eventCallback("onComplete", display);
 timeline.pause();

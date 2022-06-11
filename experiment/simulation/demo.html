@@ -42,11 +42,12 @@
                     <div class="v-instruction-text" id="task-description">
                         Simulation of a circuit made from the given state diagram using D flip-flops.
                     </div>
-                    <p>Start- Starts the simulation after the inputs are properly selected. Default speed is 1x. Select
-                        the speed through dropdown menu</p>
+                    <p>Refer to the given state diagram to understand the circuit</p>
+                    <p>There are two input streams X and Y</p>
+                    <p>Start- Starts the simulation. Default speed is 1x. Select the speed through dropdown menu</p>
                     <p>Reset - Resets the simulation</p>
                     <p>There is a clock which can be started by the user but it's cycle cannot be controlled.</p>
-                    <p>There is one output(Y) </p>
+                    <p>There is one output(A) </p>
                 </div>
             </div>
         </div>
@@ -103,20 +104,21 @@
                     <rect id="y8" x="270" y="140" width="30" height="40"
                         style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
                     <path id="path1" fill="none" stroke="currentColor" stroke-width="3"
-                        d="M 600 700 L 600 550 L 750 550" /> <!-- J to Qb-->
-                    <path id="path2" fill="none" stroke="currentColor" stroke-width="3" d="M 800 450 L 1050 450 " />
-                    <!-- J to Qa-->
-                    <path id="path3" fill="none" stroke="currentColor" stroke-width="3" d="M 50 440 L 230 440 " />
-                    <!-- J to Qa-->
-                    <path id="path4" fill="none" stroke="currentColor" stroke-width="3" d="M 50 480 L 230 480 " />
-                    <!-- J to Qa-->
+                        d="M 600 700 L 600 550 L 650 550" /> <!-- Clock to clk of flip flop-->
+                    <path id="path2" fill="none" stroke="currentColor" stroke-width="3" d="M 800 450 L 900 450 " />
+                    <!-- flip flop to A-->
+                    <path id="path3" fill="none" stroke="currentColor" stroke-width="3" d="M 50 435 L 225 435 " />
+                    <!-- x to first xor gate-->
+                    <path id="path4" fill="none" stroke="currentColor" stroke-width="3" d="M 50 485 L 225 485 " />
+                    <!-- y to first xor gate-->
                     <path id="path5" fill="none" stroke="currentColor" stroke-width="3" d="M 230 460 L 500 460 " />
-                    <!-- J to Qa-->
-                    <path id="path6" fill="none" stroke="currentColor" stroke-width="3" d="M 550 435 L 750 435 " />
-                    <!-- J to Qa-->
+                    <!-- first xor gate to second xor gate-->
+                    <path id="path6" fill="none" stroke="currentColor" stroke-width="3" d="M 550 435 L 650 435 " />
+                    <!-- second xor gate to flip flop-->
                     <path id="path7" fill="none" stroke="currentColor" stroke-width="3"
-                        d="M 950 450 L 950 350 L 300 350 L 300 410 L 500 410 " /> <!-- J to Qa-->
-                    <rect id="dflipflop1" x="750" y="400" width="150" height="250"
+                        d="M 850 450 L 850 350 L 300 350 L 300 410 L 500 410 " />
+                     <!-- A to second xor gate-->
+                    <rect id="dflipflop1" x="650" y="400" width="150" height="250"
                         style="fill:#29e;stroke:rgb(68, 68, 119);stroke-width:5;fill-opacity:1;stroke-opacity:1" />
                     <g id="xor1">
                         <path id="path1XOR" stroke="currentColor" fill="#29e" stroke-width="3"
@@ -126,19 +128,19 @@
                         <path id="path2XOR" stroke="currentColor" fill="#29e" stroke-width="3"
                             d="M 495 400 Q 530 435 495 470 Q 531 435 495 400 M 500 400 Q 535 435 500 470 Q 605 435 500 400" />
                     </g>
-                    <circle id="a" cx="1050" cy="450" r="15"
+                    <circle id="a" cx="900" cy="450" r="15"
                         style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
                     <circle id="clock" cx="600" cy="700" r="15"
                         style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
-                    <circle id="x" cx="50" cy="440" r="10"
+                    <circle id="x" cx="50" cy="435" r="15"
                         style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
-                    <circle id="y" cx="50" cy="480" r="10"
+                    <circle id="y" cx="50" cy="485" r="15"
                         style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
-                    <text font-size="1.5em" x="750" y="450" fill="black">D</text>
-                    <text font-size="1.5em" x="1100" y="450" fill="black">A</text>
-                    <text font-size="1.5em" x="20" y="450" fill="black">x</text>
-                    <text font-size="1.5em" x="20" y="480" fill="black">y</text>
-                    <text font-size="1.5em" x="750" y="554" fill="black">&#8827clk</text>
+                    <text font-size="1.5em" x="655" y="440" fill="black">D</text>
+                    <text font-size="1.5em" x="900" y="500" fill="black">A</text>
+                    <text font-size="1.5em" x="15" y="440" fill="black">x</text>
+                    <text font-size="1.5em" x="15" y="490" fill="black">y</text>
+                    <text font-size="1.5em" x="650" y="554" fill="black">&#8827clk</text>
                     <text font-size="1.5em" x="550" y="735" fill="black"> CLOCK</text>
                     <text font-size="1.5em" x="0" y="50" fill="black">Stream Input X</text>
                     <text font-size="1.5em" x="70" y="85" fill="black">0</text>
@@ -163,6 +165,8 @@
         </div>
         <div class="column is-3-desktop is-4-tablet is-12-mobile">
             <div class="v-datalist-container components-list">
+                <div class="v-datalist-title">State-Diagram</div>
+                <div class="v-datalist-row"><img src="images/state-diagram-1.jpeg" alt="state diagram"></img></div>
                 <div class="v-datalist-title">Observations</div>
                 <div class="v-datalist-row">
                     <div id="observations"></div>
