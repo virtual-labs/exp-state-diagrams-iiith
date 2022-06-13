@@ -116,7 +116,7 @@ export class Clock {
                 timerOff = setTimeout(run, intervalOff);
             }
 
-            window.sim2();
+            window.sim2(1);
         }
 
         timerOff = setTimeout(run, intervalOff);

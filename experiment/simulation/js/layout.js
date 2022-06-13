@@ -1,4 +1,4 @@
-import { simulate, deleteElement } from "./gate.js";
+import { simulate, deleteElement, printErrors, clearResult, printSuccess } from "./gate.js";
 import { connectGate, connectRSFF, connectJKFF, unbindEvent, initRSFlipFlop, initDFlipFlop, initJKFlipFlop, refreshWorkingArea,  connectDFlipFlopGate } from "./main.js";
 import { deleteFF } from "./flipflop.js";
 
@@ -91,6 +91,7 @@ function showPrompt(text, callback) {
   let form = document.getElementById('prompt-form');
   let container = document.getElementById('prompt-form-container');
   document.getElementById('prompt-message').innerHTML = text;
+  document.getElementById('prompt-message').style.fontSize = "1.5em";
   form.text.value = '';
 
   function complete(value) {
@@ -152,6 +153,7 @@ function checkInputString(inputString){
 }
 
 function changeToArray(inputString){
+  window.xValues.length = 0;
   for(let char of inputString){
     if(char === '1'){
       window.xValues.push(true);
@@ -162,15 +164,19 @@ function changeToArray(inputString){
   }
 }
 
-document.getElementById('show-button').onclick = function() {
+function clearArray(){
+  window.xValues.length = 0;
+}
+
+document.getElementById('input-button').onclick = function() {
   showPrompt("Enter the input stream in binary form", function(value) {
-    const result = document.getElementById('result');
     if(checkInputString(value)){
       changeToArray(value);
-      result.innerHTML = value;
+      printSuccess(value);
     }
     else{
-      result.innerHTML = "Invalid string";
+      clearArray();
+      printErrors("Invalid input stream",null);
     }
   });
 };
@@ -210,18 +216,23 @@ function clearObservations() {
 // Simulation
 
 const simButton = document.getElementById("simulate-button");
+const inputButton=document.getElementById("input-button");
 function toggleSimulation() {
+  clearResult();
   if (window.simulate === 0) {
     window.simulate = 1;
+    inputButton.disabled=false;
     simButton.innerHTML = "Simulate";
   }
   else {
     window.simulate = 0;
+    inputButton.disabled=true;
     simButton.innerHTML = "Stop";
     if(!window.sim())
     {
       window.simulate = 1;
       simButton.innerHTML = "Simulate";
+      inputButton.disabled=false;
     }
   }
 }

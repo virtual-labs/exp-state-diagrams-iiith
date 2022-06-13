@@ -441,7 +441,6 @@ export function simulateFFJK() {
     for (let ffID in flipFlops) {
         const gate = flipFlops[ffID];
         gate.setQbefore(gate.q);
-        console.log(gate);
     }
 }
 
@@ -449,6 +448,10 @@ export function testSimulateFFJK(flipFlops) {
     for (let ffID in flipFlops) {
         const gate = flipFlops[ffID];
         getResultJK(gate);
+    }
+    for (let ffID in flipFlops) {
+        const gate = flipFlops[ffID];
+        gate.setQbefore(gate.q);
     }
 }
 

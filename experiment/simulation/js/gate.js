@@ -1,6 +1,6 @@
 import { registerGate, jsPlumbInstance } from "./main.js";
 import { setPosition } from "./layout.js";
-import { computeAnd, computeNand, computeNor, computeOr, computeXnor, computeXor, testBasicCounter, testRingCounter } from "./validator.js";
+import { computeAnd, computeNand, computeNor, computeOr, computeXnor, computeXor, testStateDiagram, testRingCounter } from "./validator.js";
 import { checkConnectionsJK, simulateFFJK, testSimulateFFJK, simulateFFDD, checkConnectionsDD, testSimulateDD } from "./flipflop.js";
 
 'use strict';
@@ -236,6 +236,18 @@ function setInput(event) {
 
 window.setInput = setInput;
 
+export function clearResult() {
+    const result = document.getElementById("result");
+    result.innerHTML = "";
+    result.className = "";
+}
+
+export function printSuccess(message) {
+    const result = document.getElementById("result");
+    result.innerHTML = message;
+    result.className = "success-message";
+}
+
 export function printErrors(message, objectId) {
     const result = document.getElementById('result');
     result.innerHTML += message;
@@ -250,29 +262,31 @@ export function checkConnections() {
     let correctConnection = true;
     for (let gateId in gates) {
         const gate = gates[gateId];
+        const id = document.getElementById(gate.id);
         if (gate.inputPoints.length != gate.inputs.length) {
-            printErrors(gate.name + " not connected.\n", null);
+            printErrors("highlighted component not connected.\n", id);
             correctConnection = false;
+            return correctConnection;
+
         }
         else if (!gate.isConnected && !gate.isOutput) {
-            printErrors("Input " + gate.name + " not connected" + ".\n", null);
+            printErrors("highlighted component not connected" + ".\n", id);
             correctConnection = false;
+            return correctConnection;
         }
     }
-    if (correctConnection) {
-        return true;
-    }
-    else {
-        //printErrors("Connections are not correct.\n")
-        // alert("Connections are not correct");
-        return false;
-    }
+    return correctConnection;
+
 }
 
 export function simulate() {
 
     window.simulate = 0; // status store of infinte clock ulte naming
     // change binary string to array
+    if (window.xValues.length == 0) {
+        printErrors("Please enter input string\n", null);
+        return false;
+    }
     if (!checkConnections()) {
         return false;
     }
@@ -294,7 +308,7 @@ export function simulate() {
             const gate = gates[gateId];
             if (gate.type === "Input") {
                 if (gate.output === false) {
-                    simulate2();
+                    simulate2(1);
                 }
                 gate.output = true;
                 let element = document.getElementById(gate.id)
@@ -314,13 +328,13 @@ export function simulate() {
         }
     }
     if (!circuitHasClock) {
-        simulate2();
+        simulate2(1);
     }
 
     return true;
 }
 
-function simulate2() {
+export function simulate2(testing) {
     // change input bits
     for (let gateId in gates) {
         const gate = gates[gateId];
@@ -331,7 +345,7 @@ function simulate2() {
                 element.className = "low";
                 element.childNodes[0].innerHTML = "0";
             }
-            else{
+            else {
                 let element = document.getElementById(gate.id)
                 element.className = "high";
                 element.childNodes[0].innerHTML = "1";
@@ -455,48 +469,49 @@ function simulate2() {
         simulateFFJK();
     }
     // output bits
-    for (let gateId in gates) {
-        const gate = gates[gateId];
-        if (gate.isOutput) {
-            let input = gate.inputs[0];
-            let element = document.getElementById(gate.id)
-            if (getOutput(input)) {
-                element.className = "high";
-                element.childNodes[0].innerHTML = "1";
-            }
-            else if (getOutput(input) === false) {
-                element.className = "low";
-                element.childNodes[0].innerHTML = "0";
+    if (testing === 1) {
+        for (let gateId in gates) {
+            const gate = gates[gateId];
+            if (gate.isOutput) {
+                let input = gate.inputs[0];
+                let element = document.getElementById(gate.id)
+                if (getOutput(input)) {
+                    element.className = "high";
+                    element.childNodes[0].innerHTML = "1";
+                }
+                else if (getOutput(input) === false) {
+                    element.className = "low";
+                    element.childNodes[0].innerHTML = "0";
+                }
             }
         }
     }
-    // for(let gateID in gates)
-    // {
-    //     const gate = gates[gateID];
-    //     console.log(gate);
-    // }
+    else{
+        for (let gateId in gates) {
+            const gate = gates[gateId];
+            if (gate.isOutput) {
+                let input = gate.inputs[0];
+                if (getOutput(input) != null) {
+                    gate.setOutput(getOutput(input));
+                }
+            }
+        }
+    }
 }
 
 window.sim = simulate;
 window.sim2 = simulate2;
 
-export function testSimulation(gates, flipFlops) {
-    if (!checkConnections()) {
+export function checkForSubmit() {
+    if (!checkConnections() || !checkConnectionsJK()) {
         return false;
     }
-
-    if (window.currentTab === "task2") {
-        if (!checkConnectionsDD()) {
-            return false;
-        }
-    }
-    else if (window.currentTab === "task1") {
-        if (!checkConnectionsJK()) {
-            return false;
-        }
-    }
+    xIndex = 0;
+    return true;
+}
 
 
+export function testSimulation(gates, flipFlops) {
     // input bits
     for (let gateId in gates) {
         const gate = gates[gateId];
@@ -523,86 +538,80 @@ export function testSimulation(gates, flipFlops) {
         }
     }
     // logic gates and flip flop
-    if (window.currentTab === "task1") {
-        for (let iterations = 0; iterations < 4; iterations++) {
-            for (let gateId in gates) {
-                const gate = gates[gateId];
-                if (gate.isOutput === false && gate.isInput === false && gate.type != "NOT" && gate.type != "ThreeIPNAND") {
-                    const val1 = getOutput(gate.inputs[0]);
-                    const val2 = getOutput(gate.inputs[1]);
-                    if (val1 == null || val2 == null) {
-                        let val = null;
-                        if (val1 == null && val2 == null) {
-                            continue;
-                        }
-                        else if (val1 == null) {
-                            val = val2;
-                        }
-                        else if (val2 == null) {
-                            val = val1;
-                        }
+    for (let iterations = 0; iterations < 5; iterations++) {
+        for (let gateId in gates) {
+            const gate = gates[gateId];
+            if (gate.isOutput === false && gate.isInput === false && gate.type != "NOT" && gate.type != "ThreeIPNAND") {
+                const val1 = getOutput(gate.inputs[0]);
+                const val2 = getOutput(gate.inputs[1]);
+                if (val1 == null || val2 == null) {
+                    let val = null;
+                    if (val1 == null && val2 == null) {
+                        continue;
+                    }
+                    else if (val1 == null) {
+                        val = val2;
+                    }
+                    else if (val2 == null) {
+                        val = val1;
+                    }
 
-                        if (gate.type === "OR" && val === true) {
-                            gate.setOutput(true);
-                        }
-                        if (gate.type === "AND" && val === false) {
-                            gate.setOutput(false);
-                        }
-                        if (gate.type === "NOR" && val === true) {
-                            gate.setOutput(false);
-                        }
-                        if (gate.type === "NAND" && val === false) {
-                            gate.setOutput(true);
-                        }
+                    if (gate.type === "OR" && val === true) {
+                        gate.setOutput(true);
                     }
-                    else {
-                        gate.generateOutput();
+                    if (gate.type === "AND" && val === false) {
+                        gate.setOutput(false);
+                    }
+                    if (gate.type === "NOR" && val === true) {
+                        gate.setOutput(false);
+                    }
+                    if (gate.type === "NAND" && val === false) {
+                        gate.setOutput(true);
                     }
                 }
-                else if (gate.isOutput === false && gate.isInput === false && gate.type === "NOT") {
-                    const val1 = getOutput(gate.inputs[0]);
-                    if (val1 == null) {
-                        continue;
-                    }
-                    else {
-                        gate.generateOutput();
-                    }
+                else {
+                    gate.generateOutput();
                 }
-                else if (gate.isOutput === false && gate.isInput === false && gate.type === "ThreeIPNAND") {
-                    const val1 = getOutput(gate.inputs[0]);
-                    const val2 = getOutput(gate.inputs[1]);
-                    const val3 = getOutput(gate.inputs[2]);
-                    const val = [];
-                    if (val1 != null)
-                        val.push(val1);
-                    if (val2 != null)
-                        val.push(val2);
-                    if (val3 != null)
-                        val.push(val3);
-                    if (val.length === 0) {
-                        continue;
-                    }
-                    else if (val.length === 3) {
-                        gate.generateOutput();
-                    }
-                    else {
-                        for (let value in val) {
-                            if (val[value] === false) {
-                                gate.setOutput(true);
-                                break;
-                            }
+            }
+            else if (gate.isOutput === false && gate.isInput === false && gate.type === "NOT") {
+                const val1 = getOutput(gate.inputs[0]);
+                if (val1 == null) {
+                    continue;
+                }
+                else {
+                    gate.generateOutput();
+                }
+            }
+            else if (gate.isOutput === false && gate.isInput === false && gate.type === "ThreeIPNAND") {
+                const val1 = getOutput(gate.inputs[0]);
+                const val2 = getOutput(gate.inputs[1]);
+                const val3 = getOutput(gate.inputs[2]);
+                const val = [];
+                if (val1 != null)
+                    val.push(val1);
+                if (val2 != null)
+                    val.push(val2);
+                if (val3 != null)
+                    val.push(val3);
+                if (val.length === 0) {
+                    continue;
+                }
+                else if (val.length === 3) {
+                    gate.generateOutput();
+                }
+                else {
+                    for (let value in val) {
+                        if (val[value] === false) {
+                            gate.setOutput(true);
+                            break;
                         }
                     }
                 }
             }
-
-            testSimulateFFJK(flipFlops);
         }
+    }
 
-    }
-    if (window.currentTab === "task2") {
-        testSimulateDD(flipFlops);
-    }
+    testSimulateFFJK(flipFlops);
 
     // output bits
     for (let gateId in gates) {
@@ -621,13 +630,12 @@ export function testSimulation(gates, flipFlops) {
 export function submitCircuit() {
 
     document.getElementById("table-body").innerHTML = EMPTY;
-    const result = document.getElementById("result");
-    result.innerHTML = EMPTY;
+    clearResult();
     if (window.currentTab === "task2") {
         testRingCounter("Input-0", "Clock-0", "Output-1", "Output-2", "Output-3");
     }
     else if (window.currentTab === "task1") {
-        testBasicCounter("Input-0", "Input-1", "Clock-0", "Output-2", "Output-3");
+        testStateDiagram("Input-0", "Clock-0", "Output-1", "Output-2");
     }
 }
 window.submitCircuit = submitCircuit;
