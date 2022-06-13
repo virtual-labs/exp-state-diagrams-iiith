@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Counters: Practice</title>
+	<title>State Diagram: Practice</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.7-b/css/style.min.css">
 	<link rel="stylesheet" href="css/main.css">
 </head>
@@ -22,15 +22,9 @@
 					<ul>
 						<li class="is-active" id="task1" onclick="changeTabs(event)">
 							<a>
-								Basic Counter
+								State Diagram
 							</a>
 						</li>
-						<li id="task2" onclick="changeTabs(event)">
-							<a>
-								Ring Counter
-							</a>
-						</li>
-						
 					</ul>
 				</div>
 			</div>
@@ -39,9 +33,9 @@
 		<div class="columns is-centered">
 			<div class="column">
 				<div class="v-instruction-container instructions-box">
-					<div class="v-instruction-title" id="task-title">Basic Counter</div>
+					<div class="v-instruction-title" id="task-title">State Diagram</div>
 					<div class="v-instruction-text" id="task-description">
-						Implement a Basic Counter using JK Flip-Flops where QB is MSB and QA is LSB.
+						Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.
 						<br>
 					</div>
 					<div>
@@ -60,6 +54,10 @@
 			<div class="v-datalist-container" style="height:100%">
 				<div class="v-datalist-title">Components</div>
 				<div class="v-datalist-row components-list" id="toolbar">
+					<div class="component-button and" onclick="addGate(event)">AND</div>
+					<div class="component-button or" onclick="addGate(event)">OR</div>
+					<div class="component-button not" onclick="addGate(event)">NOT</div>
+					<div class="component-button xor" onclick="addGate(event)">XOR</div>
 					<div class="component-button jkflipflop" onclick="addJKFlipFlop(event)"></div>
 				</div>
 			</div>
@@ -74,6 +72,11 @@
 			<div class="v-datalist-container components-list">
 				<div class="v-datalist-title">Observations</div>
 				<div class="v-datalist-row">
+					<button class="v-button" id="simulate-button">Simulate</button>
+					<button class="v-button" onclick="submitCircuit()">Submit</button>
+					<button class="v-button" id="show-button">Add Input </button>
+				</div>
+				<div class="v-datalist-row">
 					<div class="v-table-wrap">
 						<table class="table is-bordered is-fullwidth">
 							<thead id="table-head">
@@ -84,11 +87,8 @@
 					</div>
 					<div id="result"></div>
 				</div>
-				<div class="v-datalist-row">
-					<button class="v-button" id="simulate-button">Simulate</button>
-					<button class="v-button" onclick="submitCircuit()">Submit</button>
-				</div>
-
+				<div class="v-datalist-title">State-Diagram</div>
+                <div class="v-datalist-row"><img src="images/practice-state-diagram2.png" alt="state diagram"></img></div>
 			</div>
 		</div>
 	</div>
@@ -98,7 +98,38 @@
 			<li class="menu-option">Cancel</li>
 		</ul>
 	</div>
-	
+
+	<!-- <div class="modal">
+		<div class="modal-content">
+			<div class="container">
+				<span class="close-button">&times;</span>
+				<div class="columns is-centered is-mobile">
+					<div class="column is-one-quarter">Input Stream(X): </div>
+					<div class="column">
+						<div class="control">
+							<input class="input" id="input-stream" type="text" placeholder="" />
+						</div>
+					</div>
+				</div>
+				<div class="columns is-centered is-mobile">
+					<div class="column center-content">
+						<button class="v-button" id="input-add">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+
+		<div id="prompt-form-container">
+			<form id="prompt-form">
+			<div id="prompt-message"></div>
+			<input name="text" type="text">
+			<input type="submit" value="Ok">
+			<input type="button" name="cancel" value="Cancel">
+			</form>
+		</div>
+			
 	<script src="js/jsplumb.bundle.js"></script>
 	<script type="module" src="js/main.js"></script>
 

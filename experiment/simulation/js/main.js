@@ -1211,19 +1211,6 @@ export function registerGate(id, gate) {
                 ],
             })
         );
-        // output Q'
-        gate.addInputPoints(
-            jsPlumbInstance.addEndpoint(element, {
-                anchor: [1, 0.7, 1, 0, 7, -1],
-                source: true,
-                target: true,
-                connectionsDetachable: false,
-                uuid: "output:3:" + id,
-                overlays: [
-                    { type: "Label", options: { id: "qbarout", location: [-1, 0.2] } } // qbar for q '
-                ],
-            })
-        );
     }
     else if (gateType === "DFlipFlop") {
         // input D
@@ -1360,13 +1347,12 @@ export function initDFlipFlop() {
     clockjs.addClock(0.5, 50, "working-area", 40, 400, "Clk", "Clock-0");
 }
 
-export function initTFlipFlop() {
-    const ids = ["Input-0", "Input-1", "Output-2","Output-3"]; // [A B Sum Carry Out]
-    const types = ["Input","Input" ,"Output", "Output"];
-    const names = ["J","K" ,"QB", "QA"];
+export function initStateDiagram() {
+    const ids = ["Input-0","Output-1","Output-2"];
+    const types = ["Input","Output", "Output"];
+    const names = ["X","A", "B"];
     const positions = [
         { x: 40, y: 200 },
-        { x: 40, y: 550 },
         { x: 820, y: 200 },
         { x: 820, y: 550 }
     ];
@@ -1393,4 +1379,4 @@ export function refreshWorkingArea() {
 window.currentTab = "task1";
 connectJKFF();
 refreshWorkingArea();
-initTFlipFlop();
+initStateDiagram();

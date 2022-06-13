@@ -242,8 +242,9 @@ export class JKFlipFlop {
         this.k = [];  // Takes 2 items in a list : Gate, Output endpoint of gate
         this.j = [];
         this.clk = [];
-        this.q = true;
-        this.qbar = false;
+        this.q = false;
+        this.Qbefore = false;
+        this.qbar = true;
         this.inputPoints = [];
         this.outputPoints = [];
         this.qIsConnected = false;
@@ -277,6 +278,9 @@ export class JKFlipFlop {
 
     setK(k) {
         this.k = k;
+    }
+    setQbefore(Qbefore) {
+        this.Qbefore = Qbefore ;
     }
     setJ(j) {
         this.j = j;
@@ -314,30 +318,25 @@ export class JKFlipFlop {
         // If J is low and K is high, the flip flop is in reset state i.e. Q is 0 and Q' is 1
         // If both J and K are high, the flip flop toggles its state i.e. Q is Q' and Q' is Q
 
+
         const k = getOutputJK(this.k[0], this.k[1]);
         const j = getOutputJK(this.j[0], this.j[1]);
-        const clk = getOutputRS(this.clk[0], this.clk[1]);
-        if (this.prevclk === true && clk === false) {
-            if (!j && !k) {
-                return;
-            }
-            else if (!j && k) {
-                this.q = false;
-                this.qbar = true;
-            }
-            else if (j && !k) {
-                this.q = true;
-                this.qbar = false;
-            }
-            else if (j && k) {
-                let temp = this.q;
-                this.q = this.qbar;
-                this.qbar = temp;
-            }
-            this.prevclk = false;
+        // const clk = getOutputRS(this.clk[0], this.clk[1]);
+        if (!j && !k) {
+            return;
         }
-        else if (this.prevclk === false && clk === true) {
-            this.prevclk = true;
+        else if (!j && k) {
+            this.q = false;
+            this.qbar = true;
+        }
+        else if (j && !k) {
+            this.q = true;
+            this.qbar = false;
+        }
+        else if (j && k) {
+            let temp = this.q;
+            this.q = this.qbar;
+            this.qbar = temp;
         }
     }
 }
@@ -408,13 +407,8 @@ export function checkConnectionsJK() {
             break;
         }
     }
-    let count = 0;
     for (let gateId in gates) {
         const gate = gates[gateId];
-        if(gate.type === "Input" && gate.output === true)
-        {
-            count++;
-        }
         if (gate.isInput) {
             if (!gate.isConnected) {
                 correctConnection = false;
@@ -436,26 +430,18 @@ export function checkConnectionsJK() {
             }
         }
     }
-
-    if (correctConnection) {
-        if(count !==2)
-        {
-            printErrors("J,K must be initialised to 1\n",null);
-            
-            return false;
-        }
-        return true;
-    }
-    else {
-        
-        return false;
-    }
+    return correctConnection;
 }
 
 export function simulateFFJK() {
     for (let ffID in flipFlops) {
         const gate = flipFlops[ffID];
         getResultJK(gate);
+    }
+    for (let ffID in flipFlops) {
+        const gate = flipFlops[ffID];
+        gate.setQbefore(gate.q);
+        console.log(gate);
     }
 }
 

@@ -1,5 +1,5 @@
 import { simulate, deleteElement } from "./gate.js";
-import { connectGate, connectRSFF, connectJKFF, unbindEvent, initRSFlipFlop, initDFlipFlop, initJKFlipFlop, refreshWorkingArea, initTFlipFlop, connectDFlipFlopGate } from "./main.js";
+import { connectGate, connectRSFF, connectJKFF, unbindEvent, initRSFlipFlop, initDFlipFlop, initJKFlipFlop, refreshWorkingArea,  connectDFlipFlopGate } from "./main.js";
 import { deleteFF } from "./flipflop.js";
 
 'use strict';
@@ -61,51 +61,141 @@ function changeTabs(e) {
     unbindEvent();
     connectJKFF();
     refreshWorkingArea();
-    initTFlipFlop();
-  }
-  
-  else if (task === "task2") {
-    unbindEvent();
-    connectDFlipFlopGate();
-    refreshWorkingArea();
-    initDFlipFlop();
+    initStateDiagram();
   }
   window.simulate = 1;
   simButton.innerHTML = "Simulate";  
-  updateInstructions();
-  updateToolbar();
   clearObservations();
   resize();
 }
 
 window.changeTabs = changeTabs;
 
-function updateInstructions() {
-  if (window.currentTab === "task1") {
-    document.getElementById("TaskTitle").innerHTML = "Basic Counter";
-    document.getElementById("TaskDescription").innerHTML = 'Implement a Basic Counter using JK Flip-Flops where QB is MSB and QA is LSB.'
+function showCover() {
+  let coverDiv = document.createElement('div');
+  coverDiv.id = 'cover-div';
+
+  // make the page unscrollable while the modal form is open
+  document.body.style.overflowY = 'hidden';
+
+  document.body.append(coverDiv);
+}
+
+function hideCover() {
+  document.getElementById('cover-div').remove();
+  document.body.style.overflowY = '';
+}
+
+function showPrompt(text, callback) {
+  showCover();
+  let form = document.getElementById('prompt-form');
+  let container = document.getElementById('prompt-form-container');
+  document.getElementById('prompt-message').innerHTML = text;
+  form.text.value = '';
+
+  function complete(value) {
+    hideCover();
+    container.style.display = 'none';
+    document.onkeydown = null;
+    callback(value);
   }
-  else if (window.currentTab === "task2") {
-    document.getElementById("TaskTitle").innerHTML = "Ring Counter";
-    document.getElementById("TaskDescription").innerHTML = 'Implement a Ring Counter using D Flip-Flops where set bit must move from QA->QB->QC';
+
+  form.onsubmit = function() {
+    let value = form.text.value;
+    if (value == '') return false; // ignore empty submit
+
+    complete(value);
+    return false;
+  };
+
+  form.cancel.onclick = function() {
+    complete(null);
+  };
+
+  document.onkeydown = function(e) {
+    if (e.key == 'Escape') {
+      complete(null);
+    }
+  };
+
+  let lastElem = form.elements[form.elements.length - 1];
+  let firstElem = form.elements[0];
+
+  lastElem.onkeydown = function(e) {
+    if (e.key == 'Tab' && !e.shiftKey) {
+      firstElem.focus();
+      return false;
+    }
+  };
+
+  firstElem.onkeydown = function(e) {
+    if (e.key == 'Tab' && e.shiftKey) {
+      lastElem.focus();
+      return false;
+    }
+  };
+
+  container.style.display = 'block';
+  form.elements.text.focus();
+}
+
+function checkInputString(inputString){
+  if(inputString.length<=0){
+    return false;
+  }
+  for(let char of inputString){
+    if(char!== '1' && char!=='0'){
+      return false;
+    }
+  }
+  return true;
+}
+
+function changeToArray(inputString){
+  for(let char of inputString){
+    if(char === '1'){
+      window.xValues.push(true);
+    }
+    else{
+      window.xValues.push(false);
+    }
   }
 }
 
-// Toolbar
+document.getElementById('show-button').onclick = function() {
+  showPrompt("Enter the input stream in binary form", function(value) {
+    const result = document.getElementById('result');
+    if(checkInputString(value)){
+      changeToArray(value);
+      result.innerHTML = value;
+    }
+    else{
+      result.innerHTML = "Invalid string";
+    }
+  });
+};
+// modal
 
-function updateToolbar() {
-  let elem = "";
-  if (window.currentTab === "task1") {
-    elem = '<div class="component-button jkflipflop" onclick="addJKFlipFlop(event)"></div>'
-  }
-  
-  else if (window.currentTab === "task2") {
-    elem='<div class="component-button dflipflop" onclick="addDFlipFlop(event)"></div>'
-    //elem = '<div class="component-button and" onclick="addGate(event)">AND</div><div class="component-button or" onclick="addGate(event)">OR</div><div class="component-button not" onclick="addGate(event)">NOT</div><div class="component-button nand" onclick="addGate(event)">NAND</div><div class="component-button nor" onclick="addGate(event)">NOR</div><div class="component-button xor" onclick="addGate(event)">XOR</div><div class="component-button xnor" onclick="addGate(event)">XNOR</div><div class="component-button rsflipflop" onclick="addRSFlipFlop(event)"></div>'
-  }
+// const modal = document.querySelector(".modal");
+// const trigger = document.getElementById("simulate-button");
+// const closeButton = document.querySelector(".close-button");
 
-  document.getElementById("toolbar").innerHTML = elem;
-}
+// export function toggleModal() {
+//   modal.classList.toggle("show-modal");
+//   document.getElementById('input-stream').value = ""
+// }
+
+// function windowOnClick(event) {
+//   if (event.target === modal) {
+//     toggleModal();
+//   }
+// }
+
+// trigger.addEventListener("click", toggleModal);
+// closeButton.addEventListener("click", toggleModal);
+// window.addEventListener("click", windowOnClick);
+
+
 
 // Clear observations
 function clearObservations() {
@@ -156,7 +246,7 @@ const circuitBoardTop = circuitBoard.offsetTop;
 const windowHeight = window.innerHeight;
 const width = window.innerWidth;
 if (width < 1024) {
-  circuitBoard.style.height = 600 + "px";
+  circuitBoard.style.height = "600px";
 } else {
   circuitBoard.style.height = windowHeight - circuitBoardTop - 20 + "px";
 }
