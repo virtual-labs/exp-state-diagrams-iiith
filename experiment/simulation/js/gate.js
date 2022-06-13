@@ -339,7 +339,7 @@ function simulate2() {
         }
     }
     xIndex++;
-    xIndex %= 8;
+    xIndex %= window.xValues.length;
 
     // input bits
 
