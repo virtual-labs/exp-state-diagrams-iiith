@@ -1,7 +1,7 @@
 import { simulate, deleteElement, printErrors, clearResult, printSuccess } from "./gate.js";
-import { connectGate, connectRSFF, connectJKFF, unbindEvent, initRSFlipFlop, initDFlipFlop, initJKFlipFlop, refreshWorkingArea,  connectDFlipFlopGate } from "./main.js";
+import { connectJKFF, unbindEvent, refreshWorkingArea } from "./main.js";
 import { deleteFF } from "./flipflop.js";
-
+import { xValues } from "./gate.js";
 'use strict';
 
 // Wires
@@ -55,14 +55,10 @@ function changeTabs(e) {
   }
   window.currentTab = task;
   document.getElementById(task).classList.add("is-active");
-
-  // Half adder
-  if (task === "task1") {
-    unbindEvent();
-    connectJKFF();
-    refreshWorkingArea();
-    initStateDiagram();
-  }
+  unbindEvent();
+  connectJKFF();
+  refreshWorkingArea();
+  initStateDiagram();
   window.simulate = 1;
   simButton.innerHTML = "Simulate";  
   clearObservations();
@@ -153,19 +149,19 @@ function checkInputString(inputString){
 }
 
 function changeToArray(inputString){
-  window.xValues.length = 0;
+  xValues.length = 0;
   for(let char of inputString){
     if(char === '1'){
-      window.xValues.push(true);
+      xValues.push(true);
     }
     else{
-      window.xValues.push(false);
+      xValues.push(false);
     }
   }
 }
 
 function clearArray(){
-  window.xValues.length = 0;
+  xValues.length = 0;
 }
 
 document.getElementById('input-button').onclick = function() {

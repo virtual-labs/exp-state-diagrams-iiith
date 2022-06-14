@@ -1,13 +1,13 @@
 import { registerGate, jsPlumbInstance } from "./main.js";
 import { setPosition } from "./layout.js";
-import { computeAnd, computeNand, computeNor, computeOr, computeXnor, computeXor, testStateDiagram, testRingCounter } from "./validator.js";
+import { computeAnd, computeNand, computeNor, computeOr, computeXnor, computeXor, testStateDiagram} from "./validator.js";
 import { checkConnectionsJK, simulateFFJK, testSimulateFFJK, simulateFFDD, checkConnectionsDD, testSimulateDD } from "./flipflop.js";
 
 'use strict';
 const EMPTY = "";
 export let gates = {}; // Array of gates
 // const xValues = [false,false, true,true, false,false, true,true, false,false, true,true, false,false, true,true];
-window.xValues = [];
+export let xValues = [];
 let xIndex = 0;
 window.numComponents = 0;
 export function clearGates() {
@@ -283,41 +283,14 @@ export function simulate() {
 
     window.simulate = 0; // status store of infinte clock ulte naming
     // change binary string to array
-    if (window.xValues.length == 0) {
+    if (xValues.length == 0) {
         printErrors("Please enter input string\n", null);
         return false;
     }
-    if (!checkConnections()) {
+    if (!checkConnections() || !checkConnectionsJK()) {
         return false;
     }
-
-    if (window.currentTab === "task2") {
-        if (!checkConnectionsDD()) {
-            return false;
-        }
-    }
-    else if (window.currentTab === "task1") {
-        if (!checkConnectionsJK()) {
-            return false;
-        }
-    }
     xIndex = 0;
-    // handling ori for task 2
-    if (window.currentTab === "task2") {
-        for (let gateId in gates) {
-            const gate = gates[gateId];
-            if (gate.type === "Input") {
-                if (gate.output === false) {
-                    simulate2(1);
-                }
-                gate.output = true;
-                let element = document.getElementById(gate.id)
-                element.className = "high";
-                element.childNodes[0].innerHTML = "1";
-            }
-        }
-    }
-
     let circuitHasClock = false;
 
     for (let gateId in gates) {
@@ -353,7 +326,7 @@ export function simulate2(testing) {
         }
     }
     xIndex++;
-    xIndex %= window.xValues.length;
+    xIndex %= xValues.length;
 
     // input bits
 
@@ -460,14 +433,8 @@ export function simulate2(testing) {
                 }
             }
         }
-        if (window.currentTab === "task2") {
-            simulateFFDD();
-        }
-
     }
-    if (window.currentTab === "task1") {
-        simulateFFJK();
-    }
+    simulateFFJK();
     // output bits
     if (testing === 1) {
         for (let gateId in gates) {
@@ -631,12 +598,7 @@ export function submitCircuit() {
 
     document.getElementById("table-body").innerHTML = EMPTY;
     clearResult();
-    if (window.currentTab === "task2") {
-        testRingCounter("Input-0", "Clock-0", "Output-1", "Output-2", "Output-3");
-    }
-    else if (window.currentTab === "task1") {
-        testStateDiagram("Input-0", "Clock-0", "Output-1", "Output-2");
-    }
+    testStateDiagram("Input-0", "Clock-0", "Output-1", "Output-2");
 }
 window.submitCircuit = submitCircuit;
 

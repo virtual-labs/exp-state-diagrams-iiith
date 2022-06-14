@@ -1,0 +1,75 @@
+{
+    "version": 2.0,
+    "questions": [
+        {
+            "question": "1. A given state diagram have 8 distinct states the number of flip-flops required to make the circuit are",
+            "answers": {
+                "a": "3",
+                "b": "4",
+                "c": "8",
+                "d": "1"
+            },
+            "correctAnswer": "a",
+            "explanations": {
+                "a":"The answer is log(8) with base 2"
+            },
+            "difficulty": "beginner"
+        },
+        {
+            "question": "2. The following data with three inputs A, B, C and one output Y. The output is 1 when the binary value of the input is odd number. The output is 0 otherwise. Then Y is equal to ?",
+            "answers": {
+                "a": "A and B",
+                "b": "A xor B xor C",
+                "c": "C",
+                "d": "B or C"
+            },
+            "correctAnswer": "c",
+            "explanations": {
+                "c":"The correct answer is: C"
+            },
+            "difficulty": "beginner"
+        },
+        {
+            "question": "3. For making a mod 6 counter mankar used 3 flip-flops without any gate, then how many states will be skipped",
+            "answers": {
+                "a": "2",
+                "b": "1",
+                "c": "0",
+                "d": "3"
+            },
+            "correctAnswer": "a",
+            "explanations": {
+                "a":"2^3 - 6 = 2"
+            },
+            "difficulty": "advanced"
+        },
+        {
+            "question": "4. Number of columns in state table for 1 D-Flip-Flop, 2 inputs and 1 output are/is ",
+            "answers": {
+                "a": "4",
+                "b": "5",
+                "c": "1",
+                "d": "7"
+            },
+            "correctAnswer": "c",
+            "explanations": {
+                "c":"2 for input + 2 for D-flips flop (previous and next) + 1 for output"
+            },
+            "difficulty": "advanced"
+        },
+        {
+            "question": "5. Number of columns in state table for 2 D-Flip-Flop, 2 inputs and 2 output are/is ",
+            "answers": {
+                "a": "8",
+                "b": "4",
+                "c": "16",
+                "d": "None of these"
+            },
+            "correctAnswer": "c",
+            "explanations": {
+                "c": "The number of rows is equal to 2 ^ (sum of inputs and D-flip flops)"
+            },
+            "difficulty": "intermediate"
+        }
+    ]
+}
