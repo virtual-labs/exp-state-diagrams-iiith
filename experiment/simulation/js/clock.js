@@ -50,7 +50,7 @@ export class Clock {
          el.style.left = x + "px";
          el.style.top = y + "px";
  
-         if (this.type != "Input" && this.type != "Output" && this.type != "Clock") {
+         if (this.type !== "Input" && this.type !== "Output" && this.type !== "Clock") {
  
              el.addEventListener(
                  "contextmenu",
@@ -145,10 +145,10 @@ export class Clock {
 
 export function addClock(frequency, dutyCycle, workingArea, x, y, name, id) {
     let clock = new Clock(frequency, dutyCycle);
-    if(id != null) {
+    if(id !== null) {
     clock.setId(id);
     }
-    if(name != null) {
+    if(name !== null) {
     clock.setName(name);
     }
     clock.updateComponent();

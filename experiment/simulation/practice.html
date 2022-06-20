@@ -34,16 +34,20 @@
 			<div class="column">
 				<div class="v-instruction-container instructions-box">
 					<div class="v-instruction-title" id="task-title">State Diagram</div>
-					<div class="v-instruction-text" id="task-description">
+					<div class="v-instruction-text" style="text-align: left;" id="task-description">
 						Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.
-						<br>
 					</div>
-					<div>
-						<p>Click on components on the left side to add them to the circuit board.</p>
-						<p>Drag and drop components to move them around, connect them using wires by dragging your cursor from one endpoint to another.</p>
-						<p>You can delete components by right clicking on them and selecting the delete option.</p>
-						<p>Click on the "Simulate" button to simulate the circuit and see the output.</p>
-						<p>Click on the "Submit" button to submit the circuit once you think you have built the required circuit.</p>
+					<!-- left align unordered list -->
+					<div class="v-content" style="text-align: left; padding-left: 10%;">
+						<ul style="list-style: disc;">
+						<li>Click on components on the left side to add them to the circuit board.</li>
+						<li>Drag and drop components to move them around, connect them using wires by dragging your
+							cursor from one endpoint to another.</li>
+						<li>You can delete components by right clicking on them and selecting the delete option.</li>
+						<li>Click on the "Simulate" button to simulate the circuit and see the output.</li>
+						<li>Click on the "Submit" button to submit the circuit once you think you have built the required
+							circuit.</li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -70,11 +74,13 @@
 		</div>
 		<div class="column is-3-desktop is-12-tablet is-12-mobile">
 			<div class="v-datalist-container components-list">
-				<div class="v-datalist-title">Observations</div>
 				<div class="v-datalist-row">
 					<button class="v-button" id="simulate-button">Simulate</button>
-					<button class="v-button" onclick="submitCircuit()">Submit</button>
+					<button class="v-button" id="submit-button" onclick="submitCircuit()">Submit</button>
 					<button class="v-button" id="input-button">Add Input </button>
+				</div>
+				<div class="v-datalist-title">State-Diagram</div>
+				<div class="v-datalist-row"><img src="images/practice-state-diagram2.png" alt="state diagram"></img>
 				</div>
 				<div class="v-datalist-row">
 					<div class="v-table-wrap">
@@ -85,10 +91,9 @@
 							</tbody>
 						</table>
 					</div>
+					<div class="v-datalist-title">Observations</div>
 					<div id="result"></div>
 				</div>
-				<div class="v-datalist-title">State-Diagram</div>
-                <div class="v-datalist-row"><img src="images/practice-state-diagram2.png" alt="state diagram"></img></div>
 			</div>
 		</div>
 	</div>
@@ -106,7 +111,7 @@
 			<button class="v-button" name="cancel" value="Cancel">Cancel</button>
 		</form>
 	</div>
-			
+
 	<script src="js/jsplumb.bundle.js"></script>
 	<script type="module" src="js/main.js"></script>
 

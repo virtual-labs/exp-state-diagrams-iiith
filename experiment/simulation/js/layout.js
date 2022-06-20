@@ -50,7 +50,7 @@ function changeTabs(e) {
     return;
   }
 
-  if (window.currentTab != null) {
+  if (window.currentTab !== null) {
     document.getElementById(window.currentTab).classList.remove("is-active");
   }
   window.currentTab = task;
@@ -99,8 +99,10 @@ function showPrompt(text, callback) {
 
   form.onsubmit = function() {
     let value = form.text.value;
-    if (value == '') return false; // ignore empty submit
-
+    if(value == '' || !checkInputString(value)){
+      form.text.classList.add("highlight");
+      return false;
+    }
     complete(value);
     return false;
   };
@@ -176,28 +178,6 @@ document.getElementById('input-button').onclick = function() {
     }
   });
 };
-// modal
-
-// const modal = document.querySelector(".modal");
-// const trigger = document.getElementById("simulate-button");
-// const closeButton = document.querySelector(".close-button");
-
-// export function toggleModal() {
-//   modal.classList.toggle("show-modal");
-//   document.getElementById('input-stream').value = ""
-// }
-
-// function windowOnClick(event) {
-//   if (event.target === modal) {
-//     toggleModal();
-//   }
-// }
-
-// trigger.addEventListener("click", toggleModal);
-// closeButton.addEventListener("click", toggleModal);
-// window.addEventListener("click", windowOnClick);
-
-
 
 // Clear observations
 function clearObservations() {
@@ -213,22 +193,26 @@ function clearObservations() {
 
 const simButton = document.getElementById("simulate-button");
 const inputButton=document.getElementById("input-button");
+const submitButton=document.getElementById("submit-button");
 function toggleSimulation() {
   clearResult();
   if (window.simulate === 0) {
     window.simulate = 1;
     inputButton.disabled=false;
+    submitButton.disabled=false;
     simButton.innerHTML = "Simulate";
   }
   else {
     window.simulate = 0;
     inputButton.disabled=true;
+    submitButton.disabled=true;
     simButton.innerHTML = "Stop";
     if(!window.sim())
     {
       window.simulate = 1;
       simButton.innerHTML = "Simulate";
       inputButton.disabled=false;
+      submitButton.disabled=false;
     }
   }
 }

@@ -149,7 +149,7 @@ export function getResultRS(ff) {
         return;
     }
 
-    if (getOutputRS(ff.r[0], ff.r[1]) != null && getOutputRS(ff.s[0], ff.s[1]) != null && getOutputRS(ff.clk[0], ff.clk[1]) != null) {
+    if (getOutputRS(ff.r[0], ff.r[1]) !== null && getOutputRS(ff.s[0], ff.s[1]) !== null && getOutputRS(ff.clk[0], ff.clk[1]) !== null) {
         ff.generateOutput();
     }
     return;
@@ -172,15 +172,15 @@ export function checkConnectionsRS() {
             break;
         }
         // Check if all the inputs are connected
-        if (gate.r == null || gate.r.length === 0) {
+        if (gate.r === null || gate.r.length === 0) {
             correctConnection = false;
             break;
         }
-        if (gate.s == null || gate.s.length === 0) {
+        if (gate.s === null || gate.s.length === 0) {
             correctConnection = false;
             break;
         }
-        if (gate.clk == null || gate.clk.length === 0) {
+        if (gate.clk === null || gate.clk.length === 0) {
             correctConnection = false;
             break;
         }
@@ -200,7 +200,7 @@ export function checkConnectionsRS() {
             }
         }
         else {
-            if (gate.inputPoints.length != gate.inputs.length) {
+            if (gate.inputPoints.length !== gate.inputs.length) {
                 correctConnection = false;
             }
             else if (!gate.isConnected && !gate.isOutput) {
@@ -209,14 +209,7 @@ export function checkConnectionsRS() {
         }
     }
 
-    if (correctConnection) {
-        return true;
-    }
-    else {
-        // printErrors("Connections are not correct\n");
-        // alert("Connections are not correct");
-        return false;
-    }
+    return correctConnection;
 }
 
 export function simulateFFRS() {
@@ -370,7 +363,7 @@ export function getResultJK(ff) {
     }
 
 
-    if (getOutputJK(ff.k[0], ff.k[1]) != null && getOutputJK(ff.j[0], ff.j[1]) != null && getOutputJK(ff.clk[0], ff.clk[1]) != null) {
+    if (getOutputJK(ff.k[0], ff.k[1]) !== null && getOutputJK(ff.j[0], ff.j[1]) !== null && getOutputJK(ff.clk[0], ff.clk[1]) !== null) {
         ff.generateOutput();
     }
 
@@ -391,17 +384,17 @@ export function checkConnectionsJK() {
             break;
         }
         // Check if all the inputs are connected
-        if (gate.k == null || gate.k.length === 0) {
+        if (gate.k === null || gate.k.length === 0) {
             printErrors("K of Flip-Flop must be connected\n",id);
             correctConnection = false;
             break;
         }
-        if (gate.j == null || gate.j.length === 0) {
+        if (gate.j === null || gate.j.length === 0) {
             printErrors("J of Flip-Flop must be connected\n",id);
             correctConnection = false;
             break;
         }
-        if (gate.clk == null || gate.clk.length === 0) {
+        if (gate.clk === null || gate.clk.length === 0) {
             printErrors("Clock of Flip-Flop must be connected\n",id);
             correctConnection = false;
             break;
@@ -422,7 +415,7 @@ export function checkConnectionsJK() {
             }
         }
         else {
-            if (gate.inputPoints.length != gate.inputs.length) {
+            if (gate.inputPoints.length !== gate.inputs.length) {
                 correctConnection = false;
             }
             else if (!gate.isConnected && !gate.isOutput) {
@@ -596,7 +589,7 @@ export function getResultDD(ff) {
             return;
         }
     }
-    if (getOutputD(ff.d[0], ff.d[1]) != null && getOutputD(ff.clk[0], ff.clk[1]) != null) {
+    if (getOutputD(ff.d[0], ff.d[1]) !== null && getOutputD(ff.clk[0], ff.clk[1]) !== null) {
             ff.generateOutput();
     }
     return;
@@ -612,24 +605,24 @@ export function checkConnectionsDD() {
         // Check if all the outputs are connected
         const id = document.getElementById(gate.id);
 
-        if(gate.pr.length != 0 && gate.clr.length != 0){
+        if(gate.pr.length !== 0 && gate.clr.length !== 0){
             correctConnection = false;
             printErrors("Can't activate both preset and clear\n",id);
             break;
         }
 
-        if (gate.qIsConnected == false) {
+        if (gate.qIsConnected === false) {
             correctConnection = false;
             printErrors("Q of flip flops must be connected\n",id);
             break;
         }
         // Check if all the inputs are connected
-        if (gate.d == null || gate.d.length == 0) {
+        if (gate.d === null || gate.d.length === 0) {
             correctConnection = false;
             printErrors("D of flip flops must be connected\n",id);
             break;
         }
-        if (gate.clk == null || gate.clk.length == 0) {
+        if (gate.clk === null || gate.clk.length === 0) {
             correctConnection = false;
             printErrors("CLK of flip flops must be connected\n",id);
             break;
@@ -653,13 +646,13 @@ export function checkConnectionsDD() {
             }
         }
         else if (gate.isOutput) {
-            if (gate.inputs.length == 0) {
+            if (gate.inputs.length === 0) {
                 correctConnection = false;
                 break;
             }
         }
         else {
-            if (gate.inputPoints.length != gate.inputs.length) {
+            if (gate.inputPoints.length !== gate.inputs.length) {
                 correctConnection = false;
             }
             else if (!gate.isConnected && !gate.isOutput) {

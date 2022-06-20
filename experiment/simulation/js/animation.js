@@ -26,20 +26,20 @@ const SPEED = document.getElementById("speed");
 let currPos = 0;
 
 const OBJECTS = [document.getElementById("x"), document.getElementById("y"), document.getElementById("clock"), document.getElementById("a")];
-const ARRAYX = [document.getElementById("x1"), document.getElementById("x2"), document.getElementById("x3"), document.getElementById("x4"), document.getElementById("x5"), document.getElementById("x6"), document.getElementById("x7"), document.getElementById("x8")];
-const ARRAYY = [document.getElementById("y1"), document.getElementById("y2"), document.getElementById("y3"), document.getElementById("y4"), document.getElementById("y5"), document.getElementById("y6"), document.getElementById("y7"), document.getElementById("y8")];
+const ARRAYX = [document.getElementById("x1"), document.getElementById("x2"), document.getElementById("x3"), document.getElementById("x4"), document.getElementById("x5"), document.getElementById("x6"), document.getElementById("x7"), document.getElementById("x8"), document.getElementById("x9"), document.getElementById("x10"), document.getElementById("x11"), document.getElementById("x12")];
+const ARRAYY = [document.getElementById("y1"), document.getElementById("y2"), document.getElementById("y3"), document.getElementById("y4"), document.getElementById("y5"), document.getElementById("y6"), document.getElementById("y7"), document.getElementById("y8"), document.getElementById("y9"), document.getElementById("y10"), document.getElementById("y11"), document.getElementById("y12")];
 const TEXTINPUT = [document.createElementNS(svgns, "text"), document.createElementNS(svgns, "text")];
 const TEXTCLOCK = [document.createElementNS(svgns, "text")];
 const TEXTOUTPUT = [document.createElementNS(svgns, "text")];
 const INPUTDOTS = [document.createElementNS(svgns, "circle"), document.createElementNS(svgns, "circle"), document.createElementNS(svgns, "circle")];
 
-const inputStream = [[0, 0, 1, 1, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1, 0, 1]];
-const outputStream = [0, 1, 0, 0, 0, 1, 0, 0];
+const inputStream = [[0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0], [0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1]];
+const outputStream = [0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0];
 
 
 let timeline = gsap.timeline({ repeat: 0, repeatDelay: 0 });
-let decide = 0;
-let circuitStarted = 0;
+let decide = false;
+let circuitStarted = false;
 
 function demoWidth() {
     if (width < 1024) {
@@ -121,12 +121,21 @@ function computeXorOne() {
     }
 }
 
+function getXor(a,b)
+{
+    if(a === b)
+    {
+        return 0;
+    }
+    return 1;
+}
+
 function computeXorTwo() {
     if (currPos === 0) {
         fillColor(INPUTDOTS[2], "#eeeb22");
     }
     else {
-        if (inputStream[1][currPos] === outputStream[currPos-2]) {
+        if (getXor(inputStream[0][currPos],inputStream[1][currPos]) === outputStream[currPos - 1]) {
             fillColor(INPUTDOTS[2], "#eeeb22");
         }
         else {
@@ -194,7 +203,7 @@ function allDisappear() {
 function outputHandler() {
     let state = currPos;
     TEXTOUTPUT[0].textContent = outputStream[state];
-    setter(TEXTOUTPUT[0].textContent,OBJECTS[3]);
+    setter(TEXTOUTPUT[0].textContent, OBJECTS[3]);
     setter(outputStream[state], INPUTDOTS[2]);
 }
 function changeInput() {
@@ -221,7 +230,6 @@ function changeInput() {
         fillColor(INPUTDOTS[1], "#eeeb22");
     }
     if (state === 0) {
-        console.log("here")
         fillColor(INPUTDOTS[2], "#eeeb22");
     }
 }
@@ -280,16 +288,16 @@ function setter(value, component) {
 
 function changeSpeed(newSpeed) {
 
-    if (TEXTINPUT[0].textContent !== "2" && TEXTINPUT[1].textContent !== "2"  && timeline.progress() !== 1) {
+    if (TEXTINPUT[0].textContent !== "2" && TEXTINPUT[1].textContent !== "2" && timeline.progress() !== 1) {
         timeline.resume();
         timeline.timeScale(newSpeed);
         OBSERV.innerHTML = newSpeed + "x speed";
-        decide = 1;
+        decide = true;
         STATUS.innerHTML = "Pause";
     }
 }
 function setSpeed(speed) {
-    if (circuitStarted != 0) {
+    if (circuitStarted) {
 
 
         if (speed === "1") {
@@ -306,8 +314,8 @@ function setSpeed(speed) {
 
 }
 function restartCircuit() {
-    if (circuitStarted === 0) {
-        circuitStarted = 1;
+    if (!circuitStarted) {
+        circuitStarted = true;
     }
     timeline.seek(0);
     timeline.pause();
@@ -315,18 +323,18 @@ function restartCircuit() {
     reboot();
     currPos = 0;
     clearObservation();
-    decide = 0;
+    decide = false;
     STATUS.innerHTML = "Start";
     OBSERV.innerHTML = "Successfully restored";
     SPEED.selectedIndex = 0;
 }
 
 function simulationStatus() {
-    if (decide === 0) {
+    if (!decide) {
         startCircuit();
 
     }
-    else if (decide === 1) {
+    else if (decide) {
         stopCircuit();
 
     }
@@ -335,7 +343,7 @@ function stopCircuit() {
     if (timeline.time() !== 0 && timeline.progress() !== 1) {
         timeline.pause();
         OBSERV.innerHTML = "Simulation has been stopped.";
-        decide = 0;
+        decide = false;
         STATUS.innerHTML = "Start";
         SPEED.selectedIndex = 0;
     }
@@ -345,14 +353,13 @@ function stopCircuit() {
 }
 // need to fix this up a bit
 function startCircuit() {
-    console.log("start");
-    if (circuitStarted === 0) {
-        circuitStarted = 1;
+    if (!circuitStarted) {
+        circuitStarted = true;
     }
     timeline.play();
     timeline.timeScale(1);
     OBSERV.innerHTML = "Simulation has started.";
-    decide = 1;
+    decide = true;
     STATUS.innerHTML = "Pause";
     SPEED.selectedIndex = 0;
     if (timeline.progress() === 1) {
@@ -368,15 +375,15 @@ function simulator() {
             autoRotate: true,
             alignOrigin: [0.5, 0.5]
         },
-    
+
         duration: 4,
-        delay: 12*currPos,
+        delay: 12 * currPos,
         repeat: 0,
         repeatDelay: 3,
         yoyo: true,
         ease: "none",
         paused: false,
-    
+
     }, 0);
     timeline.to(INPUTDOTS[1], {
         motionPath: {
@@ -385,15 +392,15 @@ function simulator() {
             autoRotate: true,
             alignOrigin: [0.5, 0.5]
         },
-    
+
         duration: 4,
-        delay: 12*currPos,
+        delay: 12 * currPos,
         repeat: 0,
         repeatDelay: 3,
         yoyo: true,
         ease: "none",
         paused: false,
-    
+
     }, 0);
     timeline.to(INPUTDOTS[2], {
         motionPath: {
@@ -402,17 +409,17 @@ function simulator() {
             autoRotate: true,
             alignOrigin: [0.5, 0.5]
         },
-    
+
         duration: 8,
-        delay: 12*currPos,
+        delay: 12 * currPos,
         repeat: 0,
         repeatDelay: 3,
         yoyo: true,
         ease: "none",
         paused: false,
-    
+
     }, 0);
-    
+
     timeline.to(INPUTDOTS[1], {
         motionPath: {
             path: "#path5",
@@ -420,17 +427,17 @@ function simulator() {
             autoRotate: true,
             alignOrigin: [0.5, 0.5]
         },
-    
+
         duration: 4,
-        delay: 12*currPos+4,
+        delay: 12 * currPos + 4,
         repeat: 0,
         repeatDelay: 3,
         yoyo: true,
         ease: "none",
         paused: false,
-    
+
     }, 0);
-    
+
     timeline.to(INPUTDOTS[2], {
         motionPath: {
             path: "#path6",
@@ -438,15 +445,15 @@ function simulator() {
             autoRotate: true,
             alignOrigin: [0.5, 0.5]
         },
-    
+
         duration: 4,
-        delay: 12*currPos+8,
+        delay: 12 * currPos + 8,
         repeat: 0,
         repeatDelay: 3,
         yoyo: true,
         ease: "none",
         paused: false,
-    
+
     }, 0);
 }
 
@@ -465,27 +472,26 @@ timeline.add(clockAppear, 0);
 timeline.add(xTextAppear, 0);
 timeline.add(yTextAppear, 0);
 
-for(let i=0;i<96;i+=12){
-    timeline.add(changeInput, 0+i);
-    if(i%24==0)
-    {
-        timeline.add(clockToZero, 0+i);
+for (let i = 0; i < 144; i += 12) {
+    timeline.add(changeInput, 0 + i);
+    if (i % 24 === 0) {
+        timeline.add(clockToZero, 0 + i);
     }
-    else{
-        timeline.add(clockToOne, 0+i);
+    else {
+        timeline.add(clockToOne, 0 + i);
     }
-    timeline.add(dotsAppear, 0+i);
-    timeline.add(simulator, 0+i);
-    timeline.add(xDotDisappear, 4+i);
-    timeline.add(computeXorOne,4+i);
-    timeline.add(yDotDisappear, 8+i);
-    timeline.add(computeXorTwo, 8+i);
-    timeline.add(dotsDisappear, 12+i);
-    timeline.add(outputHandler, 12+i);
-    timeline.add(outputVisible, 12+i);
-    timeline.add(increaseCurrPos, 12+i);
+    timeline.add(dotsAppear, 0 + i);
+    timeline.add(simulator, 0 + i);
+    timeline.add(xDotDisappear, 4 + i);
+    timeline.add(computeXorOne, 4 + i);
+    timeline.add(yDotDisappear, 8 + i);
+    timeline.add(computeXorTwo, 8 + i);
+    timeline.add(dotsDisappear, 12 + i);
+    timeline.add(outputHandler, 12 + i);
+    timeline.add(outputVisible, 12 + i);
+    timeline.add(increaseCurrPos, 12 + i);
 }
-timeline.add(display, 98);
+timeline.add(display, 146);
 timeline.eventCallback("onComplete", outputVisible);
 timeline.eventCallback("onComplete", display);
 timeline.pause();

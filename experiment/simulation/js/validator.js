@@ -5,7 +5,7 @@ import { flipFlops } from './flipflop.js';
 
 // Helper functions
 export function computeXor(a, b) {
-    return a != b;
+    return a !== b;
 }
 export function computeAnd(a, b) {
     return a && b;
@@ -14,7 +14,7 @@ export function computeOr(a, b) {
     return a || b;
 }
 export function computeXnor(a, b) {
-    return a == b;
+    return a === b;
 }
 export function computeNand(a, b) {
     return !(a && b);
@@ -41,10 +41,10 @@ export function testStateDiagram(input0,clock0,output1,output2){
     if(checkForSubmit()){
         for(let i = 0; i < 10; i++){
             simulate2(0);
-            if(expectedOutputs1[i][0]!=gates[output1].output || expectedOutputs1[i][1]!=gates[output2].output){
+            if(expectedOutputs1[i][0]!==gates[output1].output || expectedOutputs1[i][1]!==gates[output2].output){
                 circuitIsCorrect1 = false;
             }
-            if(expectedOutputs2[i][0]!=gates[output1].output || expectedOutputs2[i][1]!=gates[output2].output){
+            if(expectedOutputs2[i][0]!==gates[output1].output || expectedOutputs2[i][1]!==gates[output2].output){
                 circuitIsCorrect2 = false;
             }
         }

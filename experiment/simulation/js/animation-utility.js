@@ -1,3 +1,4 @@
+'use strict';
 export function setCoordinates(xObject,yObject,textObject){
     gsap.set(textObject,{
         x: xObject,

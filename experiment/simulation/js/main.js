@@ -8,7 +8,7 @@ import * as flipflopjs from "./flipflop.js";
 let num_wires = 0;
 
 document.getScroll = function () {
-    if (window.pageYOffset != undefined) {
+    if (window.pageYOffset !== undefined) {
         return [pageXOffset, pageYOffset];
     } else {
         let sx, sy, d = document,
