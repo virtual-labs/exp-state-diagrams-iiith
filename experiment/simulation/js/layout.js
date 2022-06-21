@@ -89,7 +89,8 @@ function showPrompt(text, callback) {
   document.getElementById('prompt-message').innerHTML = text;
   document.getElementById('prompt-message').style.fontSize = "1.5em";
   form.text.value = '';
-
+  form.text.classList.remove("highlight");
+  document.getElementById('error-message').innerHTML = "";
   function complete(value) {
     hideCover();
     container.style.display = 'none';
@@ -101,6 +102,7 @@ function showPrompt(text, callback) {
     let value = form.text.value;
     if(value == '' || !checkInputString(value)){
       form.text.classList.add("highlight");
+      document.getElementById('error-message').innerHTML = "Invalid input stream";
       return false;
     }
     complete(value);

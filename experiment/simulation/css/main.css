@@ -293,6 +293,11 @@ svg.wire path {
   font-weight: bold;
 }
 
+.failure-input {
+  font-size: 0.8rem;
+  color: rgb(228, 23, 23);
+  font-weight: bold;
+}
 
 .modal {
   position: fixed;
