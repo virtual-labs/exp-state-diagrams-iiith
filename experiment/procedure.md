@@ -1,5 +1,5 @@
-1. With The help of Theory Page , try to build the Circuit for given state digram.
-2. If You are unable to make it , load or export the circuit directly and use it.
-3. Use Time variant input pulses to analyze the output.
-4. There is an import feature, which lets you construct building blocks. Click on import and then click on circuit board to see the imported block. For more details, refer import section in manual.
+Learn everything from the 'Demo' section.
 
+In the 'Practice' section you need to make the circuit for the given state diagram. The circuit is to be made using JK flip-flops, you can test your circuit after entering an input binary string and then click on simulate.
+
+After performing the tasks observe the relationship between the number of flip-flops needed and number of states

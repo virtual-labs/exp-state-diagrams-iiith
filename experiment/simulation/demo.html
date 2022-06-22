@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.7-b/css/style.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/MotionPathPlugin.min.js"></script>
+    <title>
+        State Diagram: Demo
+    </title>
+</head>
+
+<body>
+    <div class="container" style="margin-top: 1%;">
+        <div class="columns is-centered">
+            <div class="column is-one-quarter v-instruction-title">
+                Tasks
+            </div>
+            <div class="column">
+                <div class="v-tabs">
+                    <ul>
+                        <li id="task1" class="is-active">
+                            <a>
+                                State Diagrams
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns is-centered">
+            <div class="column">
+                <div class="v-instruction-container instructions-box">
+                    <div class="v-instruction-title" id="task-title">State Diagrams</div>
+                    <div class="v-instruction-text" id="task-description">
+                        Simulation of a circuit made from the given state diagram using D flip-flops.
+                    </div>
+                    <p>Refer to the given state diagram to understand the circuit</p>
+                    <p>There are two input streams X and Y</p>
+                    <p>Start- Starts the simulation. Default speed is 1x. Select the speed through dropdown menu</p>
+                    <p>Reset - Resets the simulation</p>
+                    <p>There is a clock which can be started by the user but it's cycle cannot be controlled.</p>
+                    <p>There is one output(A) </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="column" style="margin:auto;text-align:center">
+            <div class="v-select">
+                <select autocomplete="off" name="speed" onchange="setSpeed(this.value)" id="speed">
+                    <option value="1">1x</option>
+                    <option value="2">2x</option>
+                    <option value="4">4x</option>
+                </select>
+            </div>
+            <button class="v-button" id="play-or-pause" onclick="simulationStatus()">Start</button>
+            <button class="v-button" id="restart" onclick="restartCircuit()">Reset</button>
+        </div>
+    </div>
+
+    <div class="columns is-centered is-flex is-flex-direction-row is-flex-wrap-wrap is-align-content-start">
+        <div class="column is-9-desktop is-12-tablet is-12-mobile">
+            <div id="circuit-board">
+                <svg class="svg" xmlns="http://www.w3.org/2000/svg" width="100%" height="120%" viewBox="0 0 925 1000 ">
+                    <rect id="x1" x="60" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x2" x="100" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x3" x="140" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x4" x="180" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x5" x="220" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x6" x="260" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x7" x="300" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x8" x="340" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x9" x="380" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x10" x="420" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x11" x="460" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="x12" x="500" y="60" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y1" x="60" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y2" x="100" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y3" x="140" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y4" x="180" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y5" x="220" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y6" x="260" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y7" x="300" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y8" x="340" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y9" x="380" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y10" x="420" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y11" x="460" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <rect id="y12" x="500" y="140" width="40" height="50"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);fill-opacity:1" />
+                    <path id="path1" fill="none" stroke="currentColor" stroke-width="3"
+                        d="M 600 700 L 600 550 L 650 550" /> <!-- Clock to clk of flip flop-->
+                    <path id="path2" fill="none" stroke="currentColor" stroke-width="3" d="M 800 450 L 900 450 " />
+                    <!-- flip flop to A-->
+                    <path id="path3" fill="none" stroke="currentColor" stroke-width="3" d="M 50 435 L 225 435 " />
+                    <!-- x to first xor gate-->
+                    <path id="path4" fill="none" stroke="currentColor" stroke-width="3" d="M 50 485 L 225 485 " />
+                    <!-- y to first xor gate-->
+                    <path id="path5" fill="none" stroke="currentColor" stroke-width="3" d="M 230 460 L 500 460 " />
+                    <!-- first xor gate to second xor gate-->
+                    <path id="path6" fill="none" stroke="currentColor" stroke-width="3" d="M 550 435 L 650 435 " />
+                    <!-- second xor gate to flip flop-->
+                    <path id="path7" fill="none" stroke="currentColor" stroke-width="3"
+                        d="M 850 450 L 850 350 L 300 350 L 300 410 L 500 410 " />
+                     <!-- A to second xor gate-->
+                    <rect id="dflipflop1" x="650" y="400" width="150" height="250"
+                        style="fill:#29e;stroke:rgb(68, 68, 119);stroke-width:5;fill-opacity:1;stroke-opacity:1" />
+                    <g id="xor1">
+                        <path id="path1XOR" stroke="currentColor" fill="#29e" stroke-width="3"
+                            d="M 195 425 Q 230 460 195 495 Q 231 460 195 425 M 200 425 Q 235 460 200 495 Q 305 460 200 425" />
+                    </g>
+                    <g id="xor2">
+                        <path id="path2XOR" stroke="currentColor" fill="#29e" stroke-width="3"
+                            d="M 495 400 Q 530 435 495 470 Q 531 435 495 400 M 500 400 Q 535 435 500 470 Q 605 435 500 400" />
+                    </g>
+                    <circle id="a" cx="900" cy="450" r="15"
+                        style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
+                    <circle id="clock" cx="600" cy="700" r="15"
+                        style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
+                    <circle id="x" cx="50" cy="435" r="15"
+                        style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
+                    <circle id="y" cx="50" cy="485" r="15"
+                        style="fill:green;stroke:rgb(68, 68, 119);stroke-width:3;fill-opacity:1;stroke-opacity:1" />
+                    <text font-size="1.5em" x="655" y="440" fill="black">D</text>
+                    <text font-size="1.5em" x="900" y="500" fill="black">A</text>
+                    <text font-size="1.5em" x="15" y="440" fill="black">x</text>
+                    <text font-size="1.5em" x="15" y="490" fill="black">y</text>
+                    <text font-size="1.5em" x="650" y="554" fill="black">&#8827clk</text>
+                    <text font-size="1.5em" x="550" y="735" fill="black"> CLOCK</text>
+                    <text font-size="1.5em" x="0" y="50" fill="black">Stream Input X</text>
+                    <text font-size="1.5em" x="75" y="90" fill="black">0</text>
+                    <text font-size="1.5em" x="115" y="90" fill="black">0</text>
+                    <text font-size="1.5em" x="155" y="90" fill="black">1</text>
+                    <text font-size="1.5em" x="195" y="90" fill="black">1</text>
+                    <text font-size="1.5em" x="235" y="90" fill="black">0</text>
+                    <text font-size="1.5em" x="275" y="90" fill="black">0</text>
+                    <text font-size="1.5em" x="315" y="90" fill="black">1</text>
+                    <text font-size="1.5em" x="355" y="90" fill="black">1</text>
+                    <text font-size="1.5em" x="395" y="90" fill="black">0</text>
+                    <text font-size="1.5em" x="435" y="90" fill="black">0</text>
+                    <text font-size="1.5em" x="475" y="90" fill="black">0</text>
+                    <text font-size="1.5em" x="515" y="90" fill="black">0</text>
+                    <text font-size="1.5em" x="0" y="130" fill="black">Stream Input Y</text>
+                    <text font-size="1.5em" x="75" y="170" fill="black">0</text>
+                    <text font-size="1.5em" x="115" y="170" fill="black">1</text>
+                    <text font-size="1.5em" x="155" y="170" fill="black">0</text>
+                    <text font-size="1.5em" x="195" y="170" fill="black">1</text>
+                    <text font-size="1.5em" x="235" y="170" fill="black">0</text>
+                    <text font-size="1.5em" x="275" y="170" fill="black">1</text>
+                    <text font-size="1.5em" x="315" y="170" fill="black">0</text>
+                    <text font-size="1.5em" x="355" y="170" fill="black">1</text>
+                    <text font-size="1.5em" x="395" y="170" fill="black">1</text>
+                    <text font-size="1.5em" x="435" y="170" fill="black">1</text>
+                    <text font-size="1.5em" x="475" y="170" fill="black">1</text>
+                    <text font-size="1.5em" x="515" y="170" fill="black">1</text>
+                </svg>
+            </div>
+        </div>
+        <div class="column is-3-desktop is-4-tablet is-12-mobile">
+            <div class="v-datalist-container components-list">
+                <div class="v-datalist-title">State-Diagram</div>
+                <div class="v-datalist-row"><img src="images/state-diagram-1.jpeg" alt="state diagram"></img></div>
+                <div class="v-datalist-title">Observations</div>
+                <div class="v-datalist-row">
+                    <div id="observations"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="menu">
+        <ul class="menu-options">
+            <li class="menu-option">Delete</li>
+            <li class="menu-option">Cancel</li>
+        </ul>
+    </div>
+    <script type="module" src="js/animation.js"></script>
+</body>
+
+</html>
