@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title>State Diagram: Practice</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.7-b/css/style.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/css/style.min.css">
 	<link rel="stylesheet" href="css/main.css">
 </head>
 
@@ -29,24 +29,21 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="columns is-centered">
+		<div class="columns is-centered is-flex">
 			<div class="column">
-				<div class="v-instruction-container instructions-box">
-					<div class="v-instruction-title" id="task-title">State Diagram</div>
-					<div class="v-instruction-text" style="text-align: left;" id="task-description">
-						Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.
-					</div>
-					<!-- left align unordered list -->
-					<div class="v-content" style="text-align: left; padding-left: 10%;">
+				<div class="v-collapsible-instruction-container v-instruction-container">
+					<div class="v-collapsible is-size-5">Instructions<br>Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.</div>
+					<div class="v-content" style="text-align: left; padding-left: 10%; padding-right: 10%;">
 						<ul style="list-style: disc;">
-						<li>Click on components on the left side to add them to the circuit board.</li>
-						<li>Drag and drop components to move them around, connect them using wires by dragging your
-							cursor from one endpoint to another.</li>
-						<li>You can delete components by right clicking on them and selecting the delete option.</li>
-						<li>Click on the "Simulate" button to simulate the circuit and see the output.</li>
-						<li>Click on the "Submit" button to submit the circuit once you think you have built the required
-							circuit.</li>
+							<li>Click on components on the left side to add them to the circuit board.</li>
+							<li>Drag and drop components to move them around, connect them using wires by dragging your
+								cursor from one endpoint to another.</li>
+							<li>You can delete components by right clicking on them and selecting the delete option.
+							</li>
+							<li>Click on the "Simulate" button to simulate the circuit and see the output.</li>
+							<li>Click on the "Submit" button to submit the circuit once you think you have built the
+								required
+								circuit.</li>
 						</ul>
 					</div>
 				</div>
@@ -114,6 +111,7 @@
 	</div>
 
 	<script src="js/jsplumb.bundle.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/js/script.js"></script>
 	<script type="module" src="js/main.js"></script>
 
 </body>

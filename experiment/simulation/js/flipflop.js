@@ -708,8 +708,8 @@ export function deleteFF(id) {
             if (flipFlops[key].j[0] === ff) {
                 flipFlops[key].j = null;
             }
-            if (flipFlops[key].j[0] === ff) {
-                flipFlops[key].j = null;
+            if (flipFlops[key].k[0] === ff) {
+                flipFlops[key].k = null;
             }
             if (flipFlops[key].clk[0] === ff) {
                 flipFlops[key].clk = null;

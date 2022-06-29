@@ -222,13 +222,6 @@ function toggleSimulation() {
 simButton.addEventListener("click", toggleSimulation);
 
 
-
-// Instruction box
-const instructionBox = document.getElementsByClassName("instructions-box")[0];
-instructionBox.addEventListener("click", (e) => {
-  instructionBox.classList.toggle("expand");
-});
-
 // Making webpage responsive
 
 // Dimensions of working area
