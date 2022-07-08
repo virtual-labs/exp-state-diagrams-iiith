@@ -1,4 +1,4 @@
-import { setCoordinates, fillInputDots, objectDisappear, objectAppear, fillColor, setColor, unsetColor } from "./animation-utility.js";
+import { setCoordinates, fillInputDots, objectDisappear, objectAppear, fillColor, setColor, unsetColor, getXor } from "./animation-utility.js";
 'use strict';
 
 window.simulationStatus = simulationStatus;
@@ -14,30 +14,65 @@ const circuitBoardTop = circuitBoard.offsetTop;
 // Full height of window
 const windowHeight = window.innerHeight;
 const width = window.innerWidth;
-const instructionBox = document.getElementsByClassName("instructions-box")[0];
 const svg = document.querySelector(".svg");
 const svgns = "http://www.w3.org/2000/svg";
 
 const EMPTY = "";
-const STATUS = document.getElementById("play-or-pause");
-const OBSERV = document.getElementById("observations");
-const SPEED = document.getElementById("speed");
+const status = document.getElementById("play-or-pause");
+const observ = document.getElementById("observations");
+const speed = document.getElementById("speed");
 
 let currPos = 0;
 
-const OBJECTS = [document.getElementById("x"), document.getElementById("y"), document.getElementById("clock"), document.getElementById("a")];
-const ARRAYX = [document.getElementById("x1"), document.getElementById("x2"), document.getElementById("x3"), document.getElementById("x4"), document.getElementById("x5"), document.getElementById("x6"), document.getElementById("x7"), document.getElementById("x8"), document.getElementById("x9"), document.getElementById("x10"), document.getElementById("x11"), document.getElementById("x12")];
-const ARRAYY = [document.getElementById("y1"), document.getElementById("y2"), document.getElementById("y3"), document.getElementById("y4"), document.getElementById("y5"), document.getElementById("y6"), document.getElementById("y7"), document.getElementById("y8"), document.getElementById("y9"), document.getElementById("y10"), document.getElementById("y11"), document.getElementById("y12")];
-const TEXTINPUT = [document.createElementNS(svgns, "text"), document.createElementNS(svgns, "text")];
+const OBJECTS = [
+    document.getElementById("x"), 
+    document.getElementById("y"), 
+    document.getElementById("clock"), 
+    document.getElementById("a")
+];
+const ARRAYX = [
+    document.getElementById("x1"), 
+    document.getElementById("x2"), 
+    document.getElementById("x3"), 
+    document.getElementById("x4"), 
+    document.getElementById("x5"), 
+    document.getElementById("x6"), 
+    document.getElementById("x7"), 
+    document.getElementById("x8"), 
+    document.getElementById("x9"), 
+    document.getElementById("x10"), 
+    document.getElementById("x11"), 
+    document.getElementById("x12")
+];
+const ARRAYY = [
+    document.getElementById("y1"),
+    document.getElementById("y2"), 
+    document.getElementById("y3"), 
+    document.getElementById("y4"), 
+    document.getElementById("y5"), 
+    document.getElementById("y6"), 
+    document.getElementById("y7"), 
+    document.getElementById("y8"), 
+    document.getElementById("y9"), 
+    document.getElementById("y10"), 
+    document.getElementById("y11"), 
+    document.getElementById("y12")
+];
+const TEXTINPUT = [
+    document.createElementNS(svgns, "text"), 
+    document.createElementNS(svgns, "text")
+];
 const TEXTCLOCK = [document.createElementNS(svgns, "text")];
 const TEXTOUTPUT = [document.createElementNS(svgns, "text")];
-const INPUTDOTS = [document.createElementNS(svgns, "circle"), document.createElementNS(svgns, "circle"), document.createElementNS(svgns, "circle")];
+const INPUTDOTS = [
+    document.createElementNS(svgns, "circle"), 
+    document.createElementNS(svgns, "circle"), 
+    document.createElementNS(svgns, "circle")
+];
 
 const inputStream = [[0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0], [0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1]];
 const outputStream = [0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0];
 
-
-let timeline = gsap.timeline({ repeat: 0, repeatDelay: 0 });
 let decide = false;
 let circuitStarted = false;
 
@@ -48,12 +83,6 @@ function demoWidth() {
         circuitBoard.style.height = `${windowHeight - circuitBoardTop - 20}px`;
     }
     sidePanels[0].style.height = circuitBoard.style.height;
-}
-// Instruction box
-function instructionBoxInit() {
-    instructionBox.addEventListener("click", () => {
-        instructionBox.classList.toggle("expand");
-    });
 }
 
 function setActive(i) {
@@ -112,7 +141,7 @@ function dotsAppear() {
     }
 }
 
-function computeXorOne() {
+function calculateXorOne() {
     if (inputStream[0][currPos] === inputStream[1][currPos]) {
         fillColor(INPUTDOTS[1], "#eeeb22");
     }
@@ -121,16 +150,7 @@ function computeXorOne() {
     }
 }
 
-function getXor(a,b)
-{
-    if(a === b)
-    {
-        return 0;
-    }
-    return 1;
-}
-
-function computeXorTwo() {
+function calculateXorTwo() {
     if (currPos === 0) {
         fillColor(INPUTDOTS[2], "#eeeb22");
     }
@@ -153,9 +173,6 @@ function yDotDisappear() {
     objectDisappear(INPUTDOTS[1]);
 }
 
-function ffDotDisapper() {
-    objectDisappear(INPUTDOTS[2]);
-}
 
 // function to disappear the output text
 function outputDisappear() {
@@ -188,7 +205,7 @@ function clockAppear() {
     objectAppear(TEXTCLOCK[0]);
 }
 function clearObservation() {
-    OBSERV.innerHTML = EMPTY;
+    observ.innerHTML = EMPTY;
 }
 function allDisappear() {
     dotsDisappear();
@@ -239,14 +256,14 @@ function clockToZero() {
     svg.appendChild(TEXTCLOCK[0]);
     setCoordinates(598, 704, TEXTCLOCK[0]);
     fillColor(OBJECTS[2], "#eeeb22");
-    OBSERV.innerHTML = "Clock set to 0";
+    observ.innerHTML = "Clock set to 0";
 }
 function clockToOne() {
     TEXTCLOCK[0].textContent = 1;
     svg.appendChild(TEXTCLOCK[0]);
     setCoordinates(598, 704, TEXTCLOCK[0]);
     fillColor(OBJECTS[2], "#29e");
-    OBSERV.innerHTML = "Clock set to 1";
+    observ.innerHTML = "Clock set to 1";
 }
 
 function increaseCurrPos() {
@@ -268,11 +285,11 @@ function reboot() {
     }
 }
 function display() {
-    OBSERV.innerHTML = "Simulation has finished. Press Reset to start again";
-    OBSERV.innerHTML += "<br />";
+    observ.innerHTML = "Simulation has finished. Press Reset to start again";
+    observ.innerHTML += "<br />";
     let img = document.createElement("img");
     img.src = "./images/state-table.png";
-    OBSERV.appendChild(img);
+    observ.appendChild(img);
 }
 function setter(value, component) {
     //toggles the text content a of input/output component b
@@ -285,34 +302,13 @@ function setter(value, component) {
     }
 }
 
-
-function changeSpeed(newSpeed) {
-
-    if (TEXTINPUT[0].textContent !== "2" && TEXTINPUT[1].textContent !== "2" && timeline.progress() !== 1) {
-        timeline.resume();
-        timeline.timeScale(newSpeed);
-        OBSERV.innerHTML = newSpeed + "x speed";
-        decide = true;
-        STATUS.innerHTML = "Pause";
-    }
-}
 function setSpeed(speed) {
     if (circuitStarted) {
-
-
-        if (speed === "1") {
-            startCircuit();
-        }
-        else if (speed === "2") {
-            changeSpeed(2);
-        }
-        else if (speed === "4") {
-            changeSpeed(4);
-        }
+        timeline.timeScale(parseInt(speed));
+        observ.innerHTML = `${speed}x speed`;
     }
-
-
 }
+
 function restartCircuit() {
     if (!circuitStarted) {
         circuitStarted = true;
@@ -324,9 +320,9 @@ function restartCircuit() {
     currPos = 0;
     clearObservation();
     decide = false;
-    STATUS.innerHTML = "Start";
-    OBSERV.innerHTML = "Successfully restored";
-    SPEED.selectedIndex = 0;
+    status.innerHTML = "Start";
+    observ.innerHTML = "Successfully restored";
+    speed.selectedIndex = 0;
 }
 
 function simulationStatus() {
@@ -342,13 +338,13 @@ function simulationStatus() {
 function stopCircuit() {
     if (timeline.time() !== 0 && timeline.progress() !== 1) {
         timeline.pause();
-        OBSERV.innerHTML = "Simulation has been stopped.";
+        observ.innerHTML = "Simulation has been stopped.";
         decide = false;
-        STATUS.innerHTML = "Start";
-        SPEED.selectedIndex = 0;
+        status.innerHTML = "Start";
+        speed.selectedIndex = 0;
     }
     else if (timeline.progress() === 1) {
-        OBSERV.innerHTML = "Please Restart the simulation";
+        observ.innerHTML = "Please Restart the simulation";
     }
 }
 // need to fix this up a bit
@@ -358,12 +354,12 @@ function startCircuit() {
     }
     timeline.play();
     timeline.timeScale(1);
-    OBSERV.innerHTML = "Simulation has started.";
+    observ.innerHTML = "Simulation has started.";
     decide = true;
-    STATUS.innerHTML = "Pause";
-    SPEED.selectedIndex = 0;
+    status.innerHTML = "Pause";
+    speed.selectedIndex = 0;
     if (timeline.progress() === 1) {
-        OBSERV.innerHTML = "Please Restart the simulation";
+        observ.innerHTML = "Please Restart the simulation";
     }
 }
 
@@ -458,9 +454,9 @@ function simulator() {
 }
 
 //execution starts here
+let timeline = gsap.timeline({ repeat: 0, repeatDelay: 0 });
 gsap.registerPlugin(MotionPathPlugin);
 demoWidth();
-instructionBoxInit();
 textIOInit();
 textClockInit();
 outputCoordinates();
@@ -483,9 +479,9 @@ for (let i = 0; i < 144; i += 12) {
     timeline.add(dotsAppear, 0 + i);
     timeline.add(simulator, 0 + i);
     timeline.add(xDotDisappear, 4 + i);
-    timeline.add(computeXorOne, 4 + i);
+    timeline.add(calculateXorOne, 4 + i);
     timeline.add(yDotDisappear, 8 + i);
-    timeline.add(computeXorTwo, 8 + i);
+    timeline.add(calculateXorTwo, 8 + i);
     timeline.add(dotsDisappear, 12 + i);
     timeline.add(outputHandler, 12 + i);
     timeline.add(outputVisible, 12 + i);

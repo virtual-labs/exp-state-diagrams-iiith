@@ -419,3 +419,39 @@ svg.wire path {
   margin-bottom: 5px;
   width: 180px;  
 }
+
+.color-green{
+  
+  fill:green;
+  stroke:rgb(68, 68, 119);
+  stroke-width:3;
+  fill-opacity:1;
+  stroke-opacity:1;
+}
+
+.speed-box{
+  border:1px solid black;
+  color:black;
+  background-color:white;
+  text-align:center;
+  font-size:1.0rem;
+  border-radius:1em;
+  padding:.5em 1.0em;
+  cursor:pointer;
+}
+.wire-demo{
+  stroke-width: 3px;
+  fill: none;
+  stroke: black;
+}
+
+.gate-demo{
+  stroke-width: 3px;
+  fill: #29e;
+  stroke: black;
+}
+
+.text-demo{
+  font-size: 1.5em;
+  fill: black;
+}
