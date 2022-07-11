@@ -1,5 +1,5 @@
-import { simulate, deleteElement, printErrors, clearResult, printSuccess } from "./gate.js";
-import { connectJKFF, unbindEvent, refreshWorkingArea } from "./main.js";
+import { deleteElement, printErrors, clearResult, printSuccess } from "./gate.js";
+import { connectJKFF, unbindEvent, refreshWorkingArea, initStateDiagram } from "./main.js";
 import { deleteFF } from "./flipflop.js";
 import { xValues } from "./gate.js";
 'use strict';
@@ -24,7 +24,7 @@ export const setPosition = ({ top, left }) => {
   toggleMenu("show");
 };
 
-window.addEventListener("click", e => {
+window.addEventListener("click", () => {
   if (menuVisible) toggleMenu("hide");
   window.selectedComponent = null;
   window.componentType = null;

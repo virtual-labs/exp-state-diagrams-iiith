@@ -68,7 +68,6 @@ export class Clock {
     }
 
     simulate() {
-        const time = 1000 / this.frequency;
         const intervalOn = 4000;
         const intervalOff = 4000;
         // isOn is on for intervalOn milliseconds, then off for intervalOff milliseconds

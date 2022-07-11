@@ -1,7 +1,7 @@
 import { registerGate, jsPlumbInstance } from "./main.js";
 import { setPosition } from "./layout.js";
 import { computeAnd, computeNand, computeNor, computeOr, computeXnor, computeXor, testStateDiagram} from "./validator.js";
-import { checkConnectionsJK, simulateFFJK, testSimulateFFJK, simulateFFDD, checkConnectionsDD, testSimulateDD, flipFlops } from "./flipflop.js";
+import { checkConnectionsJK, simulateFFJK, testSimulateFFJK, flipFlops } from "./flipflop.js";
 
 'use strict';
 const EMPTY = "";
@@ -595,7 +595,7 @@ export function submitCircuit() {
 
     document.getElementById("table-body").innerHTML = EMPTY;
     clearResult();
-    testStateDiagram("Input-0", "Clock-0", "Output-1", "Output-2");
+    testStateDiagram("Output-1", "Output-2");
 }
 window.submitCircuit = submitCircuit;
 

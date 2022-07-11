@@ -1,4 +1,4 @@
-import { checkForSubmit, gates, simulate2, testSimulation,xValues} from './gate.js';
+import { checkForSubmit, gates, simulate2,xValues} from './gate.js';
 import { flipFlops } from './flipflop.js';
 
 'use strict';
@@ -23,7 +23,7 @@ export function computeNor(a, b) {
     return !(a || b);
 }
 
-export function testStateDiagram(input0,clock0,output1,output2){
+export function testStateDiagram(output1,output2){
     let circuitIsCorrect1 = true;
     let circuitIsCorrect2 = true;
     for (let ffID in flipFlops) {

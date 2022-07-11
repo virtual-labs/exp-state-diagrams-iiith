@@ -628,16 +628,11 @@ export function checkConnectionsDD() {
             break;
         }
     }
-    let count=0;
     let oriVal=false;
     for (let gateId in gates) {
         const gate = gates[gateId];
         if(gate.type==="Input"){
             oriVal=gate.output;
-        }
-        if(gate.type === "Output" && gate.output==null)
-        {
-            count++;
         }
         if (gate.isInput) {
             if (!gate.isConnected) {
