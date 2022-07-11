@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/css/style.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/css/style.min.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 
@@ -36,19 +36,19 @@
         </div>
 
         <div class="columns is-centered">
-			<div class="column">
-				<div class="v-collapsible-instruction-container v-instruction-container">
-					<div class="v-collapsible is-size-5">Instructions</div>
-					<div class="v-content" style="text-align: left; padding-left: 10%; padding-right: 10%;">
-						<ul style="list-style: disc;">
-							<li><b>Start</b>- Starts the simulation. Default speed is 1x.</li>
-							<li>Select the speed through dropdown menu</li>
-							<li><b>Reset</b> - Resets the simulation</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
+            <div class="column">
+                <div class="v-collapsible-instruction-container v-instruction-container">
+                    <div class="v-collapsible is-size-5">Instructions</div>
+                    <div class="v-content" style="text-align: left; padding-left: 10%; padding-right: 10%;">
+                        <ul style="list-style: disc;">
+                            <li><b>Start</b>- Starts the simulation. Default speed is 1x.</li>
+                            <li>Select the speed through dropdown menu</li>
+                            <li><b>Reset</b> - Resets the simulation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="columns is-centered">
@@ -91,7 +91,8 @@
                     <rect id="y10" x="420" y="140" width="40" height="50" class="gate-demo" />
                     <rect id="y11" x="460" y="140" width="40" height="50" class="gate-demo" />
                     <rect id="y12" x="500" y="140" width="40" height="50" class="gate-demo" />
-                    <path id="path1" class="wire-demo" d="M 600 700 L 600 550 L 650 550" /> <!-- Clock to clk of flip flop-->
+                    <path id="path1" class="wire-demo" d="M 600 700 L 600 550 L 650 550" />
+                    <!-- Clock to clk of flip flop-->
                     <path id="path2" class="wire-demo" d="M 800 450 L 900 450 " />
                     <!-- flip flop to A-->
                     <path id="path3" class="wire-demo" d="M 50 435 L 225 435 " />
@@ -104,7 +105,7 @@
                     <!-- second xor gate to flip flop-->
                     <path id="path7" class="wire-demo" d="M 850 450 L 850 350 L 300 350 L 300 410 L 500 410 " />
                     <!-- A to second xor gate-->
-                    <rect id="dflipflop1" x="650" y="400" width="150" height="250" class="gate-demo"/>
+                    <rect id="dflipflop1" x="650" y="400" width="150" height="250" class="gate-demo" />
                     <g id="xor1">
                         <path id="path1XOR" class="gate-demo"
                             d="M 195 425 Q 230 460 195 495 Q 231 460 195 425 M 200 425 Q 235 460 200 495 Q 305 460 200 425" />
@@ -117,38 +118,38 @@
                     <circle id="clock" cx="600" cy="700" r="15" class="color-green" />
                     <circle id="x" cx="50" cy="435" r="15" class="color-green" />
                     <circle id="y" cx="50" cy="485" r="15" class="color-green" />
-                    <text class="text-demo" x="655" y="440" >D</text>
-                    <text class="text-demo" x="900" y="500" >A</text>
-                    <text class="text-demo" x="15" y="440" >x</text>
-                    <text class="text-demo" x="15" y="490" >y</text>
-                    <text class="text-demo" x="650" y="554" >&#8827clk</text>
-                    <text class="text-demo" x="550" y="735" > CLOCK</text>
-                    <text class="text-demo" x="0" y="50" >Stream Input X</text>
-                    <text class="text-demo" x="75" y="90" >0</text>
-                    <text class="text-demo" x="115" y="90" >0</text>
-                    <text class="text-demo" x="155" y="90" >1</text>
-                    <text class="text-demo" x="195" y="90" >1</text>
-                    <text class="text-demo" x="235" y="90" >0</text>
-                    <text class="text-demo" x="275" y="90" >0</text>
-                    <text class="text-demo" x="315" y="90" >1</text>
-                    <text class="text-demo" x="355" y="90" >1</text>
-                    <text class="text-demo" x="395" y="90" >0</text>
-                    <text class="text-demo" x="435" y="90" >0</text>
-                    <text class="text-demo" x="475" y="90" >0</text>
-                    <text class="text-demo" x="515" y="90" >0</text>
-                    <text class="text-demo" x="0" y="130" >Stream Input Y</text>
-                    <text class="text-demo" x="75" y="170" >0</text>
-                    <text class="text-demo" x="115" y="170" >1</text>
-                    <text class="text-demo" x="155" y="170" >0</text>
-                    <text class="text-demo" x="195" y="170" >1</text>
-                    <text class="text-demo" x="235" y="170" >0</text>
-                    <text class="text-demo" x="275" y="170" >1</text>
-                    <text class="text-demo" x="315" y="170" >0</text>
-                    <text class="text-demo" x="355" y="170" >1</text>
-                    <text class="text-demo" x="395" y="170" >1</text>
-                    <text class="text-demo" x="435" y="170" >1</text>
-                    <text class="text-demo" x="475" y="170" >1</text>
-                    <text class="text-demo" x="515" y="170" >1</text>
+                    <text class="text-demo" x="655" y="440">D</text>
+                    <text class="text-demo" x="900" y="500">A</text>
+                    <text class="text-demo" x="15" y="440">x</text>
+                    <text class="text-demo" x="15" y="490">y</text>
+                    <text class="text-demo" x="650" y="554">&#8827clk</text>
+                    <text class="text-demo" x="550" y="735"> CLOCK</text>
+                    <text class="text-demo" x="0" y="50">Stream Input X</text>
+                    <text class="text-demo" x="75" y="90">0</text>
+                    <text class="text-demo" x="115" y="90">0</text>
+                    <text class="text-demo" x="155" y="90">1</text>
+                    <text class="text-demo" x="195" y="90">1</text>
+                    <text class="text-demo" x="235" y="90">0</text>
+                    <text class="text-demo" x="275" y="90">0</text>
+                    <text class="text-demo" x="315" y="90">1</text>
+                    <text class="text-demo" x="355" y="90">1</text>
+                    <text class="text-demo" x="395" y="90">0</text>
+                    <text class="text-demo" x="435" y="90">0</text>
+                    <text class="text-demo" x="475" y="90">0</text>
+                    <text class="text-demo" x="515" y="90">0</text>
+                    <text class="text-demo" x="0" y="130">Stream Input Y</text>
+                    <text class="text-demo" x="75" y="170">0</text>
+                    <text class="text-demo" x="115" y="170">1</text>
+                    <text class="text-demo" x="155" y="170">0</text>
+                    <text class="text-demo" x="195" y="170">1</text>
+                    <text class="text-demo" x="235" y="170">0</text>
+                    <text class="text-demo" x="275" y="170">1</text>
+                    <text class="text-demo" x="315" y="170">0</text>
+                    <text class="text-demo" x="355" y="170">1</text>
+                    <text class="text-demo" x="395" y="170">1</text>
+                    <text class="text-demo" x="435" y="170">1</text>
+                    <text class="text-demo" x="475" y="170">1</text>
+                    <text class="text-demo" x="515" y="170">1</text>
                 </svg>
             </div>
         </div>
@@ -169,7 +170,7 @@
             <li class="menu-option">Cancel</li>
         </ul>
     </div>
-	<script src="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/js/script.js"></script>
     <script type="module" src="js/animation.js"></script>
 </body>
 

@@ -2,7 +2,7 @@
     "version": 2.0,
     "questions": [
         {
-            "question": "1. A given state diagram have 8 distinct states the number of flip-flops required to make the circuit are",
+            "question": "1. A given state diagram has 8 distinct states the number of flip-flops required to make the circuit are",
             "answers": {
                 "a": "3",
                 "b": "4",

@@ -95,7 +95,7 @@ text {
   background-image: url("../images/nor.svg");
 }
 
-.threeipnand {
+.three-ip-nand {
   background-image: url("../images/nand3.svg");
   background-size: 130%;
 }
@@ -381,7 +381,7 @@ svg.wire path {
 
 #prompt-form-container {
   position: fixed;
-  top: 0;
+  top: 30%;
   left: 0;
   z-index: 9999;
   display: none;
@@ -393,7 +393,6 @@ svg.wire path {
 #prompt-form-container:before {
   display: inline-block;
   height: 100%;
-  content: '';
   vertical-align: middle;
 }
 
