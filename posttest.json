@@ -1,0 +1,65 @@
+{
+    "version": 2.0,
+    "questions": [
+        {
+            "question": "1. What is the number of flip flops required to implement a cicruit that detects a sequence of 3 or more 1s(ones)?",
+            "answers": {
+                "a": "3",
+                "b": "2",
+                "c": "1",
+                "d": "4"
+            },
+            "correctAnswer": "b",
+            "explanations": {"b":"In the state diagram for the sequence of 3 there will be 4 states 0 (that is 0 consecutive 1s), 1 (that is 1 consecutive 1s), 2 (that is 2 consecutive 1s) and 3 (that is 3 consecutive 1s). So for 4 states there will be 2 flip flops required to implement the circuit."},
+            "difficulty": "beginner"
+        },
+        {
+            "question": "2. Lets say we are asked to design a circuit for a vending machine that dispenses candy for Rs. 3 The input consists of a coin slot that can accept Rs. 1 and Rs. 2 coins. The number of states in its state diagram is:",
+            "answers": {
+                "a": "1",
+                "b": "2",
+                "c": "3",
+                "d": "4"
+            },
+            "correctAnswer": "4",
+            "explanations": {"d":"The 4 states will be 00(Rs. 0),01(Rs. 1),10(Rs. 2),11(Rs. 3.)"},
+            "difficulty": "intermediate"
+        },
+        {
+            "question": "3. For the problem described in Q2, suppose x and y are the inputs, z is the output and A(t) and B(t) represent the output bits of the flip flops used. Which of the following is the correct expression for A(t+1)?",
+            "answers": {
+                "a": "A + y + Bx",
+                "b": "A + x + By",
+                "c": "B + x + Ay",
+                "d": "A + x + By"
+            },
+            "correctAnswer": "d",
+            "explanations": {"d":"After making k map we arrive at answer A + x + By"},
+            "difficulty": "advanced"
+        },
+        {
+            "question": "4. For the problem described in Q2, suppose x and y are the inputs, z is the output and A(t) and B(t) represent the output bits of the flip flops used. Which of the following is the correct expression for B(t+1)?",
+            "answers": {
+                "a": "(B + y + Ax)(B' + y' + A)",
+                "b": "(B + x + Ay)(B' + y' + A)",
+                "c": "(B + y' + Ax)(B' + y + A)",
+                "d": "(B + y + A'x)(B' + y' + A)"
+            },
+            "correctAnswer": "a",
+            "explanations": {"a":"After making k map we arrive at answer (B + y + Ax)(B' + y' + A)"},
+            "difficulty": "advanced"
+        },
+        {
+            "question": "5. For the problem described in Q1 suppose x is input, y is output and A(t) and B(t) represent the output bits of the flip flops used. Which of the following is the correct expression for y?",
+            "answers": {
+                "a": "A(xor)B",
+                "b": "AB",
+                "c": "A+B",
+                "d": "A'+B"
+            },
+            "correctAnswer": "b",
+            "explanations": {"b":"After making k map we arrive at answer AB"},
+            "difficulty": "intermediate"
+        }
+    ]
+}
