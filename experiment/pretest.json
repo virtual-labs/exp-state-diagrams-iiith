@@ -2,7 +2,7 @@
     "version": 2.0,
     "questions": [
         {
-            "question": "1. A given state diagram have 8 distinct states the number of flip-flops required to make the circuit are",
+            "question": "1. A given state diagram has 8 distinct states the number of flip-flops required to make the circuit are",
             "answers": {
                 "a": "3",
                 "b": "4",
@@ -11,7 +11,7 @@
             },
             "correctAnswer": "a",
             "explanations": {
-                "a":"The answer is log(8) with base 2"
+                "a":"Number of flip-flops required are equal to log(Number of states) with base 2"
             },
             "difficulty": "beginner"
         },
@@ -25,7 +25,7 @@
             },
             "correctAnswer": "c",
             "explanations": {
-                "c":"The correct answer is: C"
+                "c":"An odd number is decided based upon the LSB in this case LSB is C as a result Y = C"
             },
             "difficulty": "beginner"
         },
@@ -39,7 +39,7 @@
             },
             "correctAnswer": "a",
             "explanations": {
-                "a":"2^3 - 6 = 2"
+                "a":"The counter will skip 2 states given by the formula 2^(Number of flip-flops) - number of states which is 2^3 - 6"
             },
             "difficulty": "advanced"
         },
@@ -51,14 +51,14 @@
                 "c": "1",
                 "d": "7"
             },
-            "correctAnswer": "c",
+            "correctAnswer": "b",
             "explanations": {
-                "c":"2 for input + 2 for D-flips flop (previous and next) + 1 for output"
+                "b":"2 for input , 2 for D-flips flop (previous and next) and  1 for output"
             },
             "difficulty": "advanced"
         },
         {
-            "question": "5. Number of columns in state table for 2 D-Flip-Flop, 2 inputs and 2 output are/is ",
+            "question": "5. Number of rows in state table for 2 D-Flip-Flop, 2 inputs and 2 output are/is ",
             "answers": {
                 "a": "8",
                 "b": "4",

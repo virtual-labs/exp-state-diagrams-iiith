@@ -1,6 +1,5 @@
 import { gates } from "./gate.js";
 import { registerGate } from "./main.js";
-import { setPosition } from "./layout.js";
 
 'use strict';
 
@@ -38,38 +37,19 @@ export class Clock {
 
     registerComponent(workingArea, x = 0, y = 0) {
 
-         // get width of working area
-         const width = document.getElementById(workingArea).offsetWidth;
-         const height = document.getElementById(workingArea).offsetHeight;
-         let scale = 900;
-         let yScale = 800;
-         x = (x / scale) * width;
-         y = (y / yScale) * height;
- 
-         const el = document.getElementById(this.id);
-         el.style.left = x + "px";
-         el.style.top = y + "px";
- 
-         if (this.type !== "Input" && this.type !== "Output" && this.type !== "Clock") {
- 
-             el.addEventListener(
-                 "contextmenu",
-                 function (ev) {
-                     ev.preventDefault();
-                     const origin = {
-                         left: ev.pageX - document.getScroll()[0],
-                         top: ev.pageY - document.getScroll()[1],
-                     };
-                     setPosition(origin);
-                     window.selectedComponent = this.id;
-                     window.componentType = "gate";
-                     return false;
-                 },
-                 false
-             );
-         }
-         gates[this.id] = this;
-         registerGate(this.id, this);
+        // get width of working area
+        const width = document.getElementById(workingArea).offsetWidth;
+        const height = document.getElementById(workingArea).offsetHeight;
+        let scale = 900;
+        let yScale = 800;
+        x = (x / scale) * width;
+        y = (y / yScale) * height;
+
+        const el = document.getElementById(this.id);
+        el.style.left = x + "px";
+        el.style.top = y + "px";
+        gates[this.id] = this;
+        registerGate(this.id, this);
 
     }
 
@@ -88,7 +68,6 @@ export class Clock {
     }
 
     simulate() {
-        const time = 1000 / this.frequency;
         const intervalOn = 4000;
         const intervalOff = 4000;
         // isOn is on for intervalOn milliseconds, then off for intervalOff milliseconds
@@ -98,7 +77,7 @@ export class Clock {
         let timerOn = null;
 
         const run = () => {
-            if(window.simulate === 1) {
+            if (window.simulate === 1) {
                 return;
             }
             if (!currentState) {
@@ -130,7 +109,7 @@ export class Clock {
         this.outputPoints.push(output);
     }
 
-    setConnected (val) {
+    setConnected(val) {
         this.isConnected = val;
     }
 
@@ -145,11 +124,11 @@ export class Clock {
 
 export function addClock(frequency, dutyCycle, workingArea, x, y, name, id) {
     let clock = new Clock(frequency, dutyCycle);
-    if(id !== null) {
-    clock.setId(id);
+    if (id !== null) {
+        clock.setId(id);
     }
-    if(name !== null) {
-    clock.setName(name);
+    if (name !== null) {
+        clock.setName(name);
     }
     clock.updateComponent();
     const parent = document.getElementById(workingArea);
@@ -158,13 +137,4 @@ export function addClock(frequency, dutyCycle, workingArea, x, y, name, id) {
 
     return clock;
 }
-
-// const clockAdd = document.getElementById("clockAdd");
-// clockAdd.addEventListener('click', function () {
-//     const frequency = document.getElementById("frequency-input").value;
-//     const dutyCycle = document.getElementById("dutycycle-input").value;
-//     addClock(frequency,dutyCycle,"working-area",0,0,null,null)
-//     toggleModal();
-// });
-
 

@@ -4,7 +4,7 @@ export function setCoordinates(xObject,yObject,textObject){
         x: xObject,
         y: yObject
     })
-};
+}
 export function fillInputDots(object,cxObject,cyObject,rObject,fillObject) {
     gsap.set(object, {
         attr: { cx: cxObject, cy: cyObject, r: rObject, fill: fillObject }
@@ -27,4 +27,12 @@ export function setColor(object) {
 }
 export function unsetColor(object) {
     fillColor(object,"#29e");
+}
+export function getXor(a,b)
+{
+    if(a === b)
+    {
+        return 0;
+    }
+    return 1;
 }

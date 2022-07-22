@@ -1,5 +1,5 @@
-import { simulate, deleteElement, printErrors, clearResult, printSuccess } from "./gate.js";
-import { connectJKFF, unbindEvent, refreshWorkingArea } from "./main.js";
+import { deleteElement, printErrors, clearResult, printSuccess } from "./gate.js";
+import { connectJKFF, unbindEvent, refreshWorkingArea, initStateDiagram } from "./main.js";
 import { deleteFF } from "./flipflop.js";
 import { xValues } from "./gate.js";
 'use strict';
@@ -8,6 +8,7 @@ import { xValues } from "./gate.js";
 export const wireColours = ["#ff0000", "#00ff00", "#0000ff", "#bf6be3", "#ff00ff", "#00ffff", "#ff8000", "#00ff80", "#80ff00", "#ff0080", "#8080ff", "#c0c0c0"];
 
 // Contextmenu
+const EMPTY="";
 const menu = document.querySelector(".menu");
 const menuOption = document.querySelector(".menu-option");
 let menuVisible = false;
@@ -23,7 +24,7 @@ export const setPosition = ({ top, left }) => {
   toggleMenu("show");
 };
 
-window.addEventListener("click", e => {
+window.addEventListener("click", () => {
   if (menuVisible) toggleMenu("hide");
   window.selectedComponent = null;
   window.componentType = null;
@@ -90,7 +91,7 @@ function showPrompt(text, callback) {
   document.getElementById('prompt-message').style.fontSize = "1.5em";
   form.text.value = '';
   form.text.classList.remove("highlight");
-  document.getElementById('error-message').innerHTML = "";
+  document.getElementById('error-message').innerHTML = EMPTY;
   function complete(value) {
     hideCover();
     container.style.display = 'none';
@@ -184,10 +185,9 @@ document.getElementById('input-button').onclick = function() {
 // Clear observations
 function clearObservations() {
 
-  document.getElementById("table-body").innerHTML = "";
-  let head = ''
-  document.getElementById("table-head").innerHTML = head;
-  document.getElementById('result').innerHTML = "";
+  document.getElementById("table-body").innerHTML = EMPTY;
+  document.getElementById("table-head").innerHTML = EMPTY;
+  document.getElementById('result').innerHTML = EMPTY;
 
 }
 
@@ -221,13 +221,6 @@ function toggleSimulation() {
 
 simButton.addEventListener("click", toggleSimulation);
 
-
-
-// Instruction box
-const instructionBox = document.getElementsByClassName("instructions-box")[0];
-instructionBox.addEventListener("click", (e) => {
-  instructionBox.classList.toggle("expand");
-});
 
 // Making webpage responsive
 

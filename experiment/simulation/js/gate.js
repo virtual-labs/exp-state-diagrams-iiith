@@ -1,12 +1,12 @@
 import { registerGate, jsPlumbInstance } from "./main.js";
 import { setPosition } from "./layout.js";
 import { computeAnd, computeNand, computeNor, computeOr, computeXnor, computeXor, testStateDiagram} from "./validator.js";
-import { checkConnectionsJK, simulateFFJK, testSimulateFFJK, simulateFFDD, checkConnectionsDD, testSimulateDD } from "./flipflop.js";
+import { checkConnectionsJK, simulateFFJK, testSimulateFFJK, flipFlops } from "./flipflop.js";
 
 'use strict';
 const EMPTY = "";
 export let gates = {}; // Array of gates
-// const xValues = [false,false, true,true, false,false, true,true, false,false, true,true, false,false, true,true];
+
 export let xValues = [];
 let xIndex = 0;
 window.numComponents = 0;
@@ -254,7 +254,7 @@ export function printErrors(message, objectId) {
     result.className = "failure-message";
     if (objectId !== null) {
         objectId.classList.add("highlight")
-        setTimeout(function () { objectId.classList.remove("highlight") }, 2000);
+        setTimeout(function () { objectId.classList.remove("highlight") }, 5000);
     }
 }
 
@@ -595,29 +595,29 @@ export function submitCircuit() {
 
     document.getElementById("table-body").innerHTML = EMPTY;
     clearResult();
-    testStateDiagram("Input-0", "Clock-0", "Output-1", "Output-2");
+    testStateDiagram("Output-1", "Output-2");
 }
 window.submitCircuit = submitCircuit;
 
 
 export function deleteElement(gateid) {
-
-    let gate = gates[gateid];
-    // jsPlumbInstance.selectEndpoints().detachAll();
+    const gate = gates[gateid];
     jsPlumbInstance.removeAllEndpoints(document.getElementById(gate.id));
-    // jsPlumbInstance.detach(gate.id); // <--
     jsPlumbInstance._removeElement(document.getElementById(gate.id));
     for (let elem in gates) {
-
-        let found = 0;
-        for (let index in gates[elem].inputs) {
-            if (gates[elem].inputs[index][0].id === gate.id) {
-                found = 1;
-                break;
-            }
-        }
-        if (found === 1) {
+        if (gates[elem].inputs.includes(gate)) {
             gates[elem].removeInput(gate);
+        }
+    }
+    for (let key in flipFlops) {
+        if (flipFlops[key].j[0] === gate) {
+            flipFlops[key].j = null;
+        }
+        if (flipFlops[key].k[0] === gate) {
+            flipFlops[key].k = null;
+        }
+        if (flipFlops[key].clk[0] === gate) {
+            flipFlops[key].clk = null;
         }
     }
     delete gates[gateid];
