@@ -2,7 +2,7 @@
     "version": 2.0,
     "questions": [
         {
-            "question": "1. What is the number of flip flops required to implement a cicruit that detects a sequence of 3 or more 1s(ones)?",
+            "question": "1. What is the number of flip flops required to implement a circuit that detects a sequence of 3 or more 1s(ones)?",
             "answers": {
                 "a": "3",
                 "b": "2",
@@ -10,7 +10,12 @@
                 "d": "4"
             },
             "correctAnswer": "b",
-            "explanations": {"b":"In the state diagram for the sequence of 3 there will be 4 states 0 (that is 0 consecutive 1s), 1 (that is 1 consecutive 1s), 2 (that is 2 consecutive 1s) and 3 (that is 3 consecutive 1s). So for 4 states there will be 2 flip flops required to implement the circuit."},
+            "explanations": {
+                "a":"To detect a sequence of 3 or more 1s, we need to remember the previous two bits to compare them with the current bit. Therefore, we require less than 3 flip-flops to store this information.",
+                "b":"In the state diagram for the sequence of 3 there will be 4 states 0 (that is 0 consecutive 1s), 1 (that is 1 consecutive 1s), 2 (that is 2 consecutive 1s) and 3 (that is 3 consecutive 1s). So for 4 states there will be 2 flip flops required to implement the circuit.",
+                "c":"With only 1 flip-flop, we can only remember the current bit and have no way of comparing it with the previous bits to detect a sequence of 3 or more 1s.",
+                "d":"While having additional flip-flops would provide extra storage, they are not necessary to detect a sequence of 3 or more 1s."
+            },
             "difficulty": "beginner"
         },
         {
@@ -21,8 +26,12 @@
                 "c": "3",
                 "d": "4"
             },
-            "correctAnswer": "4",
-            "explanations": {"d":"The 4 states will be 00(Rs. 0),01(Rs. 1),10(Rs. 2),11(Rs. 3.)"},
+            "correctAnswer": "d",
+            "explanations": {
+                "a":"A vending machine that dispenses candy for Rs. 3 and accepts Rs. 1 and Rs. 2 coins would require multiple states to handle different scenarios. In this case, a single state would not be sufficient to capture the different inputs and outputs of the vending machine.",
+                "b":"It would require more than two states. There would need to be states to represent different combinations of inputs and outputs, such as accepting the first coin, accepting the second coin, and dispensing the candy.",
+                "c":"It would require more than three states. There would need to be states to represent different combinations of inputs and outputs, such as accepting the first coin, accepting the second coin, and dispensing the candy.",
+                "d":"The 4 states will be 00(Rs. 0),01(Rs. 1),10(Rs. 2),11(Rs. 3.)"},
             "difficulty": "intermediate"
         },
         {

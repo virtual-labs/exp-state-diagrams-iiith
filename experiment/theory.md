@@ -58,4 +58,4 @@ We are in the final stage of our procedure. What remains, is to determine the Bo
 
 We design our circuit. We place the Flip Flops and use logic gates to form the Boolean functions that we calculated. The gates take input from the output of the Flip Flops and the Input of the circuit.
 
-We have successfully designed and constructed a Sequential Circuit.Sequential Circuits can come in handy as control parts of bigger circuits and can perform any sequential logic task that we can think of. 
+We have successfully designed and constructed a Sequential Circuit. Sequential Circuits can come in handy as control parts of bigger circuits and can perform any sequential logic task that we can think of. 

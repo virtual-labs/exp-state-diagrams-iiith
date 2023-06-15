@@ -11,7 +11,10 @@
             },
             "correctAnswer": "a",
             "explanations": {
-                "a":"Number of flip-flops required are equal to log(Number of states) with base 2"
+                "a":"Number of flip-flops required are equal to log(Number of states) with base 2",
+                "b":"Since each flip-flop can represent only 2 states, having 4 flip-flops would allow for a total of 16 possible states. This exceeds the requirement of representing only 8 distinct states",
+                "c":"Having 8 flip-flops would provide a total of 256 possible states, which is far more than the 8 distinct states required.",
+                "d":"Having only 1 flip-flop would limit the representation to just 2 possible states"
             },
             "difficulty": "beginner"
         },
@@ -25,7 +28,10 @@
             },
             "correctAnswer": "c",
             "explanations": {
-                "c":"An odd number is decided based upon the LSB in this case LSB is C as a result Y = C"
+                "a":"The logical AND operation would only result in 1 if both A and B are 1, which may not satisfy the condition for an odd number.",
+                "b":"The logical XOR operation returns 1 if the number of 1's in the inputs is odd. However, this expression includes all three inputs A, B, and C, which means the value of C may affect the result even if A and B alone satisfy the odd number condition.",
+                "c":"An odd number is decided based upon the LSB in this case LSB is C as a result Y = C",
+                "d":"The logical OR operation would result in 1 if either B or C (or both) is 1, but this does not necessarily guarantee that the binary value is an odd number."
             },
             "difficulty": "beginner"
         },
@@ -39,7 +45,10 @@
             },
             "correctAnswer": "a",
             "explanations": {
-                "a":"The counter will skip 2 states given by the formula 2^(Number of flip-flops) - number of states which is 2^3 - 6"
+                "a":"The counter will skip 2 states given by the formula 2^(Number of flip-flops) - number of states which is 2^3 - 6",
+                "b":"Skipping just 1 state will leave us with another extra state that is not utilized",
+                "c":"With 3 flip-flops, we can represent a total of 8 different states. Since we only need 6 states for the mod 6 counter, there will be some states that are not utilized or skipped",
+                "d":"If we skip 3 states, then we can only represent 5 states whereas we need to represent 6 states."
             },
             "difficulty": "advanced"
         },
@@ -67,7 +76,10 @@
             },
             "correctAnswer": "c",
             "explanations": {
-                "c": "The number of rows is equal to 2 ^ (sum of inputs and D-flip flops)"
+                "a":"Considering the current state and inputs, which can also be 2-bit, the total number of combinations will be greater than 8.",
+                "b":"With 2 D-Flip-Flops, each with 2 possible inputs and 2 possible outputs, the total number of combinations will be more than 4",
+                "c":"The number of rows is equal to 2 ^ (sum of inputs and D-flip flops)",
+                "d":"One of the above options is correct"
             },
             "difficulty": "intermediate"
         }

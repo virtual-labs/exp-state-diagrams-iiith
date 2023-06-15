@@ -1,9 +1,10 @@
- 1. A student was asked to design the state diagram of a circuit to detect 1011 occurs in a given input sequence. So, he came up with the following design. 
+ 1. A student was asked to design the state diagram of a circuit to detect if 1011 occurs in a given input sequence. So, he came up with the following design. 
 
 <img src="images/state_diagram.png">
 
 
 a. What will be the sequence of states and outputs for the following input sequence 10101101011000
+
 b. Does the circuit correctly solve the problem. Why/why not? If not then what should be the change in the state diagram?
 
 
