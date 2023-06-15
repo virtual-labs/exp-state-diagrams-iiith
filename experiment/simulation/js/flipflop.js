@@ -700,13 +700,13 @@ export function deleteFF(id) {
     jsPlumbInstance._removeElement(document.getElementById(ff.id));
     for (let key in flipFlops) {
         if (ff.constructor.name === "JKFlipFlop") {
-            if (flipFlops[key].j[0] === ff) {
+            if (flipFlops[key].j!==null && flipFlops[key].j.length!==0 && flipFlops[key].j[0] === ff) {
                 flipFlops[key].j = null;
             }
-            if (flipFlops[key].k[0] === ff) {
+            if (flipFlops[key].k!==null && flipFlops[key].k.length!==0 && flipFlops[key].k[0] === ff) {
                 flipFlops[key].k = null;
             }
-            if (flipFlops[key].clk[0] === ff) {
+            if (flipFlops[key].clk!==null && flipFlops[key].clk.length!==0 && flipFlops[key].clk[0] === ff) {
                 flipFlops[key].clk = null;
             }
         }
