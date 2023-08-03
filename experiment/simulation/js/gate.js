@@ -29,6 +29,7 @@ export class Gate {
         this.inputPoints = [];
         this.outputPoints = [];
         this.inputs = []; // List of input gates
+        this.outputs=[];
         this.output = null; // Output value
         this.isInput = false;
         this.isOutput = false;
@@ -40,19 +41,22 @@ export class Gate {
     addInput(gate, pos) {
         this.inputs.push([gate, pos]);
     }
+    addOutput(gate) {
+        this.outputs.push(gate);
+    }
     removeInput(gate) {
-        let index = -1;
-        let i = 0;
-        for (let input in this.inputs) {
-            if (this.inputs[input][0] === gate) {
-                index = i;
-                break;
+        for (let i = this.inputs.length - 1; i >= 0; i--) {
+            if (this.inputs[i][0] === gate) {
+              this.inputs.splice(i, 1);
             }
-            i++;
         }
-
-        if (index > -1) {
-            this.inputs.splice(index, 1);
+    }
+    removeOutput(gate) {
+        // Find and remove all occurrences of gate
+      for (let i = this.outputs.length - 1; i >= 0; i--) {
+        if (this.outputs[i] === gate) {
+          this.outputs.splice(i, 1);
+            }
         }
     }
     updatePosition(id) {
@@ -267,7 +271,7 @@ export function checkConnections() {
             return false;
 
         }
-        else if (!gate.isConnected && !gate.isOutput) {
+        else if ((!gate.isConnected||gate.outputs.length===0) && !gate.isOutput) {
             printErrors("highlighted component not connected" + ".\n", id);
             return false;
         }
@@ -605,20 +609,37 @@ export function deleteElement(gateid) {
     jsPlumbInstance.removeAllEndpoints(document.getElementById(gate.id));
     jsPlumbInstance._removeElement(document.getElementById(gate.id));
     for (let elem in gates) {
-        if (gates[elem].inputs.includes(gate)) {
+        let found = 0;
+        for (let index in gates[elem].inputs) {
+            if (gates[elem].inputs[index][0].id === gate.id) {
+                found = 1;
+                break;
+            }
+        }
+        if (found === 1) {
             gates[elem].removeInput(gate);
+        }
+        if(gates[elem].outputs.includes(gate)) {
+            gates[elem].removeOutput(gate);
         }
     }
     for (let key in flipFlops) {
-        if (flipFlops[key].j[0] === gate) {
+        if (flipFlops[key].j!== null && flipFlops[key].j.length!== 0 && flipFlops[key].j[0] === gate) {
             flipFlops[key].j = null;
         }
-        if (flipFlops[key].k[0] === gate) {
+        if (flipFlops[key].k!==null && flipFlops[key].k.length!==0 && flipFlops[key].k[0] === gate) {
             flipFlops[key].k = null;
         }
-        if (flipFlops[key].clk[0] === gate) {
+        if (flipFlops[key].clk!==null && flipFlops[key].clk.length!==0 && flipFlops[key].clk[0] === gate) {
             flipFlops[key].clk = null;
         }
+        if(flipFlops[key].qOutputs.includes(gate)) {
+            flipFlops[key].removeqOutput(gate);
+        }
+        if(flipFlops[key].qbarOutputs.includes(gate)) {
+            flipFlops[key].removeqbarOutput(gate);
+        }
+
     }
     delete gates[gateid];
 }

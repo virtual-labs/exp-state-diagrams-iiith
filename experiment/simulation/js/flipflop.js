@@ -25,9 +25,35 @@ export class RSFlipFlop {
         this.qbar = null;
         this.inputPoints = [];
         this.outputPoints = [];
+        this.qOutputs = [];
+        this.qbarOutputs = [];
         this.qIsConnected = false;
         this.qbarIsConnected = false;
         this.component = `<div class="drag-drop rsflipflop" id=${this.id}></div>`;
+    }
+
+    addqOutput(gate) {
+        this.qOutputs.push(gate);
+    }
+    addqbarOutput(gate) {
+        this.qbarOutputs.push(gate);
+    }
+
+    removeqOutput(gate) {
+        // Find and remove all occurrences of gate
+      for (let i = this.qOutputs.length - 1; i >= 0; i--) {
+        if (this.qOutputs[i] === gate) {
+          this.qOutputs.splice(i, 1);
+            }
+        }
+    }
+    removeqbarOutput(gate) {
+        // Find and remove all occurrences of gate
+      for (let i = this.qbarOutputs.length - 1; i >= 0; i--) {
+        if (this.qbarOutputs[i] === gate) {
+          this.qbarOutputs.splice(i, 1);
+            }
+        }
     }
     registerComponent(workingArea, x = 0, y = 0) {
         const parent = document.getElementById(workingArea);
@@ -240,10 +266,35 @@ export class JKFlipFlop {
         this.qbar = true;
         this.inputPoints = [];
         this.outputPoints = [];
+        this.qOutputs = [];
+        this.qbarOutputs = [];
         this.qIsConnected = false;
         this.qbarIsConnected = false;
         this.component = `<div class="drag-drop jkflipflop" id=${this.id}></div>`;
         this.prevclk = false;
+    }
+    addqOutput(gate) {
+        this.qOutputs.push(gate);
+    }
+    addqbarOutput(gate) {
+        this.qbarOutputs.push(gate);
+    }
+
+    removeqOutput(gate) {
+        // Find and remove all occurrences of gate
+      for (let i = this.qOutputs.length - 1; i >= 0; i--) {
+        if (this.qOutputs[i] === gate) {
+          this.qOutputs.splice(i, 1);
+            }
+        }
+    }
+    removeqbarOutput(gate) {
+        // Find and remove all occurrences of gate
+      for (let i = this.qbarOutputs.length - 1; i >= 0; i--) {
+        if (this.qbarOutputs[i] === gate) {
+          this.qbarOutputs.splice(i, 1);
+            }
+        }
     }
     registerComponent(workingArea, x = 0, y = 0) {
         const parent = document.getElementById(workingArea);
@@ -378,7 +429,7 @@ export function checkConnectionsJK() {
         // For Full Adder objects
         // Check if all the outputs are connected
         const id = document.getElementById(gate.id);
-        if (!gate.qIsConnected) {
+        if (!gate.qIsConnected || gate.qOutputs.length===0) {
             printErrors("Q of Flip-Flop must be connected\n",id);
             correctConnection = false;
             break;
@@ -403,7 +454,7 @@ export function checkConnectionsJK() {
     for (let gateId in gates) {
         const gate = gates[gateId];
         if (gate.isInput) {
-            if (!gate.isConnected) {
+            if (!gate.isConnected || gate.outputs.length===0) {
                 correctConnection = false;
                 break;
             }
@@ -418,7 +469,8 @@ export function checkConnectionsJK() {
             if (gate.inputPoints.length !== gate.inputs.length) {
                 correctConnection = false;
             }
-            else if (!gate.isConnected && !gate.isOutput) {
+            else if ((!gate.isConnected || gate.outputs.length===0) && !gate.isOutput) {
+
                 correctConnection = false;
             }
         }
@@ -700,41 +752,20 @@ export function deleteFF(id) {
     jsPlumbInstance._removeElement(document.getElementById(ff.id));
     for (let key in flipFlops) {
         if (ff.constructor.name === "JKFlipFlop") {
-            if (flipFlops[key].j[0] === ff) {
+            if (flipFlops[key].j!== null && flipFlops[key].j.length!== 0 && flipFlops[key].j[0] === ff) {
                 flipFlops[key].j = null;
             }
-            if (flipFlops[key].k[0] === ff) {
+            if (flipFlops[key].k!==null && flipFlops[key].k.length!==0 && flipFlops[key].k[0] === ff) {
                 flipFlops[key].k = null;
             }
-            if (flipFlops[key].clk[0] === ff) {
+            if (flipFlops[key].clk!==null && flipFlops[key].clk.length!==0 && flipFlops[key].clk[0] === ff) {
                 flipFlops[key].clk = null;
             }
-        }
-        else if (ff.constructor.name === "RSFlipFlop") {
-            if (flipFlops[key].r[0] === ff) {
-                flipFlops[key].r = null;
+            if(flipFlops[key].qOutputs.includes(ff)) {
+                flipFlops[key].removeqOutput(ff);
             }
-            if (flipFlops[key].s[0] === ff) {
-                flipFlops[key].s = null;
-            }
-            if (flipFlops[key].clk[0] === ff) {
-                flipFlops[key].clk = null;
-            }
-        }
-        else if (ff.constructor.name === "DFlipFlop") {
-            if (flipFlops[key].d[0] === ff) {
-                flipFlops[key].d = null;
-            }
-            if (flipFlops[key].clk[0] === ff) {
-                flipFlops[key].clk = null;
-            }
-            if(flipFlops[key].pr[0] === ff)
-            {
-                flipFlops[key].pr = null;
-            }
-            if(flipFlops[key].clr[0] === ff)
-            {
-                flipFlops[key].clr = null;
+            if(flipFlops[key].qbarOutputs.includes(ff)) {
+                flipFlops[key].removeqbarOutput(ff);
             }
         }
     }
@@ -749,6 +780,9 @@ export function deleteFF(id) {
         }
         if (found === 1) {
             gates[elem].removeInput(ff);
+        }
+        if(gates[elem].outputs.includes(ff)) {
+            gates[elem].removeOutput(ff);
         }
     }
 
