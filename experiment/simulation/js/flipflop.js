@@ -31,6 +31,7 @@ export class RSFlipFlop {
         this.qbarIsConnected = false;
         this.component = `<div class="drag-drop rsflipflop" id=${this.id}></div>`;
     }
+
     addqOutput(gate) {
         this.qOutputs.push(gate);
     }
@@ -469,6 +470,7 @@ export function checkConnectionsJK() {
                 correctConnection = false;
             }
             else if ((!gate.isConnected || gate.outputs.length===0) && !gate.isOutput) {
+
                 correctConnection = false;
             }
         }

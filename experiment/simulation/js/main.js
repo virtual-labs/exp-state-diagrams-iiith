@@ -69,6 +69,7 @@ export const connectGate = function () {
                 input.isConnected = true;
                 gatejs.gates[fromEndpoint.elementId].addInput(input, "");
                 input.addOutput(gatejs.gates[fromEndpoint.elementId]);
+
             }
 
         }
