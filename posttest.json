@@ -1,0 +1,74 @@
+{
+    "version": 2.0,
+    "questions": [
+        {
+            "question": "1. What is the number of flip flops required to implement a circuit that detects a sequence of 3 or more 1s(ones)?",
+            "answers": {
+                "a": "3",
+                "b": "2",
+                "c": "1",
+                "d": "4"
+            },
+            "correctAnswer": "b",
+            "explanations": {
+                "a":"To detect a sequence of 3 or more 1s, we need to remember the previous two bits to compare them with the current bit. Therefore, we require less than 3 flip-flops to store this information.",
+                "b":"In the state diagram for the sequence of 3 there will be 4 states 0 (that is 0 consecutive 1s), 1 (that is 1 consecutive 1s), 2 (that is 2 consecutive 1s) and 3 (that is 3 consecutive 1s). So for 4 states there will be 2 flip flops required to implement the circuit.",
+                "c":"With only 1 flip-flop, we can only remember the current bit and have no way of comparing it with the previous bits to detect a sequence of 3 or more 1s.",
+                "d":"While having additional flip-flops would provide extra storage, they are not necessary to detect a sequence of 3 or more 1s."
+            },
+            "difficulty": "beginner"
+        },
+        {
+            "question": "2. Lets say we are asked to design a circuit for a vending machine that dispenses candy for Rs. 3 The input consists of a coin slot that can accept Rs. 1 and Rs. 2 coins. The number of states in its state diagram is:",
+            "answers": {
+                "a": "1",
+                "b": "2",
+                "c": "3",
+                "d": "4"
+            },
+            "correctAnswer": "d",
+            "explanations": {
+                "a":"A vending machine that dispenses candy for Rs. 3 and accepts Rs. 1 and Rs. 2 coins would require multiple states to handle different scenarios. In this case, a single state would not be sufficient to capture the different inputs and outputs of the vending machine.",
+                "b":"It would require more than two states. There would need to be states to represent different combinations of inputs and outputs, such as accepting the first coin, accepting the second coin, and dispensing the candy.",
+                "c":"It would require more than three states. There would need to be states to represent different combinations of inputs and outputs, such as accepting the first coin, accepting the second coin, and dispensing the candy.",
+                "d":"The 4 states will be 00(Rs. 0),01(Rs. 1),10(Rs. 2),11(Rs. 3.)"},
+            "difficulty": "intermediate"
+        },
+        {
+            "question": "3. For the problem described in Q2, suppose x and y are the inputs, z is the output and A(t) and B(t) represent the output bits of the flip flops used. Which of the following is the correct expression for A(t+1)?",
+            "answers": {
+                "a": "A + y + Bx",
+                "b": "A + x + By",
+                "c": "B + x + Ay",
+                "d": "A + x + By"
+            },
+            "correctAnswer": "d",
+            "explanations": {"d":"After making k map we arrive at answer A + x + By"},
+            "difficulty": "advanced"
+        },
+        {
+            "question": "4. For the problem described in Q2, suppose x and y are the inputs, z is the output and A(t) and B(t) represent the output bits of the flip flops used. Which of the following is the correct expression for B(t+1)?",
+            "answers": {
+                "a": "(B + y + Ax)(B' + y' + A)",
+                "b": "(B + x + Ay)(B' + y' + A)",
+                "c": "(B + y' + Ax)(B' + y + A)",
+                "d": "(B + y + A'x)(B' + y' + A)"
+            },
+            "correctAnswer": "a",
+            "explanations": {"a":"After making k map we arrive at answer (B + y + Ax)(B' + y' + A)"},
+            "difficulty": "advanced"
+        },
+        {
+            "question": "5. For the problem described in Q1 suppose x is input, y is output and A(t) and B(t) represent the output bits of the flip flops used. Which of the following is the correct expression for y?",
+            "answers": {
+                "a": "A(xor)B",
+                "b": "AB",
+                "c": "A+B",
+                "d": "A'+B"
+            },
+            "correctAnswer": "b",
+            "explanations": {"b":"After making k map we arrive at answer AB"},
+            "difficulty": "intermediate"
+        }
+    ]
+}

@@ -1,0 +1,87 @@
+{
+    "version": 2.0,
+    "questions": [
+        {
+            "question": "1. A given state diagram has 8 distinct states the number of flip-flops required to make the circuit are",
+            "answers": {
+                "a": "3",
+                "b": "4",
+                "c": "8",
+                "d": "1"
+            },
+            "correctAnswer": "a",
+            "explanations": {
+                "a":"Number of flip-flops required are equal to log(Number of states) with base 2",
+                "b":"Since each flip-flop can represent only 2 states, having 4 flip-flops would allow for a total of 16 possible states. This exceeds the requirement of representing only 8 distinct states",
+                "c":"Having 8 flip-flops would provide a total of 256 possible states, which is far more than the 8 distinct states required.",
+                "d":"Having only 1 flip-flop would limit the representation to just 2 possible states"
+            },
+            "difficulty": "beginner"
+        },
+        {
+            "question": "2. The following data with three inputs A, B, C and one output Y. The output is 1 when the binary value of the input is odd number. The output is 0 otherwise. Then Y is equal to ?",
+            "answers": {
+                "a": "A and B",
+                "b": "A xor B xor C",
+                "c": "C",
+                "d": "B or C"
+            },
+            "correctAnswer": "c",
+            "explanations": {
+                "a":"The logical AND operation would only result in 1 if both A and B are 1, which may not satisfy the condition for an odd number.",
+                "b":"The logical XOR operation returns 1 if the number of 1's in the inputs is odd. However, this expression includes all three inputs A, B, and C, which means the value of C may affect the result even if A and B alone satisfy the odd number condition.",
+                "c":"An odd number is decided based upon the LSB in this case LSB is C as a result Y = C",
+                "d":"The logical OR operation would result in 1 if either B or C (or both) is 1, but this does not necessarily guarantee that the binary value is an odd number."
+            },
+            "difficulty": "beginner"
+        },
+        {
+            "question": "3. For making a mod 6 counter mankar used 3 flip-flops without any gate, then how many states will be skipped",
+            "answers": {
+                "a": "2",
+                "b": "1",
+                "c": "0",
+                "d": "3"
+            },
+            "correctAnswer": "a",
+            "explanations": {
+                "a":"The counter will skip 2 states given by the formula 2^(Number of flip-flops) - number of states which is 2^3 - 6",
+                "b":"Skipping just 1 state will leave us with another extra state that is not utilized",
+                "c":"With 3 flip-flops, we can represent a total of 8 different states. Since we only need 6 states for the mod 6 counter, there will be some states that are not utilized or skipped",
+                "d":"If we skip 3 states, then we can only represent 5 states whereas we need to represent 6 states."
+            },
+            "difficulty": "advanced"
+        },
+        {
+            "question": "4. Number of columns in state table for 1 D-Flip-Flop, 2 inputs and 1 output are/is ",
+            "answers": {
+                "a": "4",
+                "b": "5",
+                "c": "1",
+                "d": "7"
+            },
+            "correctAnswer": "b",
+            "explanations": {
+                "b":"2 for input , 2 for D-flips flop (previous and next) and  1 for output"
+            },
+            "difficulty": "advanced"
+        },
+        {
+            "question": "5. Number of rows in state table for 2 D-Flip-Flop, 2 inputs and 2 output are/is ",
+            "answers": {
+                "a": "8",
+                "b": "4",
+                "c": "16",
+                "d": "None of these"
+            },
+            "correctAnswer": "c",
+            "explanations": {
+                "a":"Considering the current state and inputs, which can also be 2-bit, the total number of combinations will be greater than 8.",
+                "b":"With 2 D-Flip-Flops, each with 2 possible inputs and 2 possible outputs, the total number of combinations will be more than 4",
+                "c":"The number of rows is equal to 2 ^ (sum of inputs and D-flip flops)",
+                "d":"One of the above options is correct"
+            },
+            "difficulty": "intermediate"
+        }
+    ]
+}

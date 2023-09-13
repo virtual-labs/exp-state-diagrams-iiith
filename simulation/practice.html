@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>State Diagram: Practice</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/css/style.min.css">
+	<link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+	<div class="container" style="margin-top:1%">
+		<div class="columns is-centered">
+			<div class="column is-one-quarter v-instruction-title">
+				Tasks
+			</div>
+			<div class="column">
+				<div class="v-tabs">
+					<ul>
+						<li class="is-active" id="task1" onclick="changeTabs(event)">
+							<a>
+								State Diagram
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="columns is-centered">
+			<div class="column">
+				<div class="v-collapsible-instruction-container v-instruction-container">
+					<div class="v-collapsible is-size-5">Instructions<br>Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.
+					</div>
+					<div class="v-content" style="text-align: left; padding-left: 10%; padding-right: 10%;">
+						<ul style="list-style: disc;">
+							<li>Click on components on the left side to add them to the circuit board.</li>
+							<li>Drag and drop components to move them around, connect them using wires by dragging your
+								cursor from one endpoint to another.</li>
+							<li>You can delete components by right clicking on them and selecting the delete option.
+							</li>
+							<li>You can set the input bit stream to any values of your choice for testing, by clicking on the "Input" button and typing in the bit stream.</li>
+							<li>Click on the "Simulate" button after setting the input bits as per your choice. This will simulate the circuit you built for the input bit stream set and will change the output bit values accordingly, for you to test your circuit.</li>
+							<li>Click on the "Submit" button to submit the circuit once you think you have built the
+								required
+								circuit.</li>
+								<li>Clicking on "Submit" will display a "Success" or "Failure" message in the Observations Section according to the correctness of your circuit.</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="columns is-centered is-flex-direction-row is-flex-wrap-wrap is-align-content-start">
+		<div class="column is-2-desktop is-12-tablet is-12-mobile">
+			<div class="v-datalist-container" style="height:100%">
+				<div class="v-datalist-title">Components</div>
+				<div class="v-datalist-row components-list" id="toolbar">
+					<div class="component-button and" onclick="addGate(event)">AND</div>
+					<div class="component-button or" onclick="addGate(event)">OR</div>
+					<div class="component-button not" onclick="addGate(event)">NOT</div>
+					<div class="component-button xor" onclick="addGate(event)">XOR</div>
+					<div class="component-button jkflipflop" onclick="addJKFlipFlop(event)"></div>
+				</div>
+			</div>
+		</div>
+		<div class="column is-7-desktop is-12-tablet is-12-mobile">
+			<div id="circuit-board">
+				<div id="working-area">
+				</div>
+			</div>
+		</div>
+		<div class="column is-3-desktop is-12-tablet is-12-mobile">
+			<div class="v-datalist-container components-list">
+				<div class="v-datalist-row">
+					<button class="v-button" id="simulate-button">Simulate</button>
+					<button class="v-button" id="submit-button" onclick="submitCircuit()">Submit</button>
+					<button class="v-button" id="input-button">Input </button>
+				</div>
+				<div class="v-datalist-title">State-Diagram</div>
+				<div class="v-datalist-row"><img src="images/practice-state-diagram2.png" alt="state diagram"></img>
+				</div>
+				<div class="v-datalist-row">
+					<div class="v-table-wrap">
+						<table class="table is-bordered is-fullwidth">
+							<thead id="table-head">
+							</thead>
+							<tbody id="table-body">
+							</tbody>
+						</table>
+					</div>
+					<div class="v-datalist-title">Observations</div>
+					<div id="result"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="menu">
+		<ul class="menu-options">
+			<li class="menu-option">Delete</li>
+			<li class="menu-option">Cancel</li>
+		</ul>
+	</div>
+	<div id="prompt-form-container">
+		<form id="prompt-form">
+			<div id="prompt-message"></div>
+			<input name="text" type="text">
+			<div class="failure-input" id="error-message"></div>
+			<button class="v-button" type="submit" value="Ok">Ok</button>
+			<button class="v-button" name="cancel" value="Cancel">Cancel</button>
+		</form>
+	</div>
+
+	<script src="js/jsplumb.bundle.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/js/script.js"></script>
+	<script type="module" src="js/main.js"></script>
+
+<script src="../assets/js/iframeResize.js"></script></body>
+
+</html>
