@@ -25,6 +25,11 @@
 								State Diagram
 							</a>
 						</li>
+						<li id="task2" onclick="changeTabs(event)">
+							<a>
+								Pattern Identifier
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -32,7 +37,7 @@
 		<div class="columns is-centered">
 			<div class="column">
 				<div class="v-collapsible-instruction-container v-instruction-container">
-					<div class="v-collapsible is-size-5">Instructions<br>Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.
+					<div class="v-collapsible is-size-5" id = "instructions">Instructions<br>Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.
 					</div>
 					<div class="v-content" style="text-align: left; padding-left: 10%; padding-right: 10%;">
 						<ul style="list-style: disc;">
@@ -79,8 +84,8 @@
 					<button class="v-button" id="submit-button" onclick="submitCircuit()">Submit</button>
 					<button class="v-button" id="input-button">Input </button>
 				</div>
-				<div class="v-datalist-title">State-Diagram</div>
-				<div class="v-datalist-row"><img src="images/practice-state-diagram2.png" alt="state diagram"></img>
+				<div class="v-datalist-title" id = "stateDiagramHeading">State-Diagram</div>
+				<div class="v-datalist-row" id = "stateDiagram"><img src="images/practice-state-diagram2.png" alt="state diagram"></img>
 				</div>
 				<div class="v-datalist-row">
 					<div class="v-table-wrap">
