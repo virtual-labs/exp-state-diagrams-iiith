@@ -8,7 +8,7 @@ import { xValues } from "./gate.js";
 export const wireColours = ["#ff0000", "#00ff00", "#0000ff", "#bf6be3", "#ff00ff", "#00ffff", "#ff8000", "#00ff80", "#80ff00", "#ff0080", "#8080ff", "#c0c0c0"];
 
 // Contextmenu
-const EMPTY="";
+const EMPTY = "";
 const menu = document.querySelector(".menu");
 const menuOption = document.querySelector(".menu-option");
 let menuVisible = false;
@@ -45,7 +45,7 @@ menuOption.addEventListener("click", e => {
 
 // Tabs
 
-function changeTabs(e) {
+export function changeTabs(e) {
   const task = e.target.parentNode.id;
   if (window.currentTab === task) {
     return;
@@ -61,9 +61,19 @@ function changeTabs(e) {
   refreshWorkingArea();
   initStateDiagram();
   window.simulate = 1;
-  simButton.innerHTML = "Simulate";  
+  simButton.innerHTML = "Simulate";
   clearObservations();
   resize();
+  changeInstructions();
+}
+
+function changeInstructions() {
+  let instructions = ""
+  if (window.currentTab == "task1")
+    instructions = `Instructions<br>Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.`
+  else if (window.currentTab == "task2")
+    instructions = `Instructions<br>Draw a state diagram to identify a pattern of 3 or more 1's in a given sequence of inputs, (Output is 1,1 if we identify 3 or more 1's, otherwise it can be anything else), and implement it using the gates and flip flops given.`
+  document.getElementById("instructions").innerHTML = instructions
 }
 
 window.changeTabs = changeTabs;
@@ -99,9 +109,9 @@ function showPrompt(text, callback) {
     callback(value);
   }
 
-  form.onsubmit = function() {
+  form.onsubmit = function () {
     let value = form.text.value;
-    if(value == '' || !checkInputString(value)){
+    if (value == '' || !checkInputString(value)) {
       form.text.classList.add("highlight");
       document.getElementById('error-message').innerHTML = "Invalid input stream";
       return false;
@@ -110,11 +120,11 @@ function showPrompt(text, callback) {
     return false;
   };
 
-  form.cancel.onclick = function() {
+  form.cancel.onclick = function () {
     complete(null);
   };
 
-  document.onkeydown = function(e) {
+  document.onkeydown = function (e) {
     if (e.key == 'Escape') {
       complete(null);
     }
@@ -123,14 +133,14 @@ function showPrompt(text, callback) {
   let lastElem = form.elements[form.elements.length - 1];
   let firstElem = form.elements[0];
 
-  lastElem.onkeydown = function(e) {
+  lastElem.onkeydown = function (e) {
     if (e.key == 'Tab' && !e.shiftKey) {
       firstElem.focus();
       return false;
     }
   };
 
-  firstElem.onkeydown = function(e) {
+  firstElem.onkeydown = function (e) {
     if (e.key == 'Tab' && e.shiftKey) {
       lastElem.focus();
       return false;
@@ -141,43 +151,43 @@ function showPrompt(text, callback) {
   form.elements.text.focus();
 }
 
-function checkInputString(inputString){
-  if(inputString.length<=0){
+function checkInputString(inputString) {
+  if (inputString.length <= 0) {
     return false;
   }
-  for(let char of inputString){
-    if(char!== '1' && char!=='0'){
+  for (let char of inputString) {
+    if (char !== '1' && char !== '0') {
       return false;
     }
   }
   return true;
 }
 
-function changeToArray(inputString){
+function changeToArray(inputString) {
   xValues.length = 0;
-  for(let char of inputString){
-    if(char === '1'){
+  for (let char of inputString) {
+    if (char === '1') {
       xValues.push(true);
     }
-    else{
+    else {
       xValues.push(false);
     }
   }
 }
 
-function clearArray(){
+function clearArray() {
   xValues.length = 0;
 }
 
-document.getElementById('input-button').onclick = function() {
-  showPrompt("Enter the input stream in binary form", function(value) {
-    if(checkInputString(value)){
+document.getElementById('input-button').onclick = function () {
+  showPrompt("Enter the input stream in binary form", function (value) {
+    if (checkInputString(value)) {
       changeToArray(value);
       printSuccess(value);
     }
-    else{
+    else {
       clearArray();
-      printErrors("Invalid input stream",null);
+      printErrors("Invalid input stream", null);
     }
   });
 };
@@ -188,33 +198,62 @@ function clearObservations() {
   document.getElementById("table-body").innerHTML = EMPTY;
   document.getElementById("table-head").innerHTML = EMPTY;
   document.getElementById('result').innerHTML = EMPTY;
+  let heading = document.getElementById('stateDiagramHeading')
+  
+  // Check the value of window.currentTab
+  if (window.currentTab === "task2") {
+    // Get the div element by its ID
+    var divElement = document.getElementById('stateDiagram');
+
+    // Remove the image inside the div
+    var imageElement = divElement.querySelector('img');
+    if (imageElement) {
+      imageElement.remove();
+    }
+
+    // Make the div empty
+    divElement.innerHTML = '';
+    heading.innerHTML = EMPTY;
+  } else if (window.currentTab === "task1") {
+    // Get the div element by its ID
+    var divElement = document.getElementById('stateDiagram');
+
+    // Check if the div is empty
+    if (divElement.innerHTML === '') {
+      // Re-insert the image inside the div
+      var newImage = document.createElement('img');
+      newImage.setAttribute('src', 'images/practice-state-diagram2.png');
+      newImage.setAttribute('alt', 'state diagram');
+      divElement.appendChild(newImage);
+      heading.innerHTML = `State-Diagram`;
+    }
+  }
 
 }
 
 // Simulation
 
 const simButton = document.getElementById("simulate-button");
-const inputButton=document.getElementById("input-button");
-const submitButton=document.getElementById("submit-button");
+const inputButton = document.getElementById("input-button");
+const submitButton = document.getElementById("submit-button");
 function toggleSimulation() {
   clearResult();
   if (window.simulate === 0) {
     window.simulate = 1;
-    inputButton.disabled=false;
-    submitButton.disabled=false;
+    inputButton.disabled = false;
+    submitButton.disabled = false;
     simButton.innerHTML = "Simulate";
   }
   else {
     window.simulate = 0;
-    inputButton.disabled=true;
-    submitButton.disabled=true;
+    inputButton.disabled = true;
+    submitButton.disabled = true;
     simButton.innerHTML = "Stop";
-    if(!window.sim())
-    {
+    if (!window.sim()) {
       window.simulate = 1;
       simButton.innerHTML = "Simulate";
-      inputButton.disabled=false;
-      submitButton.disabled=false;
+      inputButton.disabled = false;
+      submitButton.disabled = false;
     }
   }
 }
