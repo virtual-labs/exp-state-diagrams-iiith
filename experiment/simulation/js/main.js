@@ -1345,6 +1345,15 @@ export function refreshWorkingArea() {
     gatejs.clearGates();
     flipflopjs.clearFlipFlops();
 }
+refresh.addEventListener("click",function(){
+    jsPlumbInstance.reset();
+    window.numComponents = 0;
+    window.firstSimulation = true;
+    gatejs.clearGates();
+    flipflopjs.clearFlipFlops();
+    initStateDiagram();
+
+})
 
 window.currentTab = "task1";
 connectJKFF();
