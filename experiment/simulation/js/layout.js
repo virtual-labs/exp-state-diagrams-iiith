@@ -1,11 +1,34 @@
-import { deleteElement, printErrors, clearResult, printSuccess } from "./gate.js";
-import { connectJKFF, unbindEvent, refreshWorkingArea, initStateDiagram } from "./main.js";
+import {
+  deleteElement,
+  printErrors,
+  clearResult,
+  printSuccess,
+} from "./gate.js";
+import {
+  connectJKFF,
+  unbindEvent,
+  refreshWorkingArea,
+  initStateDiagram,
+} from "./main.js";
 import { deleteFF } from "./flipflop.js";
 import { xValues } from "./gate.js";
-'use strict';
+("use strict");
 
 // Wires
-export const wireColours = ["#ff0000", "#00ff00", "#0000ff", "#bf6be3", "#ff00ff", "#00ffff", "#ff8000", "#00ff80", "#80ff00", "#ff0080", "#8080ff", "#c0c0c0"];
+export const wireColours = [
+  "#ff0000",
+  "#00ff00",
+  "#0000ff",
+  "#bf6be3",
+  "#ff00ff",
+  "#00ffff",
+  "#ff8000",
+  "#00ff80",
+  "#80ff00",
+  "#ff0080",
+  "#8080ff",
+  "#c0c0c0",
+];
 
 // Contextmenu
 const EMPTY = "";
@@ -13,7 +36,7 @@ const menu = document.querySelector(".menu");
 const menuOption = document.querySelector(".menu-option");
 let menuVisible = false;
 
-const toggleMenu = command => {
+const toggleMenu = (command) => {
   menu.style.display = command === "show" ? "block" : "none";
   menuVisible = !menuVisible;
 };
@@ -30,12 +53,11 @@ window.addEventListener("click", () => {
   window.componentType = null;
 });
 
-menuOption.addEventListener("click", e => {
+menuOption.addEventListener("click", (e) => {
   if (e.target.innerHTML === "Delete") {
     if (window.componentType === "gate") {
       deleteElement(window.selectedComponent);
-    }
-    else if (window.componentType === "flipFlop") {
+    } else if (window.componentType === "flipFlop") {
       deleteFF(window.selectedComponent);
     }
   }
@@ -68,52 +90,53 @@ export function changeTabs(e) {
 }
 
 function changeInstructions() {
-  let instructions = ""
+  let instructions = "";
   if (window.currentTab == "task1")
-    instructions = `Instructions<br>Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.`
+    instructions = `Instructions<br>Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.`;
   else if (window.currentTab == "task2")
-    instructions = `Instructions<br>Draw a state diagram to identify a pattern of 3 or more 1's in a given sequence of inputs, (Output is 1,1 if we identify 3 or more 1's, otherwise it can be anything else), and implement it using the gates and flip flops given.`
-  document.getElementById("instructions").innerHTML = instructions
+    instructions = `Instructions<br>Draw a state diagram to identify a pattern of 3 or more 1's in a given sequence of inputs, (Output is 1,1 if we identify 3 or more 1's, otherwise it can be anything else), and implement it using the gates and flip flops given.`;
+  document.getElementById("instructions").innerHTML = instructions;
 }
 
 window.changeTabs = changeTabs;
 
 function showCover() {
-  let coverDiv = document.createElement('div');
-  coverDiv.id = 'cover-div';
+  let coverDiv = document.createElement("div");
+  coverDiv.id = "cover-div";
 
   // make the page unscrollable while the modal form is open
-  document.body.style.overflowY = 'hidden';
+  document.body.style.overflowY = "hidden";
 
   document.body.append(coverDiv);
 }
 
 function hideCover() {
-  document.getElementById('cover-div').remove();
-  document.body.style.overflowY = '';
+  document.getElementById("cover-div").remove();
+  document.body.style.overflowY = "";
 }
 
 function showPrompt(text, callback) {
   showCover();
-  let form = document.getElementById('prompt-form');
-  let container = document.getElementById('prompt-form-container');
-  document.getElementById('prompt-message').innerHTML = text;
-  document.getElementById('prompt-message').style.fontSize = "1.5em";
-  form.text.value = '';
+  let form = document.getElementById("prompt-form");
+  let container = document.getElementById("prompt-form-container");
+  document.getElementById("prompt-message").innerHTML = text;
+  document.getElementById("prompt-message").style.fontSize = "1.5em";
+  form.text.value = "";
   form.text.classList.remove("highlight");
-  document.getElementById('error-message').innerHTML = EMPTY;
+  document.getElementById("error-message").innerHTML = EMPTY;
   function complete(value) {
     hideCover();
-    container.style.display = 'none';
+    container.style.display = "none";
     document.onkeydown = null;
     callback(value);
   }
 
   form.onsubmit = function () {
     let value = form.text.value;
-    if (value == '' || !checkInputString(value)) {
+    if (value == "" || !checkInputString(value)) {
       form.text.classList.add("highlight");
-      document.getElementById('error-message').innerHTML = "Invalid input stream";
+      document.getElementById("error-message").innerHTML =
+        "Invalid input stream";
       return false;
     }
     complete(value);
@@ -125,7 +148,7 @@ function showPrompt(text, callback) {
   };
 
   document.onkeydown = function (e) {
-    if (e.key == 'Escape') {
+    if (e.key == "Escape") {
       complete(null);
     }
   };
@@ -134,20 +157,20 @@ function showPrompt(text, callback) {
   let firstElem = form.elements[0];
 
   lastElem.onkeydown = function (e) {
-    if (e.key == 'Tab' && !e.shiftKey) {
+    if (e.key == "Tab" && !e.shiftKey) {
       firstElem.focus();
       return false;
     }
   };
 
   firstElem.onkeydown = function (e) {
-    if (e.key == 'Tab' && e.shiftKey) {
+    if (e.key == "Tab" && e.shiftKey) {
       lastElem.focus();
       return false;
     }
   };
 
-  container.style.display = 'block';
+  container.style.display = "block";
   form.elements.text.focus();
 }
 
@@ -156,7 +179,7 @@ function checkInputString(inputString) {
     return false;
   }
   for (let char of inputString) {
-    if (char !== '1' && char !== '0') {
+    if (char !== "1" && char !== "0") {
       return false;
     }
   }
@@ -166,10 +189,9 @@ function checkInputString(inputString) {
 function changeToArray(inputString) {
   xValues.length = 0;
   for (let char of inputString) {
-    if (char === '1') {
+    if (char === "1") {
       xValues.push(true);
-    }
-    else {
+    } else {
       xValues.push(false);
     }
   }
@@ -179,56 +201,41 @@ function clearArray() {
   xValues.length = 0;
 }
 
-document.getElementById('input-button').onclick = function () {
-  showPrompt("Enter the input stream in binary form", function (value) {
-    if (checkInputString(value)) {
-      changeToArray(value);
-      printSuccess(value);
-    }
-    else {
-      clearArray();
-      printErrors("Invalid input stream", null);
-    }
-  });
-};
-
 // Clear observations
 function clearObservations() {
-
   document.getElementById("table-body").innerHTML = EMPTY;
   document.getElementById("table-head").innerHTML = EMPTY;
-  document.getElementById('result').innerHTML = EMPTY;
-  let heading = document.getElementById('stateDiagramHeading')
-  
+  document.getElementById("result").innerHTML = EMPTY;
+  let heading = document.getElementById("stateDiagramHeading");
+
   // Check the value of window.currentTab
   if (window.currentTab === "task2") {
     // Get the div element by its ID
-    var divElement = document.getElementById('stateDiagram');
+    var divElement = document.getElementById("stateDiagram");
 
     // Remove the image inside the div
-    var imageElement = divElement.querySelector('img');
+    var imageElement = divElement.querySelector("img");
     if (imageElement) {
       imageElement.remove();
     }
 
     // Make the div empty
-    divElement.innerHTML = '';
+    divElement.innerHTML = "";
     heading.innerHTML = EMPTY;
   } else if (window.currentTab === "task1") {
     // Get the div element by its ID
-    var divElement = document.getElementById('stateDiagram');
+    var divElement = document.getElementById("stateDiagram");
 
     // Check if the div is empty
-    if (divElement.innerHTML === '') {
+    if (divElement.innerHTML === "") {
       // Re-insert the image inside the div
-      var newImage = document.createElement('img');
-      newImage.setAttribute('src', 'images/practice-state-diagram2.png');
-      newImage.setAttribute('alt', 'state diagram');
+      var newImage = document.createElement("img");
+      newImage.setAttribute("src", "images/practice-state-diagram2.png");
+      newImage.setAttribute("alt", "state diagram");
       divElement.appendChild(newImage);
       heading.innerHTML = `State-Diagram`;
     }
   }
-
 }
 
 // Simulation
@@ -240,26 +247,24 @@ function toggleSimulation() {
   clearResult();
   if (window.simulate === 0) {
     window.simulate = 1;
-    inputButton.disabled = false;
+    if (inputButton) inputButton.disabled = false;
     submitButton.disabled = false;
     simButton.innerHTML = "Simulate";
-  }
-  else {
+  } else {
     window.simulate = 0;
-    inputButton.disabled = true;
+    if (inputButton) inputButton.disabled = true;
     submitButton.disabled = true;
     simButton.innerHTML = "Stop";
     if (!window.sim()) {
       window.simulate = 1;
       simButton.innerHTML = "Simulate";
-      inputButton.disabled = false;
+      if (inputButton) inputButton.disabled = false;
       submitButton.disabled = false;
     }
   }
 }
 
 simButton.addEventListener("click", toggleSimulation);
-
 
 // Making webpage responsive
 
@@ -288,5 +293,3 @@ function resize() {
 }
 
 resize();
-
-

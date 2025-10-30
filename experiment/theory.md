@@ -108,9 +108,9 @@ Each row represents a specific combination of current state and input, showing t
 
 ### Implementation with D Flip-Flops
 
-<img src="images/d_flipflop_implementation.png">
-
 #### Step 5a: D Flip-Flop Analysis
+
+<img src="images/d_flipflop_implementation.png">
 
 For D flip-flop implementation (Figure 7), we add columns for each flip-flop input. Since D flip-flops have the characteristic equation Q⁺ = D, the required input equals the next state:
 
@@ -133,9 +133,9 @@ These functions define the combinational logic needed to drive the flip-flops an
 
 ### Implementation with JK Flip-Flops
 
-<img src="images/jk_flipflop_implementation.png">
-
 #### Step 5b: JK Flip-Flop Analysis
+
+<img src="images/jk_flipflop_implementation.png">
 
 For JK flip-flop implementation (Figure 9), we need to determine both J and K inputs for each flip-flop. The JK flip-flop characteristic table helps us find the required inputs:
 
@@ -158,9 +158,9 @@ Using Karnaugh maps for JK inputs (Figure 10):
 
 ### Circuit Implementation
 
-<img src="images/final_circuit_implementation.png">
-
 #### Step 7: Final Circuit Design
+
+<img src="images/final_circuit_implementation.png">
 
 The final step involves constructing the actual circuit (Figure 11):
 
@@ -203,9 +203,7 @@ In a Mealy machine (Figure 12b), the output depends on both current state and cu
 
 ### Applications of Finite State Machines
 
-<img src="images/fsm_applications.png">
-
-FSMs are fundamental building blocks in digital systems (Figure 13):
+FSMs are fundamental building blocks in digital systems:
 
 #### Control Units
 
