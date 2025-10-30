@@ -1,61 +1,228 @@
-There are many applications where there is a need for our circuits to have "memory"; to remember previous inputs and calculate their outputs according to them. A circuit whose output depends not only on the present input but also on the history of the input is called a sequential circuit. In this section we will learn how to design and build such sequential circuits.
-In order to see how this procedure works, we will use an example.
+### Finite State Machines and Sequential Circuits
 
-So let's suppose we have a digital quiz game that works on a clock and reads an input from a manual button. However, we want the switch to transmit only one HIGH pulse to the circuit. If we hook the button directly on the game circuit it will transmit HIGH for as few clock cycles as our finger can achieve. On a common clock frequency our finger can never be fast enough.
+<img src="images/fsm_block_diagram.png">
 
-**Step 1**
+There are many applications where there is a need for our circuits to have "memory"; to remember previous inputs and calculate their outputs according to them. A circuit whose output depends not only on the present input but also on the history of the input is called a sequential circuit. In this section, we will learn how to design and build such sequential circuits using finite state machines (FSMs).
 
-The first step of the design procedure is to define with simple but clear words what we want our circuit to do.
+#### Understanding Sequential vs. Combinational Circuits
 
-**Step 2**
+**Combinational Circuits**: Output depends only on current inputs
+**Sequential Circuits**: Output depends on current inputs AND previous states (memory)
 
-The next step is to design a State Diagram. This is a diagram that is made from circles and arrows and describes visually the operation of our circuit. In mathematic terms, this diagram that describes the operation of our sequential circuit is a Finite State Machine.
+A finite state machine is a mathematical model used to design sequential circuits. As shown in Figure 1, an FSM consists of:
 
-**A state Diagram**
+- **State Register**: Stores the current state using flip-flops
+- **Next State Logic**: Combinational circuit that determines the next state
+- **Output Logic**: Combinational circuit that generates outputs
 
-Every circle represents a "state", a well-defined condition that our machine can be found at.
-In the upper half of the circle we describe that condition. The description helps us remember what our circuit is supposed to do at that condition.
-In the lower part of the circle is the output of our circuit. If we want our circuit to transmit a HIGH on a specific state, we put a 1 on that state. Ohterwise we put a 0.
-Every arrow represents a "transition" from one state to another. A transition happens once every clock cycle. Depending on the current Input, we may go to a different state each time.
+### State Diagram Fundamentals
 
+<img src="images/state_diagram_components.png">
 
-**Step 3**
+A state diagram is a graphical representation that describes the behavior of a finite state machine. As illustrated in Figure 2, every component of a state diagram has a specific meaning:
 
-Next, we replace the words that describe the different states of the diagram with binary numbers. We start the enumeration from 0 which is assigned always on the initial state. We then continue the enumeration with any state we like, until all states have their number.
+#### State Diagram Components
 
+**States (Circles)**: Each circle represents a unique condition or state of the machine
 
-**Step 4**
+- **Upper half**: Contains the state name or description
+- **Lower half**: Contains the output value for that state
 
-Afterwards, we fill the State Table. This table has a very specific form.
+**Transitions (Arrows)**: Each arrow represents a possible change from one state to another
 
-**A State Table**
+- **Arrow label**: Shows the input condition that causes the transition
+- **Transition timing**: Occurs on each clock cycle based on current input
 
-The first columns are as many as the bits of the highest number we assigned the State Diagram.These columns describe the Current State of our circuit.
-To the right of the Current State columns we write the Input Columns. These will be as many as our Input variables.
-Next, we write the Next State Columns. These are as many as the Current State columns.
-Finally, we write the Outputs Columns. These are as many as our outputs.
-Each row of the Next State columns is filled as follows: We fill it in with the state that we reach when, in the State Diagram, from the Current State of the same row we follow the Input of the same row. If we get to a row whose Current State number doesn't correspond to any actual State in the State Diagram we fill it with Don't Care terms (X). After all, we don't care where we can go from a State that doesn't exist. We wouldn't be there in the first place! Again it is simpler than it sounds.
-The outputs column is filled by the output of the corresponding Current State in the State Diagram.
-The State Table is complete! It describes the behaviour of our circuit as fully as the State Diagram does.
+**Initial State**: Usually marked with an arrow pointing to it from nowhere, representing the starting condition
 
+### Design Procedure for Sequential Circuits
 
-**Step 5a**
+Let's demonstrate the complete design procedure using a practical example: designing a digital circuit that produces a single HIGH pulse when a button is pressed, regardless of how long the button is held.
 
-The next step is to take that theoretical "Machine" and implement it in a circuit. Most often than not, this implementation involves Flip Flops. This guide is dedicated to this kind of implementation and will describe the procedure for both D - Flip Flops as well as JK - Flip Flops. T - Flip Flops will not be included as they are too similar to the two previous cases. The selection of the Flip Flop to use is arbitrary and usually is determined by cost factors. The best choice is to perform both analysis and decide which type of Flip Flop results in minimum number of logic gates and lesser cost.
-We will need as many D - Flip Flops as the State columns.For every Flip Flop we will add one one more column in our State table with the name of the Flip Flop's input. The column that corresponds to each Flip Flop describes what input we must give the Flip Flop in order to go from the Current State to the Next State. For the D - Flip Flop this is easy: The necessary input is equal to the Next State. In the rows that contain X's we fill X's in this column as well.
+#### Step 1: Problem Definition
 
+<img src="images/button_debounce_problem.png">
 
-**Step 5b**
+The first step is to clearly define what we want our circuit to do. In our example (Figure 3):
 
-We can do the same steps with JK - Flip Flops. There are some differences however. A JK - Flip Flop has two inputs, therefore we need to add two columns for each Flip Flop.
+**Problem**: A manual button connected directly to a digital circuit will produce multiple HIGH signals due to the clock frequency being much faster than human reaction time.
 
-**Step 6**
+**Solution**: Design a sequential circuit that outputs HIGH for exactly one clock cycle when the button transitions from LOW to HIGH, then remains LOW until the button is released and pressed again.
 
-We are in the final stage of our procedure. What remains, is to determine the Boolean functions that determine the inputs of our Flip Flops and the Output. We will extract one Boolean funtion for each Flip Flop input we have. This can be done with a Karnaugh Map. The input variables of this map are the Current State variables as well as the Inputs.
+#### Step 2: State Diagram Design
 
+<img src="images/state_diagram_design.png">
 
-**Step 7**
+Next, we design the state diagram as shown in Figure 4. This diagram describes the operation of our sequential circuit:
 
-We design our circuit. We place the Flip Flops and use logic gates to form the Boolean functions that we calculated. The gates take input from the output of the Flip Flops and the Input of the circuit.
+**State S0 (IDLE)**:
 
-We have successfully designed and constructed a Sequential Circuit. Sequential Circuits can come in handy as control parts of bigger circuits and can perform any sequential logic task that we can think of. 
+- **Description**: Button not pressed, waiting for input
+- **Output**: 0 (no pulse generated)
+- **Transitions**:
+  - Input 0 → Stay in S0
+  - Input 1 → Go to S1
+
+**State S1 (PULSE)**:
+
+- **Description**: Button just pressed, generate pulse
+- **Output**: 1 (HIGH pulse generated)
+- **Transitions**:
+  - Input 0 → Go to S2
+  - Input 1 → Go to S2
+
+**State S2 (WAIT)**:
+
+- **Description**: Button held, wait for release
+- **Output**: 0 (no additional pulse)
+- **Transitions**:
+  - Input 0 → Go to S0
+  - Input 1 → Stay in S2
+
+This state diagram ensures that exactly one pulse is generated per button press cycle.
+
+#### Step 3: State Assignment
+
+<img src="images/state_assignment.png">
+
+We replace the descriptive state names with binary numbers, as shown in Figure 5:
+
+- **S0 (IDLE)** → **00**
+- **S1 (PULSE)** → **01**
+- **S2 (WAIT)** → **10**
+
+The assignment starts from 0 for the initial state and continues sequentially. Since we have 3 states, we need 2 bits to represent them (2² = 4 possible combinations).
+
+#### Step 4: State Table Construction
+
+<img src="images/state_table.png">
+
+The state table (Figure 6) systematically describes the behavior of our finite state machine:
+
+**Current State Columns**: Q₁Q₀ (present state bits)
+**Input Column**: X (button input)
+**Next State Columns**: Q₁⁺Q₀⁺ (next state bits)
+**Output Column**: Y (circuit output)
+
+Each row represents a specific combination of current state and input, showing the resulting next state and output. The state table completely describes the FSM behavior.
+
+### Implementation with D Flip-Flops
+
+<img src="images/d_flipflop_implementation.png">
+
+#### Step 5a: D Flip-Flop Analysis
+
+For D flip-flop implementation (Figure 7), we add columns for each flip-flop input. Since D flip-flops have the characteristic equation Q⁺ = D, the required input equals the next state:
+
+**D₁ = Q₁⁺** (input for flip-flop 1)
+**D₀ = Q₀⁺** (input for flip-flop 0)
+
+This simplification makes D flip-flops popular for sequential circuit design.
+
+#### Step 6a: Boolean Function Derivation
+
+<img src="images/karnaugh_maps_d.png">
+
+Using Karnaugh maps (Figure 8), we derive the Boolean functions for each D input and the output:
+
+**D₁ = Q₀X'**
+**D₀ = X**
+**Y = Q₁'Q₀**
+
+These functions define the combinational logic needed to drive the flip-flops and generate the output.
+
+### Implementation with JK Flip-Flops
+
+<img src="images/jk_flipflop_implementation.png">
+
+#### Step 5b: JK Flip-Flop Analysis
+
+For JK flip-flop implementation (Figure 9), we need to determine both J and K inputs for each flip-flop. The JK flip-flop characteristic table helps us find the required inputs:
+
+**JK Flip-Flop Excitation Table**:
+
+- Q → Q⁺ = 0: J = 0, K = X (don't care)
+- Q → Q⁺ = 1: J = 1, K = X (don't care)
+- Q → Q⁺ = 0: J = X (don't care), K = 1
+- Q → Q⁺ = 1: J = X (don't care), K = 0
+
+#### Step 6b: JK Boolean Functions
+
+<img src="images/karnaugh_maps_jk.png">
+
+Using Karnaugh maps for JK inputs (Figure 10):
+
+**J₁ = Q₀X'**, **K₁ = Q₀ + X**
+**J₀ = X**, **K₀ = X'**
+**Y = Q₁'Q₀**
+
+### Circuit Implementation
+
+<img src="images/final_circuit_implementation.png">
+
+#### Step 7: Final Circuit Design
+
+The final step involves constructing the actual circuit (Figure 11):
+
+1. **Place flip-flops**: One for each state bit
+2. **Implement next state logic**: Use logic gates to realize the Boolean functions
+3. **Implement output logic**: Generate the output signal
+4. **Connect clock and reset**: Provide synchronization and initialization
+
+The combinational logic takes inputs from the flip-flop outputs (current state) and external inputs, generating the appropriate flip-flop inputs for the next state transition.
+
+### Types of Finite State Machines
+
+<img src="images/mealy_vs_moore.png">
+
+#### Moore State Machine
+
+In a Moore machine (Figure 12a), the output depends only on the current state:
+
+**Output = f(Present State)**
+
+**Characteristics**:
+
+- Outputs are stable and change only on state transitions
+- Generally requires more states for complex problems
+- Outputs are synchronized with the clock
+- Less susceptible to input noise
+
+#### Mealy State Machine
+
+In a Mealy machine (Figure 12b), the output depends on both current state and current inputs:
+
+**Output = f(Present State, Inputs)**
+
+**Characteristics**:
+
+- Outputs can change immediately when inputs change
+- Generally requires fewer states than Moore machines
+- Faster response to input changes
+- May produce glitches if inputs change between clock edges
+
+### Applications of Finite State Machines
+
+<img src="images/fsm_applications.png">
+
+FSMs are fundamental building blocks in digital systems (Figure 13):
+
+#### Control Units
+
+- **Processor control**: Instruction fetch, decode, execute cycles
+- **Memory controllers**: DRAM refresh, cache management
+- **Communication protocols**: Handshaking, error detection
+
+#### Sequential Detectors
+
+- **Pattern recognition**: Detecting specific bit sequences
+- **Security systems**: Password verification, access control
+- **Communication**: Frame synchronization, protocol parsing
+
+#### Counters and Timers
+
+- **Digital clocks**: Time keeping, alarm systems
+- **Traffic controllers**: Light sequencing, timing control
+- **Industrial automation**: Process control, machinery operation
+
+The systematic design procedure we've covered provides a reliable method for implementing any sequential logic function using finite state machines, making them indispensable tools in digital system design.
