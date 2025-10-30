@@ -1,22 +1,76 @@
-.window { z-index:20; }
-.jtk-connector { z-index:4; }
-.jtk-endpoint { z-index:5; }
-.jtk-overlay { z-index:6; }
+.window {
+  z-index: 20;
+}
+.jtk-connector {
+  z-index: 4;
+}
+.jtk-connector :hover {
+  z-index: 4;
+  stroke-width: 7;
+}
+.jtk-endpoint {
+  z-index: 5;
+}
+.jtk-overlay {
+  z-index: 6;
+}
 
+/* Wire hover effect for deletion */
+.jtk-connector.jtk-hover {
+  stroke-width: 6px !important;
+  stroke: #ff6b6b !important;
+  cursor: pointer;
+}
+
+/* Context Menu Styles */
+.menu {
+  position: fixed;
+  display: none;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  min-width: 120px;
+}
+
+.menu-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-option {
+  padding: 8px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.menu-option:last-child {
+  border-bottom: none;
+}
+
+.menu-option:hover {
+  background-color: #f5f5f5;
+}
+
+.menu-option:active {
+  background-color: #e0e0e0;
+}
 
 /* disabling text selection */
 body {
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
 text {
-  pointer-events:none;
+  pointer-events: none;
 }
 
 .drag-drop {
@@ -61,7 +115,7 @@ text {
   background-size: 130%;
 }
 
-.logic-gate{
+.logic-gate {
   background-color: #29e;
   background-repeat: no-repeat;
   background-position: center;
@@ -100,19 +154,17 @@ text {
   background-size: 130%;
 }
 
-
 .clock {
   background-image: url("../images/clock.svg");
   background-size: 80%;
 }
 
-
 .high {
   text-align: center;
   display: inline-block;
   position: absolute;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   border: 0.2rem solid rgb(98, 178, 235);
   z-index: 1;
@@ -125,8 +177,8 @@ text {
   text-align: center;
   display: inline-block;
   position: absolute;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   border: 0.2rem solid rgb(236, 234, 90);
   z-index: 1;
@@ -140,7 +192,7 @@ text {
   justify-content: center;
   align-items: center;
   display: flex;
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-decoration: none;
   color: black;
   height: 100%;
@@ -158,15 +210,14 @@ text {
   position: absolute;
   top: -30px;
   align-items: center;
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
-
 
 .output {
   display: inline-block;
   position: absolute;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   border: 0.2rem solid rgb(20, 21, 22);
   z-index: 1;
@@ -198,9 +249,9 @@ text {
 
 #working-area {
   position: absolute;
-  width: 95%;
+  width: 90%;
   height: 95%;
-  margin: 2%;
+  margin: 1%;
 }
 
 .connector-point {
@@ -220,7 +271,7 @@ svg.wire path {
 
 .menu {
   width: 120px;
-  z-index: 1;
+  z-index: 8;
   box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.2);
   background-color: #fff;
   position: fixed;
@@ -246,7 +297,7 @@ svg.wire path {
   cursor: pointer;
 }
 
-.component-button{
+.component-button {
   width: 80px;
   height: 80px;
   border-radius: 0.75em;
@@ -278,8 +329,6 @@ svg.wire path {
   border: 0.2rem solid rgb(157, 210, 248);
   cursor: pointer;
 }
-
-
 
 .success-message {
   font-size: 1.2rem;
@@ -343,7 +392,7 @@ svg.wire path {
 .show-modal {
   opacity: 1;
   visibility: visible;
-  transform: scale(1.0);
+  transform: scale(1);
   transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
@@ -352,7 +401,7 @@ svg.wire path {
 .instructions-box {
   max-height: 70px;
   overflow: hidden;
-  transition: all .5s ease;
+  transition: all 0.5s ease;
 }
 
 .instructions-box.expand {
@@ -360,13 +409,13 @@ svg.wire path {
 }
 
 .v-instruction-container {
-  border:.2rem solid #97d23d;
+  border: 0.2rem solid #97d23d;
   justify-content: flex-start;
 }
 
 .highlight {
-  border:3px solid red;
-  box-shadow: 0 0 10px #719ECE;
+  border: 3px solid red;
+  box-shadow: 0 0 10px #719ece;
 }
 
 #prompt-form {
@@ -409,48 +458,46 @@ svg.wire path {
 
 /* centre align prompt-form input block*/
 
-
 #prompt-form input[name="text"] {
   display: block;
   height: 30px;
   margin-left: 70px;
   margin-top: 5px;
   margin-bottom: 5px;
-  width: 180px;  
+  width: 180px;
 }
 
-.color-green{
-  
-  fill:green;
-  stroke:rgb(68, 68, 119);
-  stroke-width:3;
-  fill-opacity:1;
-  stroke-opacity:1;
+.color-green {
+  fill: green;
+  stroke: rgb(68, 68, 119);
+  stroke-width: 3;
+  fill-opacity: 1;
+  stroke-opacity: 1;
 }
 
-.speed-box{
-  border:1px solid black;
-  color:black;
-  background-color:white;
-  text-align:center;
-  font-size:1.0rem;
-  border-radius:1em;
-  padding:.5em 1.0em;
-  cursor:pointer;
+.speed-box {
+  border: 1px solid black;
+  color: black;
+  background-color: white;
+  text-align: center;
+  font-size: 1rem;
+  border-radius: 1em;
+  padding: 0.5em 1em;
+  cursor: pointer;
 }
-.wire-demo{
+.wire-demo {
   stroke-width: 3px;
   fill: none;
   stroke: black;
 }
 
-.gate-demo{
+.gate-demo {
   stroke-width: 3px;
   fill: #29e;
   stroke: black;
 }
 
-.text-demo{
+.text-demo {
   font-size: 1.5em;
   fill: black;
 }

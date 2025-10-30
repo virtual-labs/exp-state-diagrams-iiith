@@ -46,8 +46,8 @@
 								cursor from one endpoint to another.</li>
 							<li>You can delete components by right clicking on them and selecting the delete option.
 							</li>
-							<li>You can set the input bit stream to any values of your choice for testing, by clicking on the "Input" button and typing in the bit stream.</li>
-							<li>Click on the "Simulate" button after setting the input bits as per your choice. This will simulate the circuit you built for the input bit stream set and will change the output bit values accordingly, for you to test your circuit.</li>
+							<li>You can delete connecting wires by right clicking on them and selecting the delete option.</li>
+							<li>Click on the "Simulate" button to simulate the circuit you built. This will simulate the circuit for the predefined input sequence and will change the output bit values accordingly, for you to test your circuit.</li>
 							<li>Click on the "Submit" button to submit the circuit once you think you have built the
 								required
 								circuit.</li>
@@ -82,7 +82,8 @@
 				<div class="v-datalist-row">
 					<button class="v-button" id="simulate-button">Simulate</button>
 					<button class="v-button" id="submit-button" onclick="submitCircuit()">Submit</button>
-					<button class="v-button" id="input-button">Input </button>
+					<button class="v-button" id="input-button">Input</button>
+					<button class="v-button" id="refresh" style="margin-top: 10px;">Reset</button>
 				</div>
 				<div class="v-datalist-title" id = "stateDiagramHeading">State-Diagram</div>
 				<div class="v-datalist-row" id = "stateDiagram"><img src="images/practice-state-diagram2.png" alt="state diagram"></img>
