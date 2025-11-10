@@ -35,147 +35,231 @@ A state diagram is a graphical representation that describes the behavior of a f
 
 **Initial State**: Usually marked with an arrow pointing to it from nowhere, representing the starting condition
 
-### Design Procedure for Sequential Circuits
+## Design of 11011 Sequence Detector Using JK Flip-Flops (With Overlap)
 
-Let's demonstrate the complete design procedure using a practical example: designing a digital circuit that produces a single HIGH pulse when a button is pressed, regardless of how long the button is held.
+### Step 1 – Derive the State Diagram and State Table
 
-#### Step 1: Problem Definition
+#### Step 1a – Determine the Number of States
 
-<img src="images/button_debounce_problem.png">
+For a sequence detector detecting an N-bit sequence, at least N states are required.
 
-The first step is to clearly define what we want our circuit to do. In our example (Figure 3):
+We are designing a 5-bit sequence detector (11011), therefore the number of states required is 5.
 
-**Problem**: A manual button connected directly to a digital circuit will produce multiple HIGH signals due to the clock frequency being much faster than human reaction time.
+Label the states as A, B, C, D, and E.  
+A is the initial state.
 
-**Solution**: Design a sequential circuit that outputs HIGH for exactly one clock cycle when the button transitions from LOW to HIGH, then remains LOW until the button is released and pressed again.
+---
 
-#### Step 2: State Diagram Design
+#### Step 1b – Characterize Each State
 
-<img src="images/state_diagram_design.png">
+| State | Has  | Awaiting |
+| ----- | ---- | -------- |
+| A     | —    | 11011    |
+| B     | 1    | 1011     |
+| C     | 11   | 011      |
+| D     | 110  | 11       |
+| E     | 1101 | 1        |
 
-Next, we design the state diagram as shown in Figure 4. This diagram describes the operation of our sequential circuit:
+---
 
-**State S0 (IDLE)**:
+#### Step 1c – Transitions for Expected Sequence
 
-- **Description**: Button not pressed, waiting for input
-- **Output**: 0 (no pulse generated)
-- **Transitions**:
-  - Input 0 → Stay in S0
-  - Input 1 → Go to S1
+Transitions are labeled as **X / Z**, where:
 
-**State S1 (PULSE)**:
+- X = Input
+- Z = Output
 
-- **Description**: Button just pressed, generate pulse
-- **Output**: 1 (HIGH pulse generated)
-- **Transitions**:
-  - Input 0 → Go to S2
-  - Input 1 → Go to S2
+For the expected input sequence:
 
-**State S2 (WAIT)**:
+- A → B on 1 / 0
+- B → C on 1 / 0
+- C → D on 0 / 0
+- D → E on 1 / 0
+- E → C on 1 / 1 (sequence detected, overlapping allowed)
 
-- **Description**: Button held, wait for release
-- **Output**: 0 (no additional pulse)
-- **Transitions**:
-  - Input 0 → Go to S0
-  - Input 1 → Stay in S2
+<img src="images/state_table_before_minimization.png">
 
-This state diagram ensures that exactly one pulse is generated per button press cycle.
+#### Step 1d – Inputs That Break the Sequence
 
-#### Step 3: State Assignment
+| State | On Input 0 | On Input 1 | Comment                           |
+| ----- | ---------- | ---------- | --------------------------------- |
+| A     | Stay in A  | Go to B    | Waiting on 1                      |
+| B     | Go to A    | Go to C    | "10" not part of sequence         |
+| C     | Go to D    | Stay in C  | Overlap due to “11”               |
+| D     | Go to A    | Go to E    | "1100" restarts sequence          |
+| E     | Go to A    | Go to C    | "11011" detected, overlap at "11" |
 
-<img src="images/state_assignment.png">
+---
 
-We replace the descriptive state names with binary numbers, as shown in Figure 5:
+#### Step 1e – Generate State Table with Output
 
-- **S0 (IDLE)** → **00**
-- **S1 (PULSE)** → **01**
-- **S2 (WAIT)** → **10**
+| Present State | Input X | Next State | Output Z |
+| ------------- | ------- | ---------- | -------- |
+| A             | 0       | A          | 0        |
+| A             | 1       | B          | 0        |
+| B             | 0       | A          | 0        |
+| B             | 1       | C          | 0        |
+| C             | 0       | D          | 0        |
+| C             | 1       | C          | 0        |
+| D             | 0       | A          | 0        |
+| D             | 1       | E          | 0        |
+| E             | 0       | A          | 0        |
+| E             | 1       | C          | 1        |
 
-The assignment starts from 0 for the initial state and continues sequentially. Since we have 3 states, we need 2 bits to represent them (2² = 4 possible combinations).
+---
 
-#### Step 4: State Table Construction
+### Step 2 – Determine Number of Flip-Flops
 
-<img src="images/state_table.png">
+We have 5 states (N = 5).  
+To determine the number of flip-flops:
 
-The state table (Figure 6) systematically describes the behavior of our finite state machine:
+2^(P-1) < 5 ≤ 2^P → P = 3
 
-**Current State Columns**: Q₁Q₀ (present state bits)
-**Input Column**: X (button input)
-**Next State Columns**: Q₁⁺Q₀⁺ (next state bits)
-**Output Column**: Y (circuit output)
+Therefore, three flip-flops are required.
 
-Each row represents a specific combination of current state and input, showing the resulting next state and output. The state table completely describes the FSM behavior.
+---
 
-### Implementation with D Flip-Flops
+### Step 3 – Assign State Codes
 
-#### Step 5a: D Flip-Flop Analysis
+Optimized state assignments:
 
-<img src="images/d_flipflop_implementation.png">
+| State | Binary Code (Y₂ Y₁ Y₀) |
+| ----- | ---------------------- |
+| A     | 000                    |
+| B     | 001                    |
+| C     | 011                    |
+| D     | 100                    |
+| E     | 101                    |
 
-For D flip-flop implementation (Figure 7), we add columns for each flip-flop input. Since D flip-flops have the characteristic equation Q⁺ = D, the required input equals the next state:
+---
 
-**D₁ = Q₁⁺** (input for flip-flop 1)
-**D₀ = Q₀⁺** (input for flip-flop 0)
+### Step 4 – Transition Table with Output
 
-This simplification makes D flip-flops popular for sequential circuit design.
+| Y₂Y₁Y₀ (PS) | X   | Next State (Y₂'Y₁'Y₀') | Z   |
+| ----------- | --- | ---------------------- | --- |
+| 000 (A)     | 0   | 000                    | 0   |
+| 000         | 1   | 001                    | 0   |
+| 001 (B)     | 0   | 000                    | 0   |
+| 001         | 1   | 011                    | 0   |
+| 011 (C)     | 0   | 100                    | 0   |
+| 011         | 1   | 011                    | 0   |
+| 100 (D)     | 0   | 000                    | 0   |
+| 100         | 1   | 101                    | 0   |
+| 101 (E)     | 0   | 000                    | 0   |
+| 101         | 1   | 011                    | 1   |
 
-#### Step 6a: Boolean Function Derivation
+---
 
-<img src="images/karnaugh_maps_d.png">
+#### Step 4a – Output Equation
 
-Using Karnaugh maps (Figure 8), we derive the Boolean functions for each D input and the output:
+The output Z = 1 only when:  
+Present State = 101 (Y₂=1, Y₁=0, Y₀=1) and Input X = 1
 
-**D₁ = Q₀X'**
-**D₀ = X**
-**Y = Q₁'Q₀**
+Therefore,  
+**Z = X · Y₂ · Y₁' · Y₀**
 
-These functions define the combinational logic needed to drive the flip-flops and generate the output.
+---
 
-### Implementation with JK Flip-Flops
+### Step 5 – Separate Transition Tables (per Flip-Flop)
 
-#### Step 5b: JK Flip-Flop Analysis
+From D flip-flop behavior, the next-state equations are:
 
-<img src="images/jk_flipflop_implementation.png">
+D₂ = X’·Y₁ + X·Y₂·Y₀’  
+D₁ = X·Y₀  
+D₀ = X
 
-For JK flip-flop implementation (Figure 9), we need to determine both J and K inputs for each flip-flop. The JK flip-flop characteristic table helps us find the required inputs:
+---
 
-**JK Flip-Flop Excitation Table**:
+### Step 6 – Use JK Flip-Flops
 
-- Q → Q⁺ = 0: J = 0, K = X (don't care)
-- Q → Q⁺ = 1: J = 1, K = X (don't care)
-- Q → Q⁺ = 0: J = X (don't care), K = 1
-- Q → Q⁺ = 1: J = X (don't care), K = 0
+The design specifies JK flip-flops, so D equations are converted into JK excitation forms.
 
-#### Step 6b: JK Boolean Functions
+---
 
-<img src="images/karnaugh_maps_jk.png">
+### Step 7 – JK Excitation Table
 
-Using Karnaugh maps for JK inputs (Figure 10):
+| Q(T) | Q(T+1) | J   | K   |
+| ---- | ------ | --- | --- |
+| 0    | 0      | 0   | d   |
+| 0    | 1      | 1   | d   |
+| 1    | 0      | d   | 1   |
+| 1    | 1      | d   | 0   |
 
-**J₁ = Q₀X'**, **K₁ = Q₀ + X**
-**J₀ = X**, **K₀ = X'**
-**Y = Q₁'Q₀**
+---
 
-### Circuit Implementation
+### Step 8 – Derive Input Equations
 
-#### Step 7: Final Circuit Design
+#### Flip-Flop Y₂
 
-<img src="images/final_circuit_implementation.png">
+- For X = 0 → J₂ = Y₁, K₂ = 1
+- For X = 1 → J₂ = 0, K₂ = Y₀
 
-The final step involves constructing the actual circuit (Figure 11):
+Combined equations:  
+J₂ = X’·Y₁  
+K₂ = X’ + Y₀
 
-1. **Place flip-flops**: One for each state bit
-2. **Implement next state logic**: Use logic gates to realize the Boolean functions
-3. **Implement output logic**: Generate the output signal
-4. **Connect clock and reset**: Provide synchronization and initialization
+---
 
-The combinational logic takes inputs from the flip-flop outputs (current state) and external inputs, generating the appropriate flip-flop inputs for the next state transition.
+#### Flip-Flop Y₁
 
-### Types of Finite State Machines
+- For X = 0 → J₁ = 0, K₁ = 1
+- For X = 1 → J₁ = Y₀, K₁ = 0
 
-<img src="images/mealy_vs_moore.png">
+Combined equations:  
+J₁ = X·Y₀  
+K₁ = X’
 
-#### Moore State Machine
+---
+
+#### Flip-Flop Y₀
+
+- For X = 0 → J₀ = 0, K₀ = 1
+- For X = 1 → J₀ = 1, K₀ = 0
+
+Combined equations:  
+J₀ = X  
+K₀ = X’
+
+---
+
+### Step 9 – Final Equations Summary
+
+| Parameter | Equation        |
+| --------- | --------------- |
+| Z         | Z = X·Y₂·Y₁'·Y₀ |
+| J₂        | J₂ = X'·Y₁      |
+| K₂        | K₂ = X' + Y₀    |
+| J₁        | J₁ = X·Y₀       |
+| K₁        | K₁ = X'         |
+| J₀        | J₀ = X          |
+| K₀        | K₀ = X'         |
+
+---
+
+### Step 10 – Circuit Representation
+
+The circuit shown above represents the Finite State Machine (FSM) implementation using three JK flip-flops, designed according to the state and output equations derived previously.
+For practical implementation, logic gates corresponding to each equation are connected to drive the J and K inputs of the flip-flops, and the output Z is derived from the condition Z = X·Y₂·Y₁'·Y₀.
+
+<img src="images/output_logic_implementation.png">
+
+---
+
+### Equivalent D Flip-Flop Implementation
+
+If implemented using D flip-flops, the equivalent next-state equations are:
+
+D₂ = X'·Y₁ + X·Y₂·Y₀'  
+D₁ = X·Y₀  
+D₀ = X
+
+<img src="images/d_flipflop_next_state_equations.png">
+
+## Types of Finite State Machines
+
+<img src="images/types_of_fsm.jpg">
+
+### Moore State Machine
 
 In a Moore machine (Figure 12a), the output depends only on the current state:
 
@@ -188,7 +272,7 @@ In a Moore machine (Figure 12a), the output depends only on the current state:
 - Outputs are synchronized with the clock
 - Less susceptible to input noise
 
-#### Mealy State Machine
+### Mealy State Machine
 
 In a Mealy machine (Figure 12b), the output depends on both current state and current inputs:
 
@@ -201,7 +285,7 @@ In a Mealy machine (Figure 12b), the output depends on both current state and cu
 - Faster response to input changes
 - May produce glitches if inputs change between clock edges
 
-### Applications of Finite State Machines
+## Applications of Finite State Machines
 
 FSMs are fundamental building blocks in digital systems:
 
