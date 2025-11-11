@@ -2,6 +2,7 @@
   "unit-type": "lu",
   "label": "",
   "basedir": ".",
+  "LaTeXinMD": "true",
   "units": [
     {
       "unit-type": "aim"
@@ -61,7 +62,13 @@
       "label": "Assignment",
       "unit-type": "task",
       "content-type": "text"
+    },
+    {
+      "target": "references.html",
+      "source": "references.md",
+      "label": "References",
+      "unit-type": "task",
+      "content-type": "text"
     }
   ]
 }
-

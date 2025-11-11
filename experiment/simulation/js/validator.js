@@ -32,14 +32,27 @@ export function testStateDiagram(output1,output2){
         gate.Qbefore = false;
     }
     xValues.length = 0;
-    const expectedx = [true,false,true,true,false,false,false,false,true,false];
-    expectedx.forEach(element => {
-        xValues.push(element);
-    });
-    const expectedOutputs1 = [[false,false],[false,true],[true,false],[true,false],[true,true],[false,false],[false,true],[true,true],[true,true],[false,false]];
-    const expectedOutputs2 = [[false,false],[true,false],[false,true],[false,true],[true,true],[false,false],[true,false],[true,true],[true,true],[false,false]];
+    let expectedOutputs1 = []
+    let expectedOutputs2 = []
+    let expectedx = []
+    if(window.currentTab == "task1")
+        {   expectedx = [true,false,true,true,false,false,false,false,true,false];
+            expectedx.forEach(element => {
+                xValues.push(element);
+            });
+            expectedOutputs1 = [[false,false],[false,true],[true,false],[true,false],[true,true],[false,false],[false,true],[true,true],[true,true],[false,false]];
+            expectedOutputs2 = [[false,false],[true,false],[false,true],[false,true],[true,true],[false,false],[true,false],[true,true],[true,true],[false,false]];
+        }
+    else if(window.currentTab == "task2")
+    {   expectedx = [true,false,true,true,true,true,false,false,false,true,false,true,true,false,true,true,true,false];
+        expectedx.forEach(element => {
+            xValues.push(element);
+        });
+        expectedOutputs1 = [[false,true],[false,false],[false,true],[true,false],[true,true],[true,true],[false,false],[false,false],[false,false],[false,true],[false,false],[false,true],[true,false],[false,false],[false,true],[true,false],[true,true],[false,false]];
+        expectedOutputs2 = [[true,false],[false,false],[true,false],[false,true],[true,true],[true,true],[false,false],[false,false],[false,false],[true,false],[false,false],[true,false],[false,true],[false,false],[true,false],[false,true],[true,true],[false,false]];
+    }
     if(checkForSubmit()){
-        for(let i = 0; i < 10; i++){
+        for(let i = 0; i < expectedx.length; i++){
             simulate2(0);
             if(expectedOutputs1[i][0]!==gates[output1].output || expectedOutputs1[i][1]!==gates[output2].output){
                 circuitIsCorrect1 = false;

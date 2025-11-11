@@ -1,2 +1,6 @@
-node_modules
-build
+package.json
+package-lock.json
+build/
+plugins/
+node_modules/
+.DS_Store
