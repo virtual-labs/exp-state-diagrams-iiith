@@ -3,12 +3,15 @@ import {
   printErrors,
   clearResult,
   printSuccess,
+  stopSimulation,
 } from "./gate.js";
 import {
   connectJKFF,
   unbindEvent,
   refreshWorkingArea,
   initStateDiagram,
+  jsPlumbInstance,
+  useDefaultInputString,
 } from "./main.js";
 import { deleteFF } from "./flipflop.js";
 import { xValues } from "./gate.js";
@@ -33,36 +36,69 @@ export const wireColours = [
 // Contextmenu
 const EMPTY = "";
 const menu = document.querySelector(".menu");
-const menuOption = document.querySelector(".menu-option");
-let menuVisible = false;
-
-const toggleMenu = (command) => {
-  menu.style.display = command === "show" ? "block" : "none";
-  menuVisible = !menuVisible;
-};
+const menuOptions = document.querySelectorAll(".menu-option");
 
 export const setPosition = ({ top, left }) => {
   menu.style.left = `${left}px`;
   menu.style.top = `${top}px`;
-  toggleMenu("show");
+  menu.style.display = "block";
 };
 
 window.addEventListener("click", () => {
-  if (menuVisible) toggleMenu("hide");
+  menu.style.display = "none";
   window.selectedComponent = null;
   window.componentType = null;
+  window.contextMenuTarget = null;
+  window.isConnectionContext = false;
 });
 
-menuOption.addEventListener("click", (e) => {
-  if (e.target.innerHTML === "Delete") {
-    if (window.componentType === "gate") {
-      deleteElement(window.selectedComponent);
-    } else if (window.componentType === "flipFlop") {
-      deleteFF(window.selectedComponent);
-    }
+// Right click on a wire: the components have their own handlers, which also say which component it is
+document.addEventListener("contextmenu", function (event) {
+  const target = event.target;
+  if (!target.closest("#working-area")) {
+    return;
   }
-  window.selectedComponent = null;
-  window.componentType = null;
+  const connection = target.closest(".jtk-connector");
+  window.isConnectionContext = connection !== null;
+  window.contextMenuTarget = target;
+  if (connection) {
+    event.preventDefault();
+    setPosition({ top: event.clientY, left: event.clientX });
+  }
+});
+
+// Deletes the wire that was right clicked; the circuit model follows (see main.js)
+function deleteConnection() {
+  const connectorElement =
+    window.contextMenuTarget && window.contextMenuTarget.closest(".jtk-connector");
+  if (!connectorElement) {
+    return;
+  }
+  const connection = jsPlumbInstance
+    .getConnections()
+    .find((c) => c.connector && c.connector.canvas === connectorElement);
+  if (connection) {
+    jsPlumbInstance.deleteConnection(connection);
+  }
+}
+
+menuOptions.forEach((menuOption) => {
+  menuOption.addEventListener("click", (e) => {
+    if (e.target.innerHTML === "Delete") {
+      if (window.isConnectionContext && window.contextMenuTarget) {
+        deleteConnection();
+      } else if (window.componentType === "gate") {
+        deleteElement(window.selectedComponent);
+      } else if (window.componentType === "flipFlop") {
+        deleteFF(window.selectedComponent);
+      }
+    }
+    window.selectedComponent = null;
+    window.componentType = null;
+    window.contextMenuTarget = null;
+    window.isConnectionContext = false;
+    menu.style.display = "none";
+  });
 });
 
 // Tabs
@@ -78,13 +114,13 @@ export function changeTabs(e) {
   }
   window.currentTab = task;
   document.getElementById(task).classList.add("is-active");
+  stopSimulation();
   unbindEvent();
   connectJKFF();
   refreshWorkingArea();
   initStateDiagram();
-  window.simulate = 1;
-  simButton.innerHTML = "Simulate";
   clearObservations();
+  useDefaultInputString();
   resize();
   changeInstructions();
 }
@@ -94,7 +130,7 @@ function changeInstructions() {
   if (window.currentTab == "task1")
     instructions = `Instructions<br>Implement a circuit for the given state diagram using JK Flip-Flops and the given gates.`;
   else if (window.currentTab == "task2")
-    instructions = `Instructions<br>Draw a state diagram to identify a pattern of 3 or more 1's in a given sequence of inputs, (Output is 1,1 if we identify 3 or more 1's, otherwise it can be anything else), and implement it using the gates and flip flops given.`;
+    instructions = `Instructions<br>Draw a state diagram to identify a pattern of 3 or more 1's in a given sequence of inputs (the outputs A B are 1,1 while 3 or more 1's in a row have been found, otherwise they can be anything but 1,1), and implement it using the gates and flip flops given.`;
   document.getElementById("instructions").innerHTML = instructions;
 }
 
@@ -245,21 +281,16 @@ const inputButton = document.getElementById("input-button");
 const submitButton = document.getElementById("submit-button");
 function toggleSimulation() {
   clearResult();
-  if (window.simulate === 0) {
-    window.simulate = 1;
-    if (inputButton) inputButton.disabled = false;
-    submitButton.disabled = false;
-    simButton.innerHTML = "Simulate";
+  if (window.simulationStatus === 0) {
+    stopSimulation();
   } else {
-    window.simulate = 0;
+    window.simulationStatus = 0;
     if (inputButton) inputButton.disabled = true;
     submitButton.disabled = true;
     simButton.innerHTML = "Stop";
+    // the clock keeps running until Stop (or Reset, or a change of tab) is pressed
     if (!window.sim()) {
-      window.simulate = 1;
-      simButton.innerHTML = "Simulate";
-      if (inputButton) inputButton.disabled = false;
-      submitButton.disabled = false;
+      stopSimulation();
     }
   }
 }

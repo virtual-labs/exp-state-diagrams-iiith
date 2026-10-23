@@ -3,7 +3,7 @@ import { registerGate } from "./main.js";
 
 'use strict';
 
-window.simulate = 0;
+window.simulationStatus = 1;
 
 export class Clock {
     constructor(frequency, dutyCycle) {
@@ -81,16 +81,21 @@ export class Clock {
     }
 
     simulate() {
-        const intervalOn = 4000;
-        const intervalOff = 4000;
+        const intervalOn = 1000;
+        const intervalOff = 1000;
         // isOn is on for intervalOn milliseconds, then off for intervalOff milliseconds
 
         let currentState = false;
         let timerOff = null;
         let timerOn = null;
+        // a newer simulation (or a stop) ends this loop
+        const generation = window.simulationGeneration;
+        // the clock starts low
+        this.isOn = false;
+        this.updateOutput();
 
         const run = () => {
-            if (window.simulate === 1) {
+            if (window.simulationStatus === 1 || window.simulationGeneration !== generation) {
                 return;
             }
             if (!currentState) {
@@ -108,7 +113,7 @@ export class Clock {
                 timerOff = setTimeout(run, intervalOff);
             }
 
-            window.sim2(1);
+            window.sim2(1, this.isOn ? "rise" : "fall");
         }
 
         timerOff = setTimeout(run, intervalOff);

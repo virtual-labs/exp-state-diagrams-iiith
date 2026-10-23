@@ -285,7 +285,9 @@ function reboot() {
     }
 }
 function display() {
-    observ.innerHTML = "Simulation has finished. Press Reset to start again";
+    decide = false;
+    status.innerHTML = "Start";
+    observ.innerHTML = "Simulation has finished. Click on Start to run it again.";
     let img = document.createElement("img");
     img.src = "./images/state-table.png";
     observ.appendChild(img);
@@ -348,6 +350,10 @@ function stopCircuit() {
 }
 // need to fix this up a bit
 function startCircuit() {
+    // after a complete run, Start begins a new one
+    if (timeline.progress() === 1) {
+        restartCircuit();
+    }
     if (!circuitStarted) {
         circuitStarted = true;
     }

@@ -280,10 +280,26 @@ export function checkConnections() {
 
 }
 
-export function simulate() {
+// Stops the clock of a running simulation and brings the buttons back to their normal state
+export function stopSimulation() {
+    window.simulationStatus = 1;
+    const simulateButton = document.getElementById("simulate-button");
+    if (simulateButton) {
+        simulateButton.innerHTML = "Simulate";
+    }
+    const submitButton = document.getElementById("submit-button");
+    if (submitButton) {
+        submitButton.disabled = false;
+    }
+    const inputButton = document.getElementById("input-button");
+    if (inputButton) {
+        inputButton.disabled = false;
+    }
+}
 
-    window.simulate = 0; // status store of infinte clock ulte naming
-    // change binary string to array
+export function simulate() {
+    window.simulationStatus = 0;
+    // the input string is a list of 0 and 1
     if (xValues.length == 0) {
         printErrors("Please enter input string\n", null);
         return false;
@@ -291,7 +307,17 @@ export function simulate() {
     if (!checkConnections() || !checkConnectionsJK()) {
         return false;
     }
+    // every new simulation gets its own number, so that the loops of an earlier one stop by themselves
+    window.simulationGeneration = (window.simulationGeneration || 0) + 1;
+    // the machine starts in the state 00 and at the first bit of the input string
     xIndex = 0;
+    for (let ffID in flipFlops) {
+        const ff = flipFlops[ffID];
+        ff.q = false;
+        ff.qbar = true;
+        ff.Qbefore = false;
+        ff.prevclk = false;
+    }
     let circuitHasClock = false;
 
     for (let gateId in gates) {
@@ -303,16 +329,22 @@ export function simulate() {
     }
     if (!circuitHasClock) {
         simulate2(1);
+    } else {
+        // show the first bit of the input string and the starting state right away
+        simulate2(1, "rise");
     }
 
     return true;
 }
 
-export function simulate2(testing) {
+// One step of the state machine, with the next bit of the input string. phase = "step": a complete step (used by
+// Submit); "rise": the clock goes high, the input bit is applied; "fall": the clock goes low, the flip-flops
+// change their state (the flip-flops are negative-edge triggered) and the next bit of the string is chosen.
+export function simulate2(testing, phase = "step") {
     // change input bits
     for (let gateId in gates) {
         const gate = gates[gateId];
-        if (gate.type === "Input") {
+        if (gate.type === "Input" && phase !== "fall") {
             gate.output = xValues[xIndex];
             if (gate.output === false) {
                 let element = document.getElementById(gate.id)
@@ -326,9 +358,6 @@ export function simulate2(testing) {
             }
         }
     }
-    xIndex++;
-    xIndex %= xValues.length;
-
     // input bits
 
     for (let gateId in gates) {
@@ -435,7 +464,11 @@ export function simulate2(testing) {
             }
         }
     }
-    simulateFFJK();
+    if (phase !== "rise") {
+        simulateFFJK();
+        xIndex++;
+        xIndex %= xValues.length;
+    }
     // output bits
     if (testing === 1) {
         for (let gateId in gates) {
@@ -469,6 +502,7 @@ export function simulate2(testing) {
 
 window.sim = simulate;
 window.sim2 = simulate2;
+window.simulationStatus = 1;
 
 export function checkForSubmit() {
     if (!checkConnections() || !checkConnectionsJK()) {
