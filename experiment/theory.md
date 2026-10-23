@@ -308,3 +308,11 @@ FSMs are fundamental building blocks in digital systems:
 - **Industrial automation**: Process control, machinery operation
 
 The systematic design procedure we've covered provides a reliable method for implementing any sequential logic function using finite state machines, making them indispensable tools in digital system design.
+
+### Notes on the Simulation
+
+- The Practice machines are **Moore machines**: the pair of output bits A B is the state, so the outputs change only when the state changes.
+- The JK flip-flops of the simulation are **negative-edge triggered**. Every simulation starts in the state A B = 00. The next bit of the input string is applied to X when the clock goes up, and the state changes when the clock goes down.
+- **Task 1** is the state diagram S0 = 00, S1 = 01, S2 = 10, S3 = 11: from S0 the input 1 stays and the input 0 goes to S1; from S1 the input 0 goes to S3 and the input 1 to S2; from S2 the input 1 stays and the input 0 goes to S3; from S3 the input 1 stays and the input 0 goes to S0. Its JK equations, found with the excitation table of Step 7 above, are J_A = B, K_A = B · X', J_B = X' and K_B = A XOR X. The Procedure gives the connections.
+- **Task 2** asks you to draw the state diagram of a detector of 3 or more 1s yourself, and to implement it. Counting the 1s in a row (0, 1, 2, 3 or more) needs 4 states, so 2 flip-flops are enough. The outputs have to be 1 1 exactly while a run of at least three 1s is going on.
+- The **Simulate** button runs the clock until **Stop** (or Reset, or a change of tab) is pressed. The **Submit** button runs its own input string from the state 00 and shows the expected and the observed outputs after every input bit.
