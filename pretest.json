@@ -1,0 +1,90 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "1. A given state diagram has 8 distinct states. The number of flip-flops required to make the circuit are:",
+      "answers": {
+        "a": "3",
+        "b": "4",
+        "c": "8",
+        "d": "1"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. Number of flip-flops required = log₂(Number of states) = log₂(8) = 3. Each flip-flop can represent 2 states, so 3 flip-flops can represent 2³ = 8 states.",
+        "b": "Incorrect. 4 flip-flops would allow for 2⁴ = 16 possible states, which exceeds the requirement of representing only 8 distinct states.",
+        "c": "Incorrect. Having 8 flip-flops would provide 2⁸ = 256 possible states, which is far more than the 8 distinct states required.",
+        "d": "Incorrect. 1 flip-flop can only represent 2¹ = 2 possible states, which is insufficient for 8 states."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "2. A circuit has three inputs A, B, C and one output Y. The output Y is 1 when the binary value of the inputs represents an odd number, and 0 otherwise. What is the expression for Y?",
+      "answers": {
+        "a": "A AND B",
+        "b": "A XOR B XOR C",
+        "c": "C",
+        "d": "B OR C"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "c": "Correct. In binary representation, a number is odd if and only if its least significant bit (LSB) is 1. Since C is the LSB in the 3-bit number ABC, Y = C.",
+        "a": "Incorrect. A AND B only considers the two most significant bits and ignores the LSB, which determines if a number is odd or even.",
+        "b": "Incorrect. A XOR B XOR C gives 1 when an odd number of inputs are 1, but this doesn't correspond to the binary value being odd.",
+        "d": "Incorrect. B OR C gives 1 when either B or C is 1, but this doesn't guarantee the binary value represents an odd number."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "3. For making a mod-6 counter, Mankar used 3 flip-flops without any additional gates. How many states will be skipped?",
+      "answers": {
+        "a": "2",
+        "b": "1",
+        "c": "0",
+        "d": "3"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. With 3 flip-flops, total possible states = 2³ = 8. For mod-6 counter, only 6 states are used. Skipped states = 8 - 6 = 2.",
+        "b": "Incorrect. Skipping only 1 state would leave 7 usable states, but a mod-6 counter needs exactly 6 states.",
+        "c": "Incorrect. With 3 flip-flops providing 8 states and needing only 6 for mod-6 counter, some states must be skipped.",
+        "d": "Incorrect. Skipping 3 states would leave only 5 usable states, which is insufficient for a mod-6 counter."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "4. How many columns are required in a state table for a circuit with 1 D flip-flop, 2 inputs, and 1 output?",
+      "answers": {
+        "a": "4",
+        "b": "5",
+        "c": "1",
+        "d": "7"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "b": "Correct. State table columns: 1 (present state) + 2 (inputs) + 1 (next state) + 1 (output) = 5 columns total.",
+        "a": "Incorrect. This count misses one of the required columns for complete state table representation.",
+        "c": "Incorrect. A single column cannot represent all the necessary information for a state table.",
+        "d": "Incorrect. This count includes more columns than necessary for the given circuit configuration."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "5. How many rows are required in a state table for a circuit with 2 D flip-flops, 2 inputs, and 2 outputs?",
+      "answers": {
+        "a": "8",
+        "b": "4",
+        "c": "16",
+        "d": "None of these"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "c": "Correct. Number of rows = 2^(present state bits + input bits) = 2^(2 + 2) = 2⁴ = 16 rows. Each combination of present state and inputs requires a separate row.",
+        "a": "Incorrect. This would be correct if there were only 3 total bits (state + inputs) instead of 4.",
+        "b": "Incorrect. This severely underestimates the number of possible combinations of states and inputs.",
+        "d": "Incorrect. Option c provides the correct answer."
+      },
+      "difficulty": "intermediate"
+    }
+  ]
+}

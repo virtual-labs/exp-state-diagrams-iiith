@@ -1,0 +1,90 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "1. What is the number of flip-flops required to implement a circuit that detects a sequence of 3 or more consecutive 1s?",
+      "answers": {
+        "a": "3",
+        "b": "2",
+        "c": "1",
+        "d": "4"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "b": "Correct. For detecting 3 consecutive 1s, we need 4 states: S0 (0 consecutive 1s), S1 (1 consecutive 1), S2 (2 consecutive 1s), and S3 (3+ consecutive 1s). Since 2² = 4, we need 2 flip-flops to represent these states.",
+        "a": "Incorrect. 3 flip-flops would provide 2³ = 8 states, which is more than the 4 states required for this sequence detector.",
+        "c": "Incorrect. 1 flip-flop can only provide 2¹ = 2 states, which is insufficient to track the progress of detecting 3 consecutive 1s.",
+        "d": "Incorrect. 4 flip-flops would provide 2⁴ = 16 states, which is excessive for this simple sequence detection task."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "2. A vending machine dispenses candy for Rs. 3 and accepts Rs. 1 and Rs. 2 coins. How many states are required in its state diagram?",
+      "answers": {
+        "a": "1",
+        "b": "2",
+        "c": "3",
+        "d": "4"
+      },
+      "correctAnswer": "d",
+      "explanations": {
+        "d": "Correct. The 4 states represent different amounts collected: S0 (Rs. 0), S1 (Rs. 1), S2 (Rs. 2), and S3 (Rs. 3 - dispense candy). These states track the progress toward reaching the target amount.",
+        "a": "Incorrect. A single state cannot represent the different amounts of money collected during the transaction process.",
+        "b": "Incorrect. Two states are insufficient to track the intermediate amounts (Rs. 0, Rs. 1, Rs. 2) before reaching the target of Rs. 3.",
+        "c": "Incorrect. Three states would miss one of the required states needed to properly handle all possible amounts from Rs. 0 to Rs. 3."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "3. For the vending machine problem in Q2, with inputs x (Rs. 1 coin) and y (Rs. 2 coin), output z (dispense candy), and flip-flop outputs A(t) and B(t), what is the correct expression for A(t+1)?",
+      "answers": {
+        "a": "A + y + Bx",
+        "b": "A + x + By",
+        "c": "B + x + Ay",
+        "d": "A + x + By"
+      },
+      "correctAnswer": "d",
+      "explanations": {
+        "d": "Correct. Using Karnaugh map simplification for the next state logic of flip-flop A, the expression A(t+1) = A + x + By represents the conditions when A should be 1 in the next state.",
+        "a": "Incorrect. This expression incorrectly combines the terms and doesn't properly represent the next state logic for flip-flop A.",
+        "b": "Incorrect. This is identical to option d, making it a duplicate choice rather than a distinct incorrect option.",
+        "c": "Incorrect. This expression uses B as the primary term instead of A, which doesn't match the required next state logic for flip-flop A."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "4. For the vending machine problem in Q2, what is the correct expression for B(t+1)?",
+      "answers": {
+        "a": "(B + y + Ax)(B' + y' + A)",
+        "b": "(B + x + Ay)(B' + y' + A)",
+        "c": "(B + y' + Ax)(B' + y + A)",
+        "d": "(B + y + A'x)(B' + y' + A)"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. Using Karnaugh map simplification for flip-flop B, this product-of-sums expression B(t+1) = (B + y + Ax)(B' + y' + A) correctly represents the next state logic.",
+        "b": "Incorrect. This expression incorrectly substitutes x for y in the first term, which doesn't match the derived logic from the state table.",
+        "c": "Incorrect. This expression has y' in the first term and y in the second term, which is the opposite of the correct formulation.",
+        "d": "Incorrect. This expression uses A' instead of A in the first term, which doesn't correspond to the correct next state logic."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "5. For the sequence detector problem in Q1, with input x, output y, and flip-flop outputs A(t) and B(t), what is the correct expression for output y?",
+      "answers": {
+        "a": "A XOR B",
+        "b": "AB",
+        "c": "A + B",
+        "d": "A' + B"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "b": "Correct. The output y = AB means the output is 1 only when both flip-flops A and B are 1, which corresponds to the state representing '3 or more consecutive 1s detected'.",
+        "a": "Incorrect. A XOR B would give 1 when exactly one flip-flop is 1, which doesn't correspond to the detection of 3 consecutive 1s.",
+        "c": "Incorrect. A + B would give 1 whenever either flip-flop is 1, which would produce false positives before detecting the complete sequence.",
+        "d": "Incorrect. A' + B uses the complement of A, which doesn't represent the correct condition for sequence detection."
+      },
+      "difficulty": "intermediate"
+    }
+  ]
+}
