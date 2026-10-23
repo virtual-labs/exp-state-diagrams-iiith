@@ -1,158 +1,115 @@
-### State Diagram Implementation
+### Demo
 
-#### Pre-initialized Components
+The Demo shows a small state machine with the inputs X and Y, one D flip-flop and the output A (the state diagram is shown on the right). The state of the machine is A: it changes when X and Y are different (inputs 01 and 10) and stays when they are equal (inputs 00 and 11). The circuit is D = A XOR (X XOR Y).
 
-The simulation workspace comes with the following components already placed:
+1. Click on **Start**. The streams of the inputs X and Y move through the circuit one bit pair at a time, and the output A shows the new state after every clock pulse. The yellow bit of each stream is the one being processed.
+2. The same button pauses and resumes the run, and the speed can be changed (1x, 2x, 4x) while it runs. At the end the table of the states and outputs is shown.
+3. When the run has finished, click on **Start** to run it again. **Reset** brings the circuit back to its starting state at any time.
 
-- **Input X**: Binary input signal (left side)
-- **Clock**: Clock signal for synchronizing state transitions (left side, below Input X)
-- **Output A**: First output bit (right side, top)
-- **Output B**: Second output bit (right side, bottom)
+### Practice
 
-#### Components Required (to be added by user)
+The Practice page has two tasks, one for each tab: **State Diagram** and **Pattern Identifier**. In both tasks the input X, the clock Clk and the output bits A and B are already on the circuit board, and you build the state machine between them from JK flip-flops and gates. The pair of output bits A B is the state of the machine.
 
-- JK flip-flops (as needed for state implementation)
-- NOT gates
-- AND gates
-- OR gates
-- XOR gates
+#### General instructions
 
-#### Circuit Connections
+- Click on a component in the **Components** panel to add it to the board, drag it to move it, and connect components by dragging from one endpoint (the dots) to another. A wire can be dragged from an output point to an input point or the other way round. An output point can drive several inputs; an input point takes one wire only.
+- The JK flip-flop has the inputs J (upper), clk (middle) and K (lower) and the outputs Q (upper) and Q' (lower). The flip-flops are **negative-edge triggered**: they change at the moment the clock goes from 1 to 0. Every simulation starts in the state A B = 00.
+- To delete a wire or a component, right click on it and select **Delete**.
+- The input X is driven by an **input string** of 0s and 1s, one bit for every clock pulse. Every task starts with a default string, which is shown in the Observations panel. Click on **Input** to enter another string (only 0, 1, T and F are accepted).
+- Click on **Simulate** to start the clock Clk (one pulse every 2 seconds). The next bit of the string is applied to X when the clock goes up, and the flip-flops change when the clock goes down. The button now reads **Stop**: click on it to stop the clock. **Reset** stops the clock too, and so does a change of tab. The **Submit** and **Input** buttons work only when the clock is stopped.
+- Click on **Submit** to check the circuit. Submit uses its own input string, starting from the state 00, and shows a table with the expected and the observed outputs A B after every input bit. A "Success" or "Fail" message is shown. The circuit must be completely connected, otherwise the component that is not connected properly is highlighted.
 
-Follow these steps to build the state machine circuit according to the provided state diagram:
+#### Task 1: State Diagram
 
-1. **Add JK Flip-Flops**:
+<img src="images/practice_state_diagram.png" alt="State diagram of Task 1">
 
-   - Click on the JK flip-flop component in the left panel to add flip-flops to the working area.
-   - Drag and position the flip-flops in the central working area for easy connections.
-   - You will need to determine the number of flip-flops based on the state diagram provided (typically 2 flip-flops for a 4-state machine).
+_Figure 1: The state diagram of Task 1. The states are S0 = 00, S1 = 01, S2 = 10 and S3 = 11 (the pair A B), and the arrows are labelled with the input X. Reference: Theory section_
 
-2. **Connect Clock Signal**:
+**State table** (the present state is A B, the next state is A⁺ B⁺):
 
-   - Connect the Clock signal (pre-placed on the left) to the CLK input of each JK flip-flop.
-   - This ensures all state transitions occur synchronously on clock edges.
-   - Drag from the Clock output endpoint to the CLK input endpoint of each flip-flop.
+| A B | X = 0 | X = 1 |
+| --- | ----- | ----- |
+| 00  | 01    | 00    |
+| 01  | 11    | 10    |
+| 10  | 11    | 10    |
+| 11  | 00    | 11    |
 
-3. **Add Logic Gates**:
+**Flip-flop inputs** (found with the JK excitation table, as in the Theory section):
 
-   - Click on the required logic gates (AND, OR, NOT, XOR) from the component panel to add them to the working area.
-   - Position the gates strategically between the flip-flops and inputs/outputs for organized wiring.
+- J_A = B, K_A = B · X'
+- J_B = X', K_B = A XOR X
 
-4. **Implement Next-State Logic**:
+**Components required:** 2 JK flip-flops (one for A, one for B), 1 NOT gate, 1 AND gate and 1 XOR gate.
 
-   - Design the J and K inputs for each flip-flop according to the state diagram equations.
-   - Connect Input X and flip-flop Q outputs to logic gates as needed.
-   - Connect logic gate outputs to the J and K inputs of flip-flops to implement the next-state logic.
-   - Example connections (adapt based on your state diagram):
-     - For a simple design: Connect X and Q outputs through appropriate gates to control state transitions.
+**Circuit connections:**
 
-5. **Connect Output Logic**:
+1. Drag two JK flip-flops. Call the first one FF A and the second one FF B. Connect the Q output of FF A to the output bit **A** and the Q output of FF B to the output bit **B**.
+2. Connect the **Clk** bit to the clk input of both flip-flops.
+3. Drag a NOT gate and connect its input to **X**. Its output is X'.
+4. Connect the Q output of FF B to the J input of FF A.
+5. Drag an AND gate and connect its inputs to the Q output of FF B and to the output of the NOT gate. Connect its output to the K input of FF A.
+6. Connect the output of the NOT gate to the J input of FF B.
+7. Drag an XOR gate and connect its inputs to the Q output of FF A and to **X**. Connect its output to the K input of FF B.
+8. Click on "Simulate" and follow the outputs for the input string, then click on "Submit".
 
-   - Connect the Q outputs of flip-flops to Output A and Output B (pre-placed on the right side).
-   - You may need combinational logic gates between flip-flop outputs and the output bits depending on the state diagram.
-   - Drag wires from flip-flop Q outputs to the output bit endpoints.
+**Expected behaviour** (checked when you click on "Submit"; the machine starts in the state 00):
 
-6. **Delete Unwanted Components or Connections**:
+| Step | X | A B |
+| ---- | - | --- |
+| 1    | 1 | 0 0 |
+| 2    | 0 | 0 1 |
+| 3    | 1 | 1 0 |
+| 4    | 1 | 1 0 |
+| 5    | 0 | 1 1 |
+| 6    | 0 | 0 0 |
+| 7    | 0 | 0 1 |
+| 8    | 0 | 1 1 |
+| 9    | 1 | 1 1 |
+| 10   | 0 | 0 0 |
 
-   - Right-click on any component or wire and select "Delete" to remove it.
-   - This helps correct mistakes and refine your circuit.
-
-7. **Input String Configuration**:
-
-   - Click on the "Input" button to open the input string dialog.
-   - Enter a binary input sequence for testing (e.g., "1011000010" to test various state transitions).
-   - The input should contain only 0s and 1s.
-   - Click "OK" to set the input string.
-
-8. **Simulation Execution**:
-
-   - Click on "Simulate" to run the circuit with the provided input string.
-   - Observe how outputs A and B change as each input bit is processed sequentially.
-   - The circuit will step through the input string, updating states on each clock cycle.
-
-9. **Circuit Verification**:
-   - Once you believe your circuit is correct, click on "Submit" to verify the implementation.
-   - The system will test your circuit against predefined test cases.
-   - If the circuit has been constructed correctly, a "Success" message will be displayed in the Observations section.
-   - If incorrect, a "Fail" message will appear, and you should review your connections.
+A circuit that gives the state code with A and B exchanged is accepted too.
 
 #### Observations
 
-- The circuit implements a finite state machine with two output bits A and B that respond to the input stream X.
-- The JK flip-flops store the current state, and the combinational logic determines the next state based on current state and input.
-- Depending upon the input stream given, the states of outputs A and B will change according to the state diagram logic.
-- The Clock signal ensures all state transitions occur synchronously on clock edges, maintaining proper timing relationships.
-- For proper operation:
-  - All flip-flops must be connected to the Clock signal.
-  - The J and K inputs must implement the correct next-state logic from the state diagram.
-  - Outputs A and B should be connected to the appropriate flip-flop Q outputs or combinational logic.
-- The Observations section will display:
-  - A state transition table showing how outputs A and B change for each input bit.
-  - Success or Failure message after clicking Submit.
-  - Any error messages if connections are missing or incorrect.
-- Monitor the state transitions to verify your circuit behaves according to the given state diagram.
+- The outputs A B are the state of the machine. After every clock pulse they change as the state diagram says for the present state and the input X.
+- The JK flip-flops store the state, and the gates in front of them are the next-state logic.
+- If the circuit has been made as described above, a "Success" message is displayed upon clicking "Submit".
 
-#### Key Design Considerations
+#### Task 2: Pattern Identifier
 
-- **State Encoding**: The binary values of outputs A and B represent different states of the finite state machine.
-- **Synchronous Operation**: All state changes occur on clock edges for predictable behavior.
-- **Next-State Logic**: The J and K inputs to flip-flops implement the state transition logic from the state diagram.
-- **Output Logic**: Outputs A and B may be direct flip-flop outputs or require additional combinational logic.
+Design a state machine that finds a run of **3 or more 1s** in the input stream: the outputs A B have to be **1 1 while the last three (or more) inputs were 1**, and they can have any other value than 1 1 at all the other times. You have to draw the state diagram yourself and design the circuit.
+
+**One possible design.** Let the state be the number of 1s in a row so far, up to 3: 00 (none), 01 (one), 10 (two) and 11 (three or more). A 1 moves the machine to the next state (11 stays in 11) and a 0 brings it back to 00:
+
+| A B | X = 0 | X = 1 |
+| --- | ----- | ----- |
+| 00  | 00    | 01    |
+| 01  | 00    | 10    |
+| 10  | 00    | 11    |
+| 11  | 00    | 11    |
+
+The JK inputs are J_A = X · B, K_A = X', J_B = X, K_B = (X · A)'. The components are 2 JK flip-flops, 2 AND gates and 2 NOT gates (the output of the second AND gate goes through a NOT gate to K_B).
+
+Any other design is accepted, whatever the state codes are, as long as A B = 1 1 exactly while the last three or more inputs were 1 (the check uses a string with runs of 1s of the lengths 1, 4, 1, 2 and 3).
+
+**Circuit connections (for the design above):**
+
+1. Drag two JK flip-flops (FF A and FF B). Connect their Q outputs to the output bits **A** and **B**, and the **Clk** bit to both clk inputs.
+2. Drag an AND gate and connect its inputs to **X** and the Q output of FF B. Connect its output to the J input of FF A.
+3. Drag a NOT gate and connect its input to **X**. Connect its output to the K input of FF A.
+4. Connect **X** to the J input of FF B.
+5. Drag a second AND gate and connect its inputs to **X** and the Q output of FF A. Drag a second NOT gate and connect its input to the output of this AND gate. Connect the NOT output to the K input of FF B.
+6. Click on "Simulate", enter strings with the Input button and watch A B reach 1 1 after the third 1 in a row, then click on "Submit".
+
+#### Observations
+
+- A B is 1 1 from the third 1 of a run of 1s until the next 0, and the pattern can overlap (a run of 4 or more 1s keeps A B at 1 1).
+- A 0 in the input always brings the machine back to the starting state.
+- If the circuit has been made correctly, a "Success" message is displayed upon clicking "Submit".
 
 #### Troubleshooting
 
-- **No state transitions**: Check if Clock signal is properly connected to all flip-flops.
-- **Incorrect transitions**: Verify J and K input connections match the state diagram equations.
-- **Simulation errors**: Ensure all logic gates are properly connected with no dangling endpoints.
-- **Timing issues**: Confirm only one Clock signal is used for all flip-flops to maintain synchronization.
-- **Input not working**: Click "Input" button first and enter a valid binary string (only 0s and 1s) before clicking "Simulate".
-- **Submit fails**: Double-check your circuit against the state diagram, ensuring all state transitions are correctly implemented.
-
-### Pattern Identifier - Alternate State Diagram
-
-#### Components Required
-
-- 3 JK flip-flops
-- Combinational logic gates (AND, OR, NOT gates as needed)
-- 1 Clock signal
-- Input X (binary input stream)
-- Outputs A and B (state outputs)
-
-#### Circuit Connections
-
-1. **Initial Setup**:
-
-   - The circuit board comes with pre-placed Input X, Clock signal, and output bits A and B.
-   - Drag three JK flip-flops from the component library to the working area.
-
-2. **Flip-Flop Connections**:
-
-   - Connect the Clock signal to the CLK input of all three JK flip-flops for synchronized operation.
-   - Design and connect the J and K inputs for each flip-flop based on the alternative state diagram provided in the theory section.
-
-3. **Combinational Logic Implementation**:
-
-   - Add necessary NOT, AND, OR, and XOR gates to implement the next-state logic and output logic.
-   - Connect logic gates according to the derived equations for the specific pattern being detected.
-
-4. **Output Connections**:
-
-   - Connect flip-flop Q outputs to output bits A and B as specified by the state diagram.
-   - Add any additional combinational logic needed for the output function.
-
-5. **Input String Configuration**:
-
-   - Click on "Input" button to enter a test binary sequence.
-   - Enter appropriate test patterns to verify the pattern detection behavior.
-
-6. **Simulation and Verification**:
-   - Click on "Simulate" to run the circuit with the input string.
-   - Observe state transitions and output behavior in the Observations section.
-   - Click on "Submit" to verify correct implementation.
-
-#### Observations
-
-- This circuit demonstrates an alternative state machine design for pattern identification.
-- Follow the same systematic approach as the first task, adapting connections based on the specific state diagram.
-- The Observations section will display state transitions and detection results.
-- If the circuit is correctly implemented, a "Success" message will be displayed upon clicking "Submit".
+- **"highlighted component not connected" or "... of Flip-Flop must be connected"**: every input and output of every component has to be connected, and the Q output of every flip-flop has to drive something.
+- **Simulate shows nothing**: wait for the first clock pulse (up to 2 seconds). The outputs change when the clock goes down.
+- **Submit fails, but the simulation looks right**: Submit starts from the state 00 and uses its own input string; check the table to see in which step the outputs differ from the expected ones.
+- **Input does not accept my string**: the string has to contain only 0s and 1s (or T and F).
